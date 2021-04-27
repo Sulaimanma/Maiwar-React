@@ -1,19 +1,45 @@
-import logo from "./logo.svg";
-import "./App.css";
-import Amplify from "aws-amplify";
-import awsconfig from "./aws-exports";
-import { AmplifySignOut, withAuthenticator } from "@aws-amplify/ui-react";
+import logo from "./logo.svg"
+import "./App.css"
+import Amplify from "aws-amplify"
+import awsconfig from "./aws-exports"
 
-Amplify.configure(awsconfig);
+import {
+  AmplifyAuthenticator,
+  AmplifySignUp,
+  AmplifySignOut,
+} from "@aws-amplify/ui-react"
+import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components"
+import { useEffect, useState } from "react"
+
+Amplify.configure(awsconfig)
 function App() {
-  return (
+  const [authState, setAuthState] = useState()
+  const [user, setUser] = useState()
+  useEffect(() => {
+    return onAuthUIStateChange((nextAuthState, authData) => {
+      setAuthState(nextAuthState)
+      setUser(authData)
+    })
+  }, [])
+  console.log(user)
+
+  return authState === AuthState.SignedIn && user ? (
     <div className="App">
-      <header className="App-header">
-        <AmplifySignOut />
-        <h2>My app content</h2>
-      </header>
+      <div>Hello, {user.attributes.email}</div>
+      <AmplifySignOut />
     </div>
-  );
+  ) : (
+    <AmplifyAuthenticator>
+      <AmplifySignUp
+        slot="sign-up"
+        formFields={[
+          { type: "username" },
+          { type: "password" },
+          { type: "email" },
+        ]}
+      />
+    </AmplifyAuthenticator>
+  )
 }
 
-export default withAuthenticator(App);
+export default App
