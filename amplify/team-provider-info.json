@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-maiwarreactapp-dev-165816-authRole",
+      "UnauthRoleArn": "arn:aws:iam::175346306213:role/amplify-maiwarreactapp-dev-165816-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::175346306213:role/amplify-maiwarreactapp-dev-165816-authRole",
+      "Region": "ap-southeast-2",
+      "DeploymentBucketName": "amplify-maiwarreactapp-dev-165816-deployment",
+      "UnauthRoleName": "amplify-maiwarreactapp-dev-165816-unauthRole",
+      "StackName": "amplify-maiwarreactapp-dev-165816",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:175346306213:stack/amplify-maiwarreactapp-dev-165816/1678bf60-a726-11eb-8349-0612e8771180",
+      "AmplifyAppId": "d2fz58qvwgfoob"
+    },
+    "categories": {
+      "auth": {
+        "maiwarreactappc0e19078": {}
+      }
+    }
+  }
+}

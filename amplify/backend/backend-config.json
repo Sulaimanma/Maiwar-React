@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "maiwarreactappc0e19078": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}
