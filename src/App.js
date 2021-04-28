@@ -1,27 +1,28 @@
-import logo from "./logo.svg"
-import "./App.css"
-import Amplify from "aws-amplify"
-import awsconfig from "./aws-exports"
+import logo from "./logo.svg";
+import "./App.css";
+import Amplify from "aws-amplify";
+import awsconfig from "./aws-exports";
 
 import {
   AmplifyAuthenticator,
   AmplifySignUp,
   AmplifySignOut,
-} from "@aws-amplify/ui-react"
-import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components"
-import { useEffect, useState } from "react"
+} from "@aws-amplify/ui-react";
+import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
+import { useEffect, useState } from "react";
 
-Amplify.configure(awsconfig)
+Amplify.configure(awsconfig);
 function App() {
-  const [authState, setAuthState] = useState()
-  const [user, setUser] = useState()
+  const [authState, setAuthState] = useState();
+  const [user, setUser] = useState();
+  //user information
   useEffect(() => {
     return onAuthUIStateChange((nextAuthState, authData) => {
-      setAuthState(nextAuthState)
-      setUser(authData)
-    })
-  }, [])
-  console.log(user)
+      setAuthState(nextAuthState);
+      setUser(authData);
+    });
+  }, []);
+  console.log(user);
 
   return authState === AuthState.SignedIn && user ? (
     <div className="App">
@@ -39,7 +40,7 @@ function App() {
         ]}
       />
     </AmplifyAuthenticator>
-  )
+  );
 }
 
-export default App
+export default App;
