@@ -19,7 +19,7 @@ export default function Map() {
     height: "100vh",
     zoom: 4.5,
   });
-  function toggleSidebar() {}
+  function toggleRight() {}
   return (
     <div className="body">
       <div id="map">

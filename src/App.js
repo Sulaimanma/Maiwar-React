@@ -25,8 +25,8 @@ function App() {
 
   return authState === AuthState.SignedIn && user ? (
     <div className="App">
-      {/* <div>Hello, {user.attributes.email}</div>
-      <AmplifySignOut /> */}
+      {/* <div>Hello, {user.attributes.email}</div>*/}
+      <AmplifySignOut />
       <Map />
     </div>
   ) : (
