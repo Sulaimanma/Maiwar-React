@@ -8,10 +8,13 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "aws-amplify": "^3.3.27",
+    "mapbox-gl": "^2.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-map-gl": "^6.1.12",
     "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "webpack-loader": "0.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -36,5 +39,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "webpack": "^5.36.0",
+    "worker-loader": "^3.0.8"
   }
 }

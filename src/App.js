@@ -1,5 +1,3 @@
-import logo from "./logo.svg";
-import "./App.css";
 import Amplify from "aws-amplify";
 import awsconfig from "./aws-exports";
 
@@ -10,6 +8,7 @@ import {
 } from "@aws-amplify/ui-react";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
 import { useEffect, useState } from "react";
+import Map from "./component/Map";
 
 Amplify.configure(awsconfig);
 function App() {
@@ -26,8 +25,9 @@ function App() {
 
   return authState === AuthState.SignedIn && user ? (
     <div className="App">
-      <div>Hello, {user.attributes.email}</div>
-      <AmplifySignOut />
+      {/* <div>Hello, {user.attributes.email}</div>
+      <AmplifySignOut /> */}
+      <Map />
     </div>
   ) : (
     <AmplifyAuthenticator>
