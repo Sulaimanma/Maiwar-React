@@ -8,6 +8,7 @@ import {
   clusterCountLayer,
   unclusteredPointLayer,
 } from "./layer";
+import PopInfo from "./PopInfo";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
@@ -55,6 +56,13 @@ export default function Map() {
       });
     });
   };
+  const video = VideoName => {
+    var path =
+      "https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/video/" +
+      VideoName +
+      ".mp4";
+    return path;
+  };
   return (
     <div className="body">
       <div id="map">
@@ -96,12 +104,7 @@ export default function Map() {
               onClose={() => setPopup(false)}
               anchor="bottom"
             >
-              <h1
-              // style={{ fontSize: "300px", position: "absolute", zIndex: "3" }}
-              >
-                here
-              </h1>
-              <div>{feature_point.geometry.coordinates}</div>
+              <PopInfo src={video(feature_point.properties.VideoName)} />
             </Popup>
           )}
         </ReactMapGl>
