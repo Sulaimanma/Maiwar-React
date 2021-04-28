@@ -1,0 +1,27 @@
+.signOut {
+  position: fixed;
+  right: 0px;
+  z-index: 17;
+}
+.greeting {
+  color: white;
+}
+amplify-sign-out {
+  background: green;
+  padding: 5px;
+}
+amplify-button .button {
+  background: black !important;
+}
+.signoutBtn {
+  height: 24px;
+  width: 100px;
+  position: absolute;
+  right: 0%;
+  font: white;
+  font-size: medium;
+  border: none;
+  background: grey;
+  margin-top: 3px;
+  cursor: pointer;
+}
