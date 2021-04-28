@@ -17,7 +17,7 @@ export default function Map() {
     longitude: 138.014308,
     width: "100vw",
     height: "100vh",
-    zoom: 3.7,
+    zoom: 4.5,
   });
   function toggleSidebar() {}
   return (
@@ -45,26 +45,6 @@ export default function Map() {
               alt="LOGO"
             />
             <h1>VIRTUAL SONGLINES</h1>
-          </div>
-          <div id="left" class="sidebar flex-center left collapsed">
-            <div class="sidebar-content rounded-rect flex-center">
-              <div id="listings" class="listings"></div>
-
-              <div
-                class="sidebar-toggle rounded-rect left"
-                onclick="toggleSidebar('left')"
-              >
-                <p>Projects</p>
-              </div>
-            </div>
-          </div>
-
-          <div id="right" class="sidebar flex-center right collapsed">
-            <div class="sidebar-content rounded-rect flex-center">
-              <div>
-                <pre id="features"></pre>
-              </div>
-            </div>
           </div>
         </ReactMapGl>
       </div>
