@@ -94,7 +94,7 @@ export default function Map() {
           </div>
           {/* Load the Layer source data*/}
           <Source
-            id="heritages"
+            // id="heritages"
             type="geojson"
             data={allData}
             cluster={true}
@@ -105,7 +105,7 @@ export default function Map() {
             <Layer {...clusterCountLayer} />
             <Layer {...unclusteredPointLayer} />
           </Source>
-          {console.log("clickInfo", clickInfo.properties)}
+          {console.log("clickInfo", clickInfo)}
 
           {/* popup module */}
           {popup && clickInfo != null && clickInfo.properties.VideoName && (
