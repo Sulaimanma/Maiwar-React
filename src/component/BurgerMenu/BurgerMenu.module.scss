@@ -1,0 +1,86 @@
+.container {
+  outline: none;
+  padding: 1.5rem 0.5rem 0 1.5rem;
+  .userProfile {
+    height: 6rem;
+    width: 6rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    a {
+      position: relative;
+      img {
+        height: 100%;
+        width: 100%;
+        border-radius: 4rem;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+  }
+  .user {
+    font-weight: 600;
+    .name {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      text-transform: capitalize;
+    }
+    .username {
+      color: #bbb;
+    }
+  }
+  .logo {
+    margin: 1rem 0 2rem;
+    display: flex;
+  }
+  .menu {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    width: 85%;
+  }
+  .logout {
+    .delimiter {
+      margin: 0px 10px;
+    }
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 5rem;
+    padding: 0 0.75rem 2rem;
+    color: #bbb;
+    a {
+      display: flex;
+      align-items: center;
+      font-size: 0.9rem;
+      .icon {
+        margin-right: 0.75rem;
+        font-size: 1.4rem;
+      }
+    }
+  }
+}
+
+.burgerIcon {
+  transform: scale(0.7);
+}
+
+//desktop
+@media only screen and (min-width: 1024px) and (orientation: landscape) {
+  .burgerIcon {
+    transform: scale(0.8);
+    margin-left: 16px;
+    margin-top: 6px;
+  }
+  .menu {
+    width: 90% !important;
+  }
+}
+@media only screen and (width: 768px) {
+  .burgerIcon {
+    transform: scale(0.9);
+    margin-left: 12px;
+    margin-top: 12px;
+  }
+}

@@ -16,6 +16,9 @@ import {
 } from "./layer";
 
 import PopInfo from "./PopInfo";
+import Pins from "./Pins";
+import { slide as Menu } from "react-burger-menu";
+import { BurgerMenu } from "./BurgerMenu/BurgerMenu";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
@@ -60,6 +63,8 @@ export default function Map() {
     setPopup(true);
     //Set the data to display
     setclickInfo(clickedFeature);
+
+    label(event);
   }, []);
 
   //Video function to play the video according to the Video Name
@@ -70,62 +75,90 @@ export default function Map() {
       ".mp4";
     return path;
   };
+  const locateUser = () => {
+    navigator.geolocation.getCurrentPosition(position => {
+      setViewpoint({
+        longitude: position.coords.longitude,
+        latitude: position.coords.latitude,
+      });
+    });
+  };
+  const label = e => {
+    const locationData = mapRef.current.queryRenderedFeatures(e.point, {});
+    // const geoData = locationData[0].geometry.coordinates[0][0][0];
+    console.log("location", locationData);
+  };
   return (
     <div className="body">
-      <div id="map">
-        <ReactMapGl
-          ref={mapRef}
-          {...viewpoint}
-          mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
-          onViewportChange={viewpoint => {
-            setViewpoint(viewpoint);
-          }}
-          mapStyle="mapbox://styles/guneriboi/cko26dcwb028v17qgn1swhijn"
-          //Define the interactive layer
-          interactiveLayerIds={["unclustered-point"]}
-          onClick={onClick}
-        >
-          <div id="logo">
-            <img
-              src="https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/img/logo.svg"
-              alt="LOGO"
-            />
-            <h1>VIRTUAL SONGLINES</h1>
-          </div>
-          {/* Load the Layer source data*/}
-          <Source
-            // id="heritages"
-            type="geojson"
-            data={allData}
-            cluster={true}
-            clusterMaxZoom={14}
-            clusterRadius={50}
+      <Menu pageWrapId={"page-wrap"}>
+        <a id="home" className="menu-item">
+          Home
+        </a>
+        <a id="about" className="menu-item">
+          About
+        </a>
+        <a id="contact" className="menu-item">
+          Contact
+        </a>
+        <a>Settings</a>
+      </Menu>
+      <main id="page-wrap">
+        <div id="map">
+          <ReactMapGl
+            ref={mapRef}
+            {...viewpoint}
+            mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
+            onViewportChange={viewpoint => {
+              setViewpoint(viewpoint);
+            }}
+            mapStyle="mapbox://styles/guneriboi/cko26dcwb028v17qgn1swhijn"
+            //Define the interactive layer
+            interactiveLayerIds={["unclustered-point"]}
+            onClick={onClick}
           >
-            <Layer {...clusterLayer} />
-            <Layer {...clusterCountLayer} />
-            <Layer {...unclusteredPointLayer} />
-          </Source>
-          {console.log("clickInfo", clickInfo)}
-
-          {/* popup module */}
-          {popup && clickInfo != null && clickInfo.properties.VideoName && (
-            <Popup
-              latitude={clickInfo.geometry.coordinates[1]}
-              longitude={clickInfo.geometry.coordinates[0]}
-              closeButton={true}
-              closeOnClick={false}
-              onClose={() => setPopup(false)}
-              anchor="bottom"
-            >
-              <PopInfo
-                src={video(clickInfo.properties.VideoName)}
-                description={clickInfo.properties.description}
-                title={clickInfo.properties.title}
+            <div id="logo">
+              <img
+                src="https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/img/logo.svg"
+                alt="LOGO"
               />
-            </Popup>
-          )}
-        </ReactMapGl>
-      </div>
+              <h1>VIRTUAL SONGLINES</h1>
+            </div>
+            {/* Load the Layer source data*/}
+            <Source
+              // id="heritages"
+              type="geojson"
+              data={allData}
+              cluster={true}
+              clusterMaxZoom={14}
+              clusterRadius={50}
+            >
+              <Layer {...clusterLayer} />
+              <Layer {...clusterCountLayer} />
+              <Layer {...unclusteredPointLayer} />
+            </Source>
+            {console.log(clickInfo)}
+            {allData != null && <Pins data={allData} onClick={onClick} />}
+
+            {/* popup module */}
+            {popup && clickInfo != null && clickInfo.properties.VideoName && (
+              <Popup
+                latitude={clickInfo.geometry.coordinates[1]}
+                longitude={clickInfo.geometry.coordinates[0]}
+                closeButton={true}
+                closeOnClick={false}
+                onClose={() => setPopup(false)}
+                anchor="bottom"
+              >
+                <PopInfo
+                  src={video(clickInfo.properties.VideoName)}
+                  description={clickInfo.properties.description}
+                  title={clickInfo.properties.title}
+                />
+              </Popup>
+            )}
+          </ReactMapGl>
+        </div>
+      </main>
     </div>
   );
 }
