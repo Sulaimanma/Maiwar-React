@@ -117,7 +117,11 @@ export default function Map() {
               onClose={() => setPopup(false)}
               anchor="bottom"
             >
-              <PopInfo src={video(clickInfo.properties.VideoName)} />
+              <PopInfo
+                src={video(clickInfo.properties.VideoName)}
+                description={clickInfo.properties.description}
+                title={clickInfo.properties.title}
+              />
             </Popup>
           )}
         </ReactMapGl>

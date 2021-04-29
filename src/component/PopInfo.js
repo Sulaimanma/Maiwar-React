@@ -1,9 +1,12 @@
 import React from "react";
 import "./popinfo.css";
 export default function PopInfo(props) {
+  const { src, description, title } = props;
   return (
     <div className="popContainer">
-      <video autoPlay loop muted width="300px" height="300px" src={props.src} />
+      <h3 className="title">{title}</h3>
+      <video autoPlay loop muted width="300px" src={src} />
+      <p className="description">{description}</p>
     </div>
   );
 }

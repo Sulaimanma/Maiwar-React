@@ -2,3 +2,31 @@
   width: 200px !important;
   height: fit-content;
 }
+.title {
+  font-size: 1.6em;
+  font-family: "Amatic SC", cursive;
+  font-weight: 100;
+  background: rgba(255, 255, 255, 1);
+  word-wrap: break-word;
+  hyphens: auto;
+  white-space: pre;
+  width: 95%;
+  color: gray;
+}
+.description {
+  white-space: normal;
+  font-family: "Amatic SC", cursive;
+  color: gray;
+  padding: 10px;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  word-wrap: break-word;
+  hyphens: auto;
+  font-family: monospace;
+}
+.mapboxgl-popup-content {
+  padding: 20px 10px 15px;
+}
