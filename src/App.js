@@ -1,27 +1,27 @@
-import Amplify, { Auth } from "aws-amplify"
-import awsconfig from "./aws-exports"
+import Amplify, { Auth } from "aws-amplify";
+import awsconfig from "./aws-exports";
 
 import {
   AmplifyAuthenticator,
   AmplifySignUp,
   AmplifySignOut,
-} from "@aws-amplify/ui-react"
-import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components"
-import { useEffect, useState } from "react"
-import Map from "./component/Map"
-import "./App.css"
-Amplify.configure(awsconfig)
+} from "@aws-amplify/ui-react";
+import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
+import { useEffect, useState } from "react";
+import Map from "./component/Map";
+import "./App.css";
+Amplify.configure(awsconfig);
 function App() {
-  const [authState, setAuthState] = useState()
-  const [user, setUser] = useState()
-  //user information
+  const [authState, setAuthState] = useState();
+  const [user, setUser] = useState();
+  //Load the user information
   useEffect(() => {
     return onAuthUIStateChange((nextAuthState, authData) => {
-      setAuthState(nextAuthState)
-      setUser(authData)
-    })
-  }, [])
-  console.log(user)
+      setAuthState(nextAuthState);
+      setUser(authData);
+    });
+  }, []);
+  console.log(user);
 
   return authState === AuthState.SignedIn && user ? (
     <div className="App">
@@ -30,16 +30,17 @@ function App() {
         <button
           className="signoutBtn"
           onClick={() => {
-            Auth.signOut()
+            Auth.signOut();
           }}
         >
           Sigo Out
         </button>
       </div>
-
+      {/* map module */}
       <Map />
     </div>
   ) : (
+    // Sign up window
     <AmplifyAuthenticator>
       <AmplifySignUp
         slot="sign-up"
@@ -50,7 +51,7 @@ function App() {
         ]}
       />
     </AmplifyAuthenticator>
-  )
+  );
 }
 
-export default App
+export default App;
