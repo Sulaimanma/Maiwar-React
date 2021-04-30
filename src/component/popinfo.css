@@ -9,7 +9,7 @@
   background: rgba(255, 255, 255, 1);
   word-wrap: break-word;
   hyphens: auto;
-  white-space: pre;
+  white-space: wrap;
   width: 95%;
   color: gray;
 }

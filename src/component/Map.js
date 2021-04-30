@@ -4,32 +4,28 @@ import React, {
   useEffect,
   useRef,
   useState,
-} from "react";
-import ReactMapGl, { Marker, Popup, Source, Layer } from "react-map-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import mapboxgl from "mapbox-gl";
-import "./map.css";
-import {
-  clusterLayer,
-  clusterCountLayer,
-  unclusteredPointLayer,
-} from "./layer";
+} from "react"
+import ReactMapGl, { Marker, Popup, Source, Layer } from "react-map-gl"
+import "mapbox-gl/dist/mapbox-gl.css"
+import mapboxgl from "mapbox-gl"
+import "./map.css"
+import { clusterLayer, clusterCountLayer, unclusteredPointLayer } from "./layer"
 
-import PopInfo from "./PopInfo";
-import Pins from "./Pins";
-import { slide as Menu } from "react-burger-menu";
-import { BurgerMenu } from "./BurgerMenu/BurgerMenu";
+import PopInfo from "./PopInfo"
+import Pins from "./Pins"
+import { slide as Menu } from "react-burger-menu"
+import { BurgerMenu } from "./BurgerMenu/BurgerMenu"
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
-mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default
 
 export default function Map() {
-  const mapRef = useRef();
+  const mapRef = useRef()
   // popup control variable
-  const [popup, setPopup] = useState(false);
+  const [popup, setPopup] = useState(false)
   // mapbox Token
   const REACT_APP_MAPBOX_TOKEN =
-    "pk.eyJ1IjoiZ3VuZXJpYm9pIiwiYSI6ImNrMnM0NjJ1dzB3cHAzbXVpaXhrdGd1YjIifQ.1TmNd7MjX3AhHdXprT4Wjg";
+    "pk.eyJ1IjoiZ3VuZXJpYm9pIiwiYSI6ImNrMnM0NjJ1dzB3cHAzbXVpaXhrdGd1YjIifQ.1TmNd7MjX3AhHdXprT4Wjg"
   //Initial Viewpoint
   const [viewpoint, setViewpoint] = useState({
     latitude: -27.477173,
@@ -39,58 +35,58 @@ export default function Map() {
     zoom: 4.5,
     bearing: 0,
     pitch: 30,
-  });
+  })
   //Fetched data
-  const [allData, setAllData] = useState(null);
+  const [allData, setAllData] = useState(null)
   //Data for display
-  const [clickInfo, setclickInfo] = useState(null);
+  const [clickInfo, setclickInfo] = useState(null)
   // Fetch the Layer GeoJson data for display
   useEffect(() => {
     /* global fetch */
     fetch(
       "https://amplifylanguageappgidarjil114226-dev.s3-ap-southeast-2.amazonaws.com/public/wordlist/features.geojson"
     )
-      .then(res => res.json())
-      .then(json => setAllData(json));
-  }, []);
+      .then((res) => res.json())
+      .then((json) => setAllData(json))
+  }, [])
 
-  const onClick = useCallback(event => {
+  const onClick = useCallback((event) => {
     // Destructure features from the click event data
-    const { features } = event;
+    const { features } = event
     // Make sure feature data is not undefined
-    const clickedFeature = features && features[0];
+    const clickedFeature = features && features[0]
     //Control the state of pop up
-    setPopup(true);
+    setPopup(true)
     //Set the data to display
-    setclickInfo(clickedFeature);
+    setclickInfo(clickedFeature)
 
-    label(event);
-  }, []);
+    label(event)
+  }, [])
 
   //Video function to play the video according to the Video Name
-  const video = VideoName => {
+  const video = (VideoName) => {
     var path =
       "https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/video/" +
       VideoName +
-      ".mp4";
-    return path;
-  };
+      ".mp4"
+    return path
+  }
   const locateUser = () => {
-    navigator.geolocation.getCurrentPosition(position => {
+    navigator.geolocation.getCurrentPosition((position) => {
       setViewpoint({
         longitude: position.coords.longitude,
         latitude: position.coords.latitude,
-      });
-    });
-  };
-  const label = e => {
-    const locationData = mapRef.current.queryRenderedFeatures(e.point, {});
+      })
+    })
+  }
+  const label = (e) => {
+    const locationData = mapRef.current.queryRenderedFeatures(e.point, {})
     // const geoData = locationData[0].geometry.coordinates[0][0][0];
-    console.log("location", locationData);
-  };
+    console.log("location", locationData)
+  }
   return (
     <div className="body">
-      <Menu pageWrapId={"page-wrap"}>
+      {/* <Menu pageWrapId={"page-wrap"}>
         <a id="home" className="menu-item">
           Home
         </a>
@@ -101,66 +97,64 @@ export default function Map() {
           Contact
         </a>
         <a>Settings</a>
-      </Menu>
-      <main id="page-wrap">
-        <div id="map">
-          <ReactMapGl
-            ref={mapRef}
-            {...viewpoint}
-            mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
-            onViewportChange={viewpoint => {
-              setViewpoint(viewpoint);
-            }}
-            mapStyle="mapbox://styles/guneriboi/cko26dcwb028v17qgn1swhijn"
-            //Define the interactive layer
-            interactiveLayerIds={["unclustered-point"]}
-            onClick={onClick}
+      </Menu> */}
+      <div id="map">
+        <ReactMapGl
+          ref={mapRef}
+          {...viewpoint}
+          mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
+          onViewportChange={(viewpoint) => {
+            setViewpoint(viewpoint)
+          }}
+          mapStyle="mapbox://styles/guneriboi/cko26dcwb028v17qgn1swhijn"
+          //Define the interactive layer
+          interactiveLayerIds={["unclustered-point"]}
+          onClick={onClick}
+        >
+          <div id="logo">
+            <img
+              src="https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/img/logo.svg"
+              alt="LOGO"
+            />
+            <h1>VIRTUAL SONGLINES</h1>
+          </div>
+          {/* Load the Layer source data*/}
+          <Source
+            // id="heritages"
+            type="geojson"
+            data={allData}
+            cluster={true}
+            clusterMaxZoom={14}
+            clusterRadius={50}
           >
-            <div id="logo">
-              <img
-                src="https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/img/logo.svg"
-                alt="LOGO"
-              />
-              <h1>VIRTUAL SONGLINES</h1>
-            </div>
-            {/* Load the Layer source data*/}
-            <Source
-              // id="heritages"
-              type="geojson"
-              data={allData}
-              cluster={true}
-              clusterMaxZoom={14}
-              clusterRadius={50}
-            >
-              <Layer {...clusterLayer} />
-              <Layer {...clusterCountLayer} />
-              <Layer {...unclusteredPointLayer} />
-            </Source>
-            {console.log(clickInfo)}
-            {allData != null && <Pins data={allData} onClick={onClick} />}
+            <Layer {...clusterLayer} />
+            <Layer {...clusterCountLayer} />
+            <Layer {...unclusteredPointLayer} />
+          </Source>
+          {console.log(clickInfo)}
+          {allData != null && <Pins data={allData} onClick={onClick} />}
 
-            {/* popup module */}
-            {popup && clickInfo != null && clickInfo.properties.VideoName && (
-              <Popup
-                latitude={clickInfo.geometry.coordinates[1]}
-                longitude={clickInfo.geometry.coordinates[0]}
-                closeButton={true}
-                closeOnClick={false}
-                onClose={() => setPopup(false)}
-                anchor="bottom"
-              >
-                <PopInfo
-                  src={video(clickInfo.properties.VideoName)}
-                  description={clickInfo.properties.description}
-                  title={clickInfo.properties.title}
-                />
-              </Popup>
-            )}
-          </ReactMapGl>
-        </div>
-      </main>
+          {/* popup module */}
+          {popup && clickInfo != null && clickInfo.properties.VideoName && (
+            <Popup
+              latitude={clickInfo.geometry.coordinates[1]}
+              longitude={clickInfo.geometry.coordinates[0]}
+              closeButton={true}
+              closeOnClick={false}
+              onClose={() => setPopup(false)}
+              anchor="bottom"
+            >
+              <PopInfo
+                src={video(clickInfo.properties.VideoName)}
+                description={clickInfo.properties.description}
+                title={clickInfo.properties.title}
+              />
+            </Popup>
+          )}
+        </ReactMapGl>
+      </div>
     </div>
-  );
+  )
 }
 
 // const onClickFun = e => {
