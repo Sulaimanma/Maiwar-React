@@ -123,7 +123,10 @@ export default function Map() {
   //   console.log("location", locationData)
   // }
 
-  console.log("events", events.onDrag)
+  // geoLocation
+  // console.log("events", events.onDrag)
+
+  console.log(allData)
   return (
     <div className="body" id="body">
       <Sidebar

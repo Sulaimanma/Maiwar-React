@@ -1,0 +1,13 @@
+type Heritage @model {
+  id: ID!
+  title: String!
+  description: String!
+  Icon: String!
+  VideoName: String!
+  AudioName: String!
+  SceneToLoad: String!
+  uuid: Int!
+  user: String!
+  latitude: String!
+  longitude: String!
+}
