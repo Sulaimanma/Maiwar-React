@@ -13,8 +13,8 @@ import { clusterLayer, clusterCountLayer, unclusteredPointLayer } from "./layer"
 
 import PopInfo from "./PopInfo"
 import Pins from "./Pins"
-import { slide as Menu } from "react-burger-menu"
-import { BurgerMenu } from "./BurgerMenu/BurgerMenu"
+import Sidebar from "./Sidebar/Sidebar"
+import DragPin from "./DragPin"
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default
@@ -22,6 +22,7 @@ mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
 export default function Map() {
   const mapRef = useRef()
   // popup control variable
+
   const [popup, setPopup] = useState(false)
   // mapbox Token
   const REACT_APP_MAPBOX_TOKEN =
@@ -59,8 +60,6 @@ export default function Map() {
     setPopup(true)
     //Set the data to display
     setclickInfo(clickedFeature)
-
-    label(event)
   }, [])
 
   //Video function to play the video according to the Video Name
@@ -71,33 +70,57 @@ export default function Map() {
       ".mp4"
     return path
   }
+
+  //Initial the marker position
+  const [marker, setMarker] = useState({
+    latitude: -27.477173,
+    longitude: 138.014308,
+  })
+  //Initial the events
+  const [events, logEvents] = useState({})
+  const onMarkerDragStart = useCallback((event) => {
+    logEvents((_events) => ({ ..._events, onDragStart: event.lngLat }))
+  }, [])
+  // Detect the drag event
+  const onMarkerDrag = useCallback((event) => {
+    logEvents((_events) => ({ ..._events, onDrag: event.lngLat }))
+  }, [])
+
+  const onMarkerDragEnd = useCallback((event) => {
+    logEvents((_events) => ({ ..._events, onDragEnd: event.lngLat }))
+    setMarker({
+      longitude: event.lngLat[0],
+      latitude: event.lngLat[1],
+    })
+  }, [])
+  // locate the user label on the map
   const locateUser = () => {
     navigator.geolocation.getCurrentPosition((position) => {
+      setMarker({
+        longitude: position.coords.longitude,
+        latitude: position.coords.latitude,
+      })
       setViewpoint({
+        ...viewpoint,
         longitude: position.coords.longitude,
         latitude: position.coords.latitude,
       })
     })
   }
-  const label = (e) => {
-    const locationData = mapRef.current.queryRenderedFeatures(e.point, {})
-    // const geoData = locationData[0].geometry.coordinates[0][0][0];
-    console.log("location", locationData)
-  }
+  // const label = (e) => {
+  //   const locationData = mapRef.current.queryRenderedFeatures(e.point, {})
+  //   // const geoData = locationData[0].geometry.coordinates[0][0][0];
+  //   console.log("location", locationData)
+  // }
+
+  console.log("events", events.onDrag)
   return (
-    <div className="body">
-      {/* <Menu pageWrapId={"page-wrap"}>
-        <a id="home" className="menu-item">
-          Home
-        </a>
-        <a id="about" className="menu-item">
-          About
-        </a>
-        <a id="contact" className="menu-item">
-          Contact
-        </a>
-        <a>Settings</a>
-      </Menu> */}
+    <div className="body" id="body">
+      <Sidebar
+        pageWrapId={"map"}
+        outerContainerId={"body"}
+        locateUser={locateUser}
+      />
       <div id="map">
         <ReactMapGl
           ref={mapRef}
@@ -133,6 +156,19 @@ export default function Map() {
           </Source>
           {console.log(clickInfo)}
           {allData != null && <Pins data={allData} onClick={onClick} />}
+          {/* Locate the user marker label */}
+          <Marker
+            longitude={marker.longitude}
+            latitude={marker.latitude}
+            offsetTop={-20}
+            offsetLeft={-10}
+            draggable
+            onDragStart={onMarkerDragStart}
+            onDrag={onMarkerDrag}
+            onDragEnd={onMarkerDragEnd}
+          >
+            <DragPin size={20} />
+          </Marker>
 
           {/* popup module */}
           {popup && clickInfo != null && clickInfo.properties.VideoName && (

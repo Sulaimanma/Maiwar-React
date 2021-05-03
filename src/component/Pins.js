@@ -1,11 +1,11 @@
-import React from "react";
-import { Marker } from "react-map-gl";
-import { FcVideoCall } from "react-icons/fc";
+import React from "react"
+import { Marker } from "react-map-gl"
+import { FcVideoCall } from "react-icons/fc"
 export default function Pins(props) {
-  const { data, onClick } = props;
+  const { data, onClick, size } = props
   return data.features
     .filter(function (place) {
-      return place.properties.VideoName.length != 0 && place.properties;
+      return place.properties.VideoName.length != 0 && place.properties
     })
     .map((place, id) => (
       <Marker
@@ -18,5 +18,5 @@ export default function Pins(props) {
       >
         <FcVideoCall style={{ fontSize: "23px" }} />
       </Marker>
-    ));
+    ))
 }

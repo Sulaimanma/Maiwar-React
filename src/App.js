@@ -1,39 +1,41 @@
-import Amplify, { Auth } from "aws-amplify";
-import awsconfig from "./aws-exports";
+import Amplify, { Auth } from "aws-amplify"
+import awsconfig from "./aws-exports"
 
 import {
   AmplifyAuthenticator,
   AmplifySignUp,
   AmplifySignOut,
-} from "@aws-amplify/ui-react";
-import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
-import { useEffect, useState } from "react";
-import Map from "./component/Map";
-import "./App.css";
-Amplify.configure(awsconfig);
+} from "@aws-amplify/ui-react"
+import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components"
+import { useEffect, useState } from "react"
+import Map from "./component/Map"
+import "./App.css"
+import Sidebar from "./component/Sidebar/Sidebar"
+
+Amplify.configure(awsconfig)
 function App() {
-  const [authState, setAuthState] = useState();
-  const [user, setUser] = useState();
+  const [authState, setAuthState] = useState()
+  const [user, setUser] = useState()
   //Load the user information
   useEffect(() => {
     return onAuthUIStateChange((nextAuthState, authData) => {
-      setAuthState(nextAuthState);
-      setUser(authData);
-    });
-  }, []);
-  console.log(user);
+      setAuthState(nextAuthState)
+      setUser(authData)
+    })
+  }, [])
+  console.log(user)
 
   return authState === AuthState.SignedIn && user ? (
-    <div className="App">
+    <div className="App" id="App">
       <div className="signOut">
         <div className="greeting">Hello, {user.attributes.email}</div>
         <button
           className="signoutBtn"
           onClick={() => {
-            Auth.signOut();
+            Auth.signOut()
           }}
         >
-          Sigo Out
+          Sign Out
         </button>
       </div>
       {/* map module */}
@@ -51,7 +53,7 @@ function App() {
         ]}
       />
     </AmplifyAuthenticator>
-  );
+  )
 }
 
-export default App;
+export default App
