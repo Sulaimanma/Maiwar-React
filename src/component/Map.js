@@ -15,6 +15,7 @@ import PopInfo from "./PopInfo"
 import Pins from "./Pins"
 import Sidebar from "./Sidebar/Sidebar"
 import DragPin from "./DragPin"
+import validator from "validator"
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default
@@ -39,6 +40,8 @@ export default function Map() {
   })
   //Fetched data
   const [allData, setAllData] = useState(null)
+  //Fetch resource to detect whether it is valid or not
+  const [resource, setResource] = useState(null)
   //Data for display
   const [clickInfo, setclickInfo] = useState(null)
   // Fetch the Layer GeoJson data for display
@@ -64,10 +67,24 @@ export default function Map() {
 
   //Video function to play the video according to the Video Name
   const video = (VideoName) => {
-    var path =
-      "https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/video/" +
-      VideoName +
-      ".mp4"
+    if ((VideoName = "Ducks")) {
+      path =
+        "https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/video/Camp_Bush_Children_Running.mp4"
+    } else {
+      var path =
+        "https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/video/" +
+        VideoName +
+        ".mp4"
+    }
+    // Make sure each Url is valid
+    if (validator.isURL(path)) {
+      console.log("Validdddddddddddd")
+    } else {
+      console.log("INNNNNNNNNNNNNNNNNNValiddddddddddddd")
+      path =
+        "https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/video/Camp_Bush_Children_Running.mp4"
+    }
+
     return path
   }
 

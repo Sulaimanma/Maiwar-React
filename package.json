@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^12.8.3",
     "aws-amplify": "^3.3.27",
     "mapbox-gl": "^2.2.0",
+    "node-sass": "^5.0.0",
     "react": "^17.0.2",
     "react-burger-menu": "^3.0.6",
     "react-dom": "^17.0.2",
@@ -17,7 +18,7 @@
     "react-scripts": "4.0.3",
     "react-transition-group": "^4.4.1",
     "sass": "^1.32.8",
-    "node-sass": "^5.0.0",
+    "validator": "^13.6.0",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
