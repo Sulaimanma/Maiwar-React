@@ -41,8 +41,50 @@ export default function Map() {
     bearing: 0,
     pitch: 0,
   });
+  const templete = {
+    AudioName: {
+      S: "String!",
+    },
+    createdAt: {
+      S: "2021-05-04T05:24:50.327Z",
+    },
+    description: {
+      S: "tetetest",
+    },
+    Icon: {
+      S: "testing",
+    },
+    id: {
+      S: "1",
+    },
+    latitude: {
+      S: "String!",
+    },
+    longitude: {
+      S: "String!",
+    },
+    SceneToLoad: {
+      S: "String!",
+    },
+    title: {
+      S: "test1",
+    },
+    updatedAt: {
+      S: "2021-05-04T05:24:50.327Z",
+    },
+    user: {
+      S: "String!",
+    },
+    uuid: {
+      S: "1",
+    },
+    VideoName: {
+      S: "String!",
+    },
+  };
   //Fetched data
   const [allData, setAllData] = useState(null);
+  //Coverted the data into Dynamo Json
   //Fetch resource to detect whether it is valid or not
   const [resource, setResource] = useState(null);
   //Data for display
@@ -56,7 +98,58 @@ export default function Map() {
       .then(res => res.json())
       .then(json => setAllData(json));
   }, []);
+  //covert the json to Dynamo Json
+  const Converte = async data => {
+    try {
+      const path = data.properties;
+      const DynamoData = await data.map((heritage, id) => ({
+        AudioName: {
+          S: path.AudioName,
+        },
+        createdAt: {
+          S: "2021-05-04T05:24:50.327Z",
+        },
+        description: {
+          S: path.description,
+        },
+        Icon: {
+          S: path.Icon,
+        },
+        id: {
+          S: path.uuid,
+        },
+        latitude: {
+          S: data.geometry.coordinates[1],
+        },
+        longitude: {
+          S: data.geometry.coordinates[0],
+        },
+        SceneToLoad: {
+          S: path.SceneToLoad,
+        },
+        title: {
+          S: path.title,
+        },
+        updatedAt: {
+          S: "2021-05-04T05:24:50.327Z",
+        },
+        user: {
+          S: "Admin",
+        },
+        uuid: {
+          S: path.uuid,
+        },
+        VideoName: {
+          S: path.VideoName,
+        },
+      }));
+      console.log("Dynamoooooo", DynamoData);
+    } catch (error) {
+      console.log("error on fetching heritages", error);
+    }
+  };
 
+  allData && allData != null && Converte(allData.features);
   const onClick = useCallback(event => {
     // Destructure features from the click event data
     const { features } = event;
@@ -70,7 +163,6 @@ export default function Map() {
 
   //Video function to play the video according to the Video Name
   const video = VideoName => {
-    console.log(VideoName);
     if (VideoName === "Ducks" || VideoName === "Gathering Bush") {
       var path =
         "https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/video/Camp_Bush_Children_Running.mp4";
@@ -107,7 +199,7 @@ export default function Map() {
       latitude: event.lngLat[1],
     });
   }, []);
-  // locate the user label on the map
+  // locate the user location label on the map
   const locateUser = () => {
     navigator.geolocation.getCurrentPosition(position => {
       setMarker({
@@ -121,16 +213,7 @@ export default function Map() {
       });
     });
   };
-  // const label = (e) => {
-  //   const locationData = mapRef.current.queryRenderedFeatures(e.point, {})
-  //   // const geoData = locationData[0].geometry.coordinates[0][0][0];
-  //   console.log("location", locationData)
-  // }
 
-  // geoLocation
-  // console.log("events", events.onDrag)
-
-  console.log(allData);
   return (
     <div className="body" id="body">
       <Sidebar
@@ -171,7 +254,7 @@ export default function Map() {
             <Layer {...clusterCountLayer} />
             <Layer {...unclusteredPointLayer} />
           </Source>
-          {console.log(clickInfo)}
+
           {allData != null && <Pins data={allData} onClick={onClick} />}
           {/* Locate the user marker label */}
           <Marker
@@ -209,28 +292,3 @@ export default function Map() {
     </div>
   );
 }
-
-// const onClickFun = e => {
-//   const features = mapRef.current.queryRenderedFeatures(e.point, {});
-//   setPopup(true);
-//   console.log("ffffffffffffffffffffff", features);
-//   const feature = features[0];
-//   const clusterId = feature.properties.uuid;
-//   setFeature(feature);
-//   feature && console.log(feature.properties);
-//   const mapboxSource = mapRef.current.getMap().getSource("heritages");
-
-//   mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
-//     if (err) {
-//       return;
-//     }
-
-//     setViewpoint({
-//       ...viewpoint,
-//       longitude: feature.geometry.coordinates[0],
-//       latitude: feature.geometry.coordinates[1],
-//       zoom,
-//       transitionDuration: 500,
-//     });
-//   });
-// };
