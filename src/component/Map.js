@@ -2,6 +2,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -22,13 +23,16 @@ import DragPin from "./DragPin";
 import API, { graphqlOperation } from "@aws-amplify/api";
 import { createHeritage } from "../graphql/mutations";
 import { v4 as uuid } from "uuid";
+import { HeritageContext } from "./Helpers/Context";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 export default function Map() {
+  const uploadLocalData = false;
   const mapRef = useRef();
   // popup control variable
+  const { heritages, fetchHeritages } = useContext(HeritageContext);
 
   const [popup, setPopup] = useState(false);
   // mapbox Token
@@ -44,47 +48,8 @@ export default function Map() {
     bearing: 0,
     pitch: 0,
   });
-  const templete = {
-    AudioName: {
-      S: "String!",
-    },
-    createdAt: {
-      S: "2021-05-04T05:24:50.327Z",
-    },
-    description: {
-      S: "tetetest",
-    },
-    Icon: {
-      S: "testing",
-    },
-    id: {
-      S: "1",
-    },
-    latitude: {
-      S: "String!",
-    },
-    longitude: {
-      S: "String!",
-    },
-    SceneToLoad: {
-      S: "String!",
-    },
-    title: {
-      S: "test1",
-    },
-    updatedAt: {
-      S: "2021-05-04T05:24:50.327Z",
-    },
-    user: {
-      S: "String!",
-    },
-    uuid: {
-      S: "1",
-    },
-    VideoName: {
-      S: "String!",
-    },
-  };
+  //converted Geojson data
+  const [convertGeo, setConvertGeo] = useState(null);
   //Fetched data
   const [allData, setAllData] = useState(null);
   //Coverted the data into Dynamo Json
@@ -181,38 +146,75 @@ export default function Map() {
   const loadLocalData = data => {
     data.map((heritage, id) => dataCreate(heritage));
   };
+
   // add the local json to the database
   useEffect(() => {
-    //covert the json to Dynamo Json
-    const Converte = async data => {
-      try {
-        const DynamoData = await data.map((heritage, id) => ({
-          AudioName: heritage.properties.AudioName,
+    console.log("ALL DATA", allData);
+    console.log("geojson", convertGeo);
+    console.log("heritages here?", heritages);
+    // heritages && allData != null && Converte(allData.features);
+  }, [heritages]);
+  //covert the json to Dynamo Json
+  const Converte = async data => {
+    try {
+      const DynamoData = await data.map((heritage, id) => ({
+        AudioName: heritage.properties.AudioName,
+        description: heritage.properties.description,
+        Icon: heritage.properties.Icon,
+        id: uuid(),
+        latitude: `${heritage.geometry.coordinates[1]}`,
+        longitude: `${heritage.geometry.coordinates[0]}`,
+        SceneToLoad: heritage.properties.SceneToLoad,
+        title: heritage.properties.title,
+        user: "Admin",
+        uuid: 2,
+        VideoName: heritage.properties.VideoName,
+      }));
+      // console.log("Dynamoooooo", DynamoData);
+      // setDynamodata(DynamoData);
+      loadLocalData(DynamoData);
+      console.log("Add the local data finished");
+    } catch (error) {
+      console.log("error on fetching heritages", error);
+    }
+  };
+  // Covert to Geojson
+  const covertGeojson = data => {
+    if (data && data.length != 0) {
+      const heritagesArray = data.map((heritage, id) => ({
+        type: "Feature",
+        properties: {
+          AudioName: heritage.AudioName,
+          Icon: heritage.Icon,
+          SceneToLoad: heritage.SceneToLoad,
+          VideoName: heritage.VideoName,
+          description: heritage.description,
+          title: heritage.title,
+        },
+        geometry: {
+          coordinates: [heritage.longitude, heritage.latitude],
+          type: "Point",
+        },
+        id: heritage.id,
+      }));
+      const finalGeo = {
+        features: heritagesArray,
+        type: "FeatureCollection",
+      };
 
-          description: heritage.properties.description,
-          Icon: heritage.properties.Icon,
-          id: uuid(),
-          latitude: `${heritage.geometry.coordinates[1]}`,
-          longitude: `${heritage.geometry.coordinates[0]}`,
-          SceneToLoad: heritage.properties.SceneToLoad,
-          title: heritage.properties.title,
+      return finalGeo;
+    }
+  };
 
-          user: "Admin",
-          uuid: 2,
-          VideoName: heritage.properties.VideoName,
-        }));
-        // console.log("Dynamoooooo", DynamoData);
-        // setDynamodata(DynamoData);
-        loadLocalData(DynamoData);
-        console.log("Add the local data finished");
-      } catch (error) {
-        console.log("error on fetching heritages", error);
-      }
-    };
-
-    allData != null && Converte(allData.features);
-  }, []);
-
+  const geojson = useMemo(() => {
+    if (heritages && heritages.length != 0) {
+      var final = covertGeojson(heritages);
+    }
+    return final;
+  }, [heritages]);
+  var geoConvertedjson;
+  geojson && (geoConvertedjson = geojson);
+  console.log("ganstaaaaaaaaaaaaaa", geoConvertedjson);
   return (
     <div className="body" id="body">
       <Sidebar
@@ -241,18 +243,20 @@ export default function Map() {
             <h1>VIRTUAL SONGLINES</h1>
           </div>
           {/* Load the Layer source data*/}
-          <Source
-            // id="heritages"
-            type="geojson"
-            data={allData}
-            cluster={true}
-            clusterMaxZoom={14}
-            clusterRadius={50}
-          >
-            <Layer {...clusterLayer} />
-            <Layer {...clusterCountLayer} />
-            <Layer {...unclusteredPointLayer} />
-          </Source>
+          {allData != null && (
+            <Source
+              // id="heritages"
+              type="geojson"
+              data={allData}
+              cluster={true}
+              clusterMaxZoom={14}
+              clusterRadius={50}
+            >
+              <Layer {...clusterLayer} />
+              <Layer {...clusterCountLayer} />
+              <Layer {...unclusteredPointLayer} />
+            </Source>
+          )}
 
           {allData != null && <Pins data={allData} onClick={onClick} />}
           {/* Locate the user marker label */}
@@ -268,7 +272,6 @@ export default function Map() {
           >
             <DragPin size={20} />
           </Marker>
-
           {/* popup module */}
           {popup && clickInfo != null && clickInfo.properties.VideoName && (
             <Popup

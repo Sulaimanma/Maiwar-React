@@ -12,6 +12,7 @@ import Map from "./component/Map";
 import "./App.css";
 import Sidebar from "./component/Sidebar/Sidebar";
 import { listHeritages } from "./graphql/queries";
+import { HeritageContext } from "./component/Helpers/Context";
 
 Amplify.configure(awsconfig);
 function App() {
@@ -25,9 +26,12 @@ function App() {
 
   const fetchHeritages = async () => {
     try {
-      const heritageData = await API.graphql(graphqlOperation(listHeritages));
+      const heritageData = await API.graphql(
+        graphqlOperation(listHeritages, { limit: 500 })
+      );
       const heritageList = heritageData.data.listHeritages.items;
-      console.log("dataaaaaaaa", heritageData);
+
+      setHeritages(heritageList);
     } catch (error) {
       console.log("error on fetching heritages", error);
     }
@@ -40,23 +44,25 @@ function App() {
       setUser(authData);
     });
   }, []);
-  console.log(user);
+  console.log("heritages on the homepage", heritages);
 
   return authState === AuthState.SignedIn && user ? (
     <div className="App" id="App">
-      <div className="signOut">
-        <div className="greeting">Hello, {user.attributes.email}</div>
-        <button
-          className="signoutBtn"
-          onClick={() => {
-            Auth.signOut();
-          }}
-        >
-          Sign Out
-        </button>
-      </div>
-      {/* map module */}
-      <Map />
+      <HeritageContext.Provider value={{ heritages, fetchHeritages }}>
+        <div className="signOut">
+          <div className="greeting">Hello, {user.attributes.email}</div>
+          <button
+            className="signoutBtn"
+            onClick={() => {
+              Auth.signOut();
+            }}
+          >
+            Sign Out
+          </button>
+        </div>
+        {/* map module */}
+        <Map />
+      </HeritageContext.Provider>
     </div>
   ) : (
     // Sign up window
