@@ -19,6 +19,9 @@ import PopInfo from "./PopInfo";
 import Pins from "./Pins";
 import Sidebar from "./Sidebar/Sidebar";
 import DragPin from "./DragPin";
+import API, { graphqlOperation } from "@aws-amplify/api";
+import { createHeritage } from "../graphql/mutations";
+import { v4 as uuid } from "uuid";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
@@ -89,6 +92,8 @@ export default function Map() {
   const [resource, setResource] = useState(null);
   //Data for display
   const [clickInfo, setclickInfo] = useState(null);
+  //Dynamodata
+  const [dynamodata, setDynamodata] = useState(null);
   // Fetch the Layer GeoJson data for display
   useEffect(() => {
     /* global fetch */
@@ -98,58 +103,7 @@ export default function Map() {
       .then(res => res.json())
       .then(json => setAllData(json));
   }, []);
-  //covert the json to Dynamo Json
-  const Converte = async data => {
-    try {
-      const path = data.properties;
-      const DynamoData = await data.map((heritage, id) => ({
-        AudioName: {
-          S: path.AudioName,
-        },
-        createdAt: {
-          S: "2021-05-04T05:24:50.327Z",
-        },
-        description: {
-          S: path.description,
-        },
-        Icon: {
-          S: path.Icon,
-        },
-        id: {
-          S: path.uuid,
-        },
-        latitude: {
-          S: data.geometry.coordinates[1],
-        },
-        longitude: {
-          S: data.geometry.coordinates[0],
-        },
-        SceneToLoad: {
-          S: path.SceneToLoad,
-        },
-        title: {
-          S: path.title,
-        },
-        updatedAt: {
-          S: "2021-05-04T05:24:50.327Z",
-        },
-        user: {
-          S: "Admin",
-        },
-        uuid: {
-          S: path.uuid,
-        },
-        VideoName: {
-          S: path.VideoName,
-        },
-      }));
-      console.log("Dynamoooooo", DynamoData);
-    } catch (error) {
-      console.log("error on fetching heritages", error);
-    }
-  };
 
-  allData && allData != null && Converte(allData.features);
   const onClick = useCallback(event => {
     // Destructure features from the click event data
     const { features } = event;
@@ -213,6 +167,51 @@ export default function Map() {
       });
     });
   };
+
+  // Add the lcal DynamoDB data to the database
+
+  const dataCreate = async heritage => {
+    try {
+      await API.graphql(graphqlOperation(createHeritage, { input: heritage }));
+      console.log("done the create");
+    } catch (error) {
+      console.log("error happened during load local data to dynamoDB", error);
+    }
+  };
+  const loadLocalData = data => {
+    data.map((heritage, id) => dataCreate(heritage));
+  };
+  // add the local json to the database
+  useEffect(() => {
+    //covert the json to Dynamo Json
+    const Converte = async data => {
+      try {
+        const DynamoData = await data.map((heritage, id) => ({
+          AudioName: heritage.properties.AudioName,
+
+          description: heritage.properties.description,
+          Icon: heritage.properties.Icon,
+          id: uuid(),
+          latitude: `${heritage.geometry.coordinates[1]}`,
+          longitude: `${heritage.geometry.coordinates[0]}`,
+          SceneToLoad: heritage.properties.SceneToLoad,
+          title: heritage.properties.title,
+
+          user: "Admin",
+          uuid: 2,
+          VideoName: heritage.properties.VideoName,
+        }));
+        // console.log("Dynamoooooo", DynamoData);
+        // setDynamodata(DynamoData);
+        loadLocalData(DynamoData);
+        console.log("Add the local data finished");
+      } catch (error) {
+        console.log("error on fetching heritages", error);
+      }
+    };
+
+    allData != null && Converte(allData.features);
+  }, []);
 
   return (
     <div className="body" id="body">
