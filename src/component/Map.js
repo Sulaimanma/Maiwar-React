@@ -6,7 +6,13 @@ import React, {
   useRef,
   useState,
 } from "react";
-import ReactMapGl, { Marker, Popup, Source, Layer } from "react-map-gl";
+import ReactMapGl, {
+  Marker,
+  Popup,
+  Source,
+  Layer,
+  FlyToInterpolator,
+} from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import "./map.css";
@@ -80,6 +86,9 @@ export default function Map() {
     setPopup(true);
     //Set the data to display
     setclickInfo(clickedFeature);
+
+    var featuresss = mapRef.current.queryRenderedFeatures(event.point);
+    console.log("featuressssss", featuresss);
   }, []);
 
   //Video function to play the video according to the Video Name
@@ -128,10 +137,14 @@ export default function Map() {
         longitude: position.coords.longitude,
         latitude: position.coords.latitude,
       });
+
       setViewpoint({
         ...viewpoint,
         longitude: position.coords.longitude,
         latitude: position.coords.latitude,
+        zoom: 15,
+        transitionInterpolator: new FlyToInterpolator({ speed: 1.2 }),
+        transitionDuration: "auto",
       });
     });
   };
@@ -227,13 +240,13 @@ export default function Map() {
       />
       <div id="map">
         <ReactMapGl
-          // ref={mapRef}
+          ref={mapRef}
           {...viewpoint}
           mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
           onViewportChange={viewpoint => {
             setViewpoint(viewpoint);
           }}
-          mapStyle="mapbox://styles/guneriboi/cko26dcwb028v17qgn1swhijn"
+          mapStyle="mapbox://styles/guneriboi/ck2s4jkxp0vin1cnzzrgslsnm"
           //Define the interactive layer
           interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
@@ -261,9 +274,9 @@ export default function Map() {
             </Source>
           )}
 
-          {geoConvertedjson != null && (
+          {/* {geoConvertedjson != null && (
             <Pins data={geoConvertedjson} onClick={onClick} />
-          )}
+          )} */}
           {/* Locate the user marker label */}
           <Marker
             longitude={marker.longitude}

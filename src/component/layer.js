@@ -29,13 +29,14 @@ export const clusterCountLayer = {
   },
 };
 
+const color = "11b4da";
 export const unclusteredPointLayer = {
   id: "unclustered-point",
   type: "circle",
   source: "heritages",
   filter: ["!", ["has", "point_count"]],
   paint: {
-    "circle-color": "#11b4da",
+    "circle-color": "green",
     "circle-radius": 10,
     "circle-stroke-width": 4,
     "circle-stroke-color": "#fff",
