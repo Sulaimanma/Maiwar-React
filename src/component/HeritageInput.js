@@ -15,6 +15,22 @@ export default function HeritageInput() {
     file: yup.mixed().required(),
     terms: yup.bool().required().oneOf([true], "terms must be accepted"),
   });
+  const templete = {
+    AudioName: "WeTellStoriesToOurChildren",
+
+    description:
+      "A skilled warrior of some twenty years, is tall, well muscled and fit. Even after three kilometres at a steady pace, his breathing is heavy but even. Many of the First Nations people are great hunters who exploit the ample resources of wallaby and grey kangaroo.",
+    Icon: "Kangaroo",
+    id: "055c9321-062c-4191-bf11-4670921e8f57",
+    latitude: "-27.442031",
+    longitude: "151.720375",
+    SceneToLoad: "",
+    title: "Kangaroo Hunt",
+    updatedAt: "2021-05-05T05:51:19.958Z",
+    user: "Admin",
+    uuid: 2,
+    VideoName: "Kangaroo_Three_Stream_Fight1",
+  };
 
   return (
     <Formik

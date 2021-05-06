@@ -143,7 +143,7 @@ export default function Map() {
         longitude: position.coords.longitude,
         latitude: position.coords.latitude,
         zoom: 15,
-        transitionInterpolator: new FlyToInterpolator({ speed: 1.2 }),
+        transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
         transitionDuration: "auto",
       });
     });
