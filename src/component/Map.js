@@ -24,15 +24,17 @@ import API, { graphqlOperation } from "@aws-amplify/api";
 import { createHeritage } from "../graphql/mutations";
 import { v4 as uuid } from "uuid";
 import { HeritageContext } from "./Helpers/Context";
+import HeritageInput from "./HeritageInput";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 export default function Map() {
-  const uploadLocalData = false;
   const mapRef = useRef();
   // popup control variable
   const { heritages, fetchHeritages } = useContext(HeritageContext);
+  //set up a enterfield
+  const [enter, setEnter] = useState(false);
 
   const [popup, setPopup] = useState(false);
   // mapbox Token
@@ -103,6 +105,7 @@ export default function Map() {
   });
   //Initial the events
   const [events, logEvents] = useState({});
+
   const onMarkerDragStart = useCallback(event => {
     logEvents(_events => ({ ..._events, onDragStart: event.lngLat }));
   }, []);
@@ -134,7 +137,6 @@ export default function Map() {
   };
 
   // Add the lcal DynamoDB data to the database
-
   const dataCreate = async heritage => {
     try {
       await API.graphql(graphqlOperation(createHeritage, { input: heritage }));
@@ -214,6 +216,7 @@ export default function Map() {
   }, [heritages]);
   var geoConvertedjson = null;
   geojson && (geoConvertedjson = geojson);
+  console.log("顯示了幾遍");
 
   return (
     <div className="body" id="body">
@@ -224,7 +227,7 @@ export default function Map() {
       />
       <div id="map">
         <ReactMapGl
-          ref={mapRef}
+          // ref={mapRef}
           {...viewpoint}
           mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
           onViewportChange={viewpoint => {
@@ -271,10 +274,24 @@ export default function Map() {
             onDragStart={onMarkerDragStart}
             onDrag={onMarkerDrag}
             onDragEnd={onMarkerDragEnd}
+            onClick={() => {
+              setEnter(true);
+            }}
           >
             <DragPin size={20} />
           </Marker>
-          {/* popup module */}
+          {enter && (
+            <Popup
+              latitude={marker.latitude}
+              longitude={marker.longitude}
+              closeButton={true}
+              closeOnClick={false}
+              onClose={() => setEnter(false)}
+              anchor="bottom"
+            >
+              <HeritageInput />
+            </Popup>
+          )}
           {popup && clickInfo != null && clickInfo.properties.VideoName && (
             <Popup
               latitude={clickInfo.geometry.coordinates[1]}

@@ -13,8 +13,11 @@ import "./App.css";
 import Sidebar from "./component/Sidebar/Sidebar";
 import { listHeritages } from "./graphql/queries";
 import { HeritageContext } from "./component/Helpers/Context";
+import { Route } from "react-router";
+import HeritageInput from "./component/HeritageInput";
 
 Amplify.configure(awsconfig);
+
 function App() {
   const [authState, setAuthState] = useState();
   const [user, setUser] = useState();
@@ -61,7 +64,8 @@ function App() {
           </button>
         </div>
         {/* map module */}
-        <Map />
+        <Route exact path="/test" component={HeritageInput}></Route>
+        <Route exact path="/" component={Map}></Route>
       </HeritageContext.Provider>
     </div>
   ) : (
