@@ -48,10 +48,9 @@ export default function Map() {
     bearing: 0,
     pitch: 0,
   });
-  //converted Geojson data
-  const [convertGeo, setConvertGeo] = useState(null);
+
   //Fetched data
-  const [allData, setAllData] = useState(null);
+  // const [allData, setAllData] = useState(null);
   //Coverted the data into Dynamo Json
   //Fetch resource to detect whether it is valid or not
   const [resource, setResource] = useState(null);
@@ -59,15 +58,16 @@ export default function Map() {
   const [clickInfo, setclickInfo] = useState(null);
   //Dynamodata
   const [dynamodata, setDynamodata] = useState(null);
+
   // Fetch the Layer GeoJson data for display
-  useEffect(() => {
-    /* global fetch */
-    fetch(
-      "https://amplifylanguageappgidarjil114226-dev.s3-ap-southeast-2.amazonaws.com/public/wordlist/features.geojson"
-    )
-      .then(res => res.json())
-      .then(json => setAllData(json));
-  }, []);
+  // useEffect(() => {
+  //   /* global fetch */
+  //   fetch(
+  //     "https://amplifylanguageappgidarjil114226-dev.s3-ap-southeast-2.amazonaws.com/public/wordlist/features.geojson"
+  //   )
+  //     .then(res => res.json())
+  //     .then(json => setAllData(json));
+  // }, []);
 
   const onClick = useCallback(event => {
     // Destructure features from the click event data
@@ -149,11 +149,9 @@ export default function Map() {
 
   // add the local json to the database
   useEffect(() => {
-    console.log("ALL DATA", allData);
-    console.log("geojson", convertGeo);
-    console.log("heritages here?", heritages);
     // heritages && allData != null && Converte(allData.features);
   }, [heritages]);
+
   //covert the json to Dynamo Json
   const Converte = async data => {
     try {
@@ -170,8 +168,7 @@ export default function Map() {
         uuid: 2,
         VideoName: heritage.properties.VideoName,
       }));
-      // console.log("Dynamoooooo", DynamoData);
-      // setDynamodata(DynamoData);
+
       loadLocalData(DynamoData);
       console.log("Add the local data finished");
     } catch (error) {
@@ -192,7 +189,10 @@ export default function Map() {
           title: heritage.title,
         },
         geometry: {
-          coordinates: [heritage.longitude, heritage.latitude],
+          coordinates: [
+            parseFloat(heritage.longitude),
+            parseFloat(heritage.latitude),
+          ],
           type: "Point",
         },
         id: heritage.id,
@@ -212,9 +212,9 @@ export default function Map() {
     }
     return final;
   }, [heritages]);
-  var geoConvertedjson;
+  var geoConvertedjson = null;
   geojson && (geoConvertedjson = geojson);
-  console.log("ganstaaaaaaaaaaaaaa", geoConvertedjson);
+
   return (
     <div className="body" id="body">
       <Sidebar
@@ -232,7 +232,7 @@ export default function Map() {
           }}
           mapStyle="mapbox://styles/guneriboi/cko26dcwb028v17qgn1swhijn"
           //Define the interactive layer
-          interactiveLayerIds={["unclustered-point"]}
+          interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
         >
           <div id="logo">
@@ -243,11 +243,11 @@ export default function Map() {
             <h1>VIRTUAL SONGLINES</h1>
           </div>
           {/* Load the Layer source data*/}
-          {allData != null && (
+          {geoConvertedjson != null && (
             <Source
               // id="heritages"
               type="geojson"
-              data={allData}
+              data={geoConvertedjson}
               cluster={true}
               clusterMaxZoom={14}
               clusterRadius={50}
@@ -258,7 +258,9 @@ export default function Map() {
             </Source>
           )}
 
-          {allData != null && <Pins data={allData} onClick={onClick} />}
+          {geoConvertedjson != null && (
+            <Pins data={geoConvertedjson} onClick={onClick} />
+          )}
           {/* Locate the user marker label */}
           <Marker
             longitude={marker.longitude}
