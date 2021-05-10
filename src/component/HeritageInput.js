@@ -1,50 +1,60 @@
-import React from "react";
-import { Form, Col, InputGroup } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
-import { Formik } from "formik";
-import * as yup from "yup";
+import React from "react"
+import { Form, Col, InputGroup } from "react-bootstrap"
+import Button from "react-bootstrap/Button"
+import { Formik } from "formik"
+import * as yup from "yup"
 
 export default function HeritageInput() {
-  const schema = yup.object().shape({
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
-    username: yup.string().required(),
-    city: yup.string().required(),
-    state: yup.string().required(),
-    zip: yup.string().required(),
-    file: yup.mixed().required(),
-    terms: yup.bool().required().oneOf([true], "terms must be accepted"),
-  });
-  const templete = {
-    AudioName: "WeTellStoriesToOurChildren",
+  // const schema = yup.object().shape({
+  //   firstName: yup.string().required(),
+  //   lastName: yup.string().required(),
+  //   username: yup.string().required(),
+  //   city: yup.string().required(),
+  //   state: yup.string().required(),
+  //   zip: yup.string().required(),
+  //   file: yup.mixed().required(),
+  //   terms: yup.bool().required().oneOf([true], "terms must be accepted"),
+  // });
+  // const templete = {
+  //   AudioName: "WeTellStoriesToOurChildren",
 
-    description:
-      "A skilled warrior of some twenty years, is tall, well muscled and fit. Even after three kilometres at a steady pace, his breathing is heavy but even. Many of the First Nations people are great hunters who exploit the ample resources of wallaby and grey kangaroo.",
-    Icon: "Kangaroo",
-    id: "055c9321-062c-4191-bf11-4670921e8f57",
-    latitude: "-27.442031",
-    longitude: "151.720375",
-    SceneToLoad: "",
-    title: "Kangaroo Hunt",
-    updatedAt: "2021-05-05T05:51:19.958Z",
-    user: "Admin",
-    uuid: 2,
-    VideoName: "Kangaroo_Three_Stream_Fight1",
-  };
+  //   description:
+  //     "A skilled warrior of some twenty years, is tall, well muscled and fit. Even after three kilometres at a steady pace, his breathing is heavy but even. Many of the First Nations people are great hunters who exploit the ample resources of wallaby and grey kangaroo.",
+  //   Icon: "Kangaroo",
+  //   id: "055c9321-062c-4191-bf11-4670921e8f57",
+  //   latitude: "-27.442031",
+  //   longitude: "151.720375",
+  //   SceneToLoad: "",
+  //   title: "Kangaroo Hunt",
+  //   updatedAt: "2021-05-05T05:51:19.958Z",
+  //   user: "Admin",
+  //   uuid: 2,
+  //   VideoName: "Kangaroo_Three_Stream_Fight1",
+  // };
+  const schema = yup.object().shape({
+    title: yup.string().required(),
+    description: yup.string().required(),
+
+    video_file: yup.mixed().optional(),
+    image_file: yup.mixed().optional(),
+    audio_file: yup.mixed().optional(),
+    terms: yup.bool().required().oneOf([true], "terms must be accepted"),
+    creator: yup.string().required(),
+  })
 
   return (
     <Formik
       validationSchema={schema}
       onSubmit={console.log}
       initialValues={{
-        firstName: "Mark",
-        lastName: "Otto",
-        username: "",
-        city: "",
-        state: "",
-        zip: "",
-        file: null,
-        terms: false,
+        title: "",
+        description: "",
+
+        video_file: "",
+        image_file: "",
+        audio_file: "",
+        terms: "",
+        creator: "",
       }}
     >
       {({
@@ -59,96 +69,93 @@ export default function HeritageInput() {
         <Form noValidate onSubmit={handleSubmit}>
           <Form.Row>
             <Form.Group as={Col} md="4" controlId="validationFormik101">
-              <Form.Label>First name</Form.Label>
+              <Form.Label>title</Form.Label>
               <Form.Control
                 type="text"
-                name="firstName"
-                value={values.firstName}
+                name="title"
+                value={values.title}
                 onChange={handleChange}
-                isValid={touched.firstName && !errors.firstName}
+                isValid={touched.title && !errors.title}
               />
               <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationFormik102">
-              <Form.Label>Last name</Form.Label>
+              <Form.Label>Description</Form.Label>
               <Form.Control
                 type="text"
-                name="lastName"
-                value={values.lastName}
+                name="description"
+                value={values.description}
                 onChange={handleChange}
-                isValid={touched.lastName && !errors.lastName}
+                isValid={touched.description && !errors.description}
               />
 
               <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
             </Form.Group>
-            <Form.Group as={Col} md="4" controlId="validationFormikUsername2">
-              <Form.Label>Username</Form.Label>
-              <InputGroup hasValidation>
-                <InputGroup.Prepend>
-                  <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  type="text"
-                  placeholder="Username"
-                  aria-describedby="inputGroupPrepend"
-                  name="username"
-                  value={values.username}
-                  onChange={handleChange}
-                  isInvalid={!!errors.username}
-                />
-                <Form.Control.Feedback type="invalid" tooltip>
-                  {errors.username}
-                </Form.Control.Feedback>
-              </InputGroup>
-            </Form.Group>
-          </Form.Row>
-          <Form.Row>
-            <Form.Group as={Col} md="6" controlId="validationFormik103">
-              <Form.Label>City</Form.Label>
+            <Form.Group as={Col} md="4" controlId="validationFormik103">
+              <Form.Label>Creator</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="City"
-                name="city"
-                value={values.city}
+                name="creator"
+                value={values.creator}
                 onChange={handleChange}
-                isInvalid={!!errors.city}
+                isValid={touched.creator && !errors.creator}
               />
 
-              <Form.Control.Feedback type="invalid" tooltip>
-                {errors.city}
-              </Form.Control.Feedback>
+              <Form.Control.Feedback tooltip>Looks good!</Form.Control.Feedback>
             </Form.Group>
-            <Form.Group as={Col} md="3" controlId="validationFormik104">
-              <Form.Label>State</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="State"
-                name="state"
-                value={values.state}
+            <Form.Group>
+              <Form.File
+                className="position-relative"
+                optional
+                name="video_file"
+                label="Video"
                 onChange={handleChange}
-                isInvalid={!!errors.state}
+                isInvalid={!!errors.video_file}
+                feedback={errors.video_file}
+                id="validationFormik107"
+                feedbackTooltip
               />
-              <Form.Control.Feedback type="invalid" tooltip>
-                {errors.state}
-              </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group as={Col} md="3" controlId="validationFormik105">
-              <Form.Label>Zip</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Zip"
-                name="zip"
-                value={values.zip}
+            <Form.Group>
+              <Form.File
+                className="position-relative"
+                optional
+                name="audio_file"
+                label="Audio"
                 onChange={handleChange}
-                isInvalid={!!errors.zip}
+                isInvalid={!!errors.audio_file}
+                feedback={errors.audio_file}
+                id="validationFormik108"
+                feedbackTooltip
               />
-
-              <Form.Control.Feedback type="invalid" tooltip>
-                {errors.zip}
-              </Form.Control.Feedback>
             </Form.Group>
-          </Form.Row>
-          <Form.Group>
+            <Form.Group>
+              <Form.File
+                className="position-relative"
+                optional
+                name="image_file"
+                label="Video"
+                onChange={handleChange}
+                isInvalid={!!errors.image_file}
+                feedback={errors.image_file}
+                id="validationFormik109"
+                feedbackTooltip
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Check
+                required
+                name="terms"
+                label="Agree to terms and conditions"
+                onChange={handleChange}
+                isInvalid={!!errors.terms}
+                feedback={errors.terms}
+                id="validationFormik106"
+                feedbackTooltip
+              />
+            </Form.Group>
+          </Form.Row>{" "}
+          {/* <Form.Group>
             <Form.File
               className="position-relative"
               required
@@ -172,12 +179,12 @@ export default function HeritageInput() {
               id="validationFormik106"
               feedbackTooltip
             />
-          </Form.Group>
+          </Form.Group> */}
           <Button variant="primary" type="submit">
             Submit form
           </Button>
         </Form>
       )}
     </Formik>
-  );
+  )
 }
