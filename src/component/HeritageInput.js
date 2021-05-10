@@ -5,32 +5,6 @@ import { Formik } from "formik"
 import * as yup from "yup"
 
 export default function HeritageInput() {
-  // const schema = yup.object().shape({
-  //   firstName: yup.string().required(),
-  //   lastName: yup.string().required(),
-  //   username: yup.string().required(),
-  //   city: yup.string().required(),
-  //   state: yup.string().required(),
-  //   zip: yup.string().required(),
-  //   file: yup.mixed().required(),
-  //   terms: yup.bool().required().oneOf([true], "terms must be accepted"),
-  // });
-  // const templete = {
-  //   AudioName: "WeTellStoriesToOurChildren",
-
-  //   description:
-  //     "A skilled warrior of some twenty years, is tall, well muscled and fit. Even after three kilometres at a steady pace, his breathing is heavy but even. Many of the First Nations people are great hunters who exploit the ample resources of wallaby and grey kangaroo.",
-  //   Icon: "Kangaroo",
-  //   id: "055c9321-062c-4191-bf11-4670921e8f57",
-  //   latitude: "-27.442031",
-  //   longitude: "151.720375",
-  //   SceneToLoad: "",
-  //   title: "Kangaroo Hunt",
-  //   updatedAt: "2021-05-05T05:51:19.958Z",
-  //   user: "Admin",
-  //   uuid: 2,
-  //   VideoName: "Kangaroo_Three_Stream_Fight1",
-  // };
   const schema = yup.object().shape({
     title: yup.string().required(),
     description: yup.string().required(),
@@ -45,7 +19,9 @@ export default function HeritageInput() {
   return (
     <Formik
       validationSchema={schema}
-      onSubmit={console.log}
+      onSubmit={(values) => {
+        alert(JSON.stringify(values, null, 2))
+      }}
       initialValues={{
         title: "",
         description: "",
@@ -53,7 +29,7 @@ export default function HeritageInput() {
         video_file: "",
         image_file: "",
         audio_file: "",
-        terms: "",
+        terms: false,
         creator: "",
       }}
     >
@@ -66,7 +42,7 @@ export default function HeritageInput() {
         isValid,
         errors,
       }) => (
-        <Form noValidate onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <Form.Row>
             <Form.Group as={Col} md="4" controlId="validationFormik101">
               <Form.Label>title</Form.Label>
@@ -155,31 +131,6 @@ export default function HeritageInput() {
               />
             </Form.Group>
           </Form.Row>{" "}
-          {/* <Form.Group>
-            <Form.File
-              className="position-relative"
-              required
-              name="file"
-              label="File"
-              onChange={handleChange}
-              isInvalid={!!errors.file}
-              feedback={errors.file}
-              id="validationFormik107"
-              feedbackTooltip
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Check
-              required
-              name="terms"
-              label="Agree to terms and conditions"
-              onChange={handleChange}
-              isInvalid={!!errors.terms}
-              feedback={errors.terms}
-              id="validationFormik106"
-              feedbackTooltip
-            />
-          </Form.Group> */}
           <Button variant="primary" type="submit">
             Submit form
           </Button>

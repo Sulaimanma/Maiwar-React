@@ -5,15 +5,25 @@ export default (props) => {
   return (
     // Pass on our props
     <Menu {...props}>
-      <a className="menu-item" onClick={props.locateUser}>
-        Label
-      </a>
+      <p
+        className="menu-item"
+        onClick={props.locateUser}
+        style={{ cursor: "pointer" }}
+      >
+        Drop Pin
+      </p>
 
-      <a className="menu-item">About</a>
+      <p className="menu-item" style={{ cursor: "pointer" }}>
+        About
+      </p>
 
-      <a className="menu-item">Services</a>
+      <p className="menu-item" style={{ cursor: "pointer" }}>
+        Services
+      </p>
 
-      <a className="menu-item">Contact us</a>
+      <p className="menu-item" style={{ cursor: "pointer" }}>
+        Contact us
+      </p>
     </Menu>
   )
 }
