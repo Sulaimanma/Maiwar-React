@@ -128,17 +128,15 @@ export default function Map() {
       VideoName == ""
     ) {
       var path =
-        "https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/video/Camp_Bush_Children_Running.mp4"
+        "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/Camp_Bush_Children_Running.mp4"
     } else if (previousVideoChange.includes(VideoName)) {
       var path =
-        "https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/video/" +
+        "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
         VideoName +
         ".mp4"
     }
     // Make sure each Url is valid
-    else {
-      var path = VideoName
-    }
+
     return path
   }
 
