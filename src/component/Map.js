@@ -27,13 +27,10 @@ import { createHeritage } from "../graphql/mutations"
 import { v4 as uuid } from "uuid"
 import { HeritageContext } from "./Helpers/Context"
 import HeritageInput from "./HeritageInput"
-
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker"
 
-// eslint-disable-next-line import/no-webpack-loader-syntax
-// mapboxgl.workerClass =
-//   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default
+mapboxgl.workerClass = MapboxWorker
 
 export default function Map() {
   const mapRef = useRef()

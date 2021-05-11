@@ -28,7 +28,7 @@ export default function HeritageInput(props) {
   const AddHeritage = (values) => {
     const { title, description, creator, video_file, audio_file, image_file } =
       values
-    console.log(image_file)
+    console.log(values)
 
     // const { Videokey } = await Storage.put(`${uuid()}.mp4`, videoData, {
     //   contentType: "video/mp4",
