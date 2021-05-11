@@ -81,7 +81,7 @@ export default function Map() {
     setclickInfo(clickedFeature)
 
     var featuresss = mapRef.current.queryRenderedFeatures(event.point)
-    console.log("featuressssss", featuresss)
+    console.log("featuressssss", clickedFeature)
   }, [])
 
   //Video function to play the video according to the Video Name
@@ -122,18 +122,23 @@ export default function Map() {
       "Woman_Two_Tree_Dillybag1",
       "Woman_WaterStream_Goanna_Coolamon1",
     ]
-    if (
-      VideoName === "Ducks" ||
-      VideoName === "Gathering Bush" ||
-      VideoName == ""
-    ) {
+    // if (previousVideoChange.includes(VideoName)) {
+    //   var path =
+    //     "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
+    //     VideoName +
+    //     ".mp4"
+    // }
+    if (VideoName === "Ducks" || VideoName === "Gathering Bush") {
       var path =
         "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/Camp_Bush_Children_Running.mp4"
-    } else if (previousVideoChange.includes(VideoName)) {
+    } else if (VideoName.length != 0) {
       var path =
         "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
         VideoName +
         ".mp4"
+    } else {
+      var path =
+        "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/Camp_Bush_Children_Running.mp4"
     }
     // Make sure each Url is valid
 
@@ -349,7 +354,7 @@ export default function Map() {
               />
             </Popup>
           )}
-          {popup && clickInfo != null && clickInfo.properties.VideoName && (
+          {popup && clickInfo != null && (
             <Popup
               latitude={clickInfo.geometry.coordinates[1]}
               longitude={clickInfo.geometry.coordinates[0]}

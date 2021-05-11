@@ -4,9 +4,10 @@ import Button from "react-bootstrap/Button"
 import { Formik } from "formik"
 import { v4 as uuid } from "uuid"
 import * as yup from "yup"
-import Storage from "@aws-amplify/storage"
+
 import API, { graphqlOperation } from "@aws-amplify/api"
 import { createHeritage } from "../graphql/mutations"
+import Storage from "@aws-amplify/storage"
 
 export default function HeritageInput(props) {
   const [videoData, setVideoData] = useState({})
@@ -25,34 +26,49 @@ export default function HeritageInput(props) {
     creator: yup.string().required(),
   })
 
-  const AddHeritage = (values) => {
-    // const { title, description, creator, video_file, audio_file, image_file } =
-    //   values
-    // console.log(values)
-    // const { Videokey } = await Storage.put(`${uuid()}.mp4`, videoData, {
-    //   contentType: "video/mp4",
-    // })
-    // const { Audiokey } = await Storage.put(`${uuid()}.mp3`, audioData, {
-    //   contentType: "audio/mp3",
-    // })
-    // const { Imagekey } = await Storage.put(`${uuid()}.mp3`, audioData, {
-    //   contentType: "image/png,image/jpeg,image/jpg",
-    // })
-    // const createHeritageInput = {
-    //   id: uuid(),
-    //   title,
-    //   description,
-    //   Icon: title,
-    //   VideoName: Videokey,
-    //   AudioName: Audiokey,
-    //   SceneToLoad: "",
-    //   uuid: uuid(),
-    //   user: creator,
-    //   latitude: toString(latitude),
-    //   longitude: toString(longitude),
-    //   ImageName: Imagekey,
-    // }
-    // await API.graphql(graphqlOperation(createHeritage))
+  const AddHeritage = async (values) => {
+    try {
+      const {
+        title,
+        description,
+        creator,
+        video_file,
+        audio_file,
+        image_file,
+      } = values
+
+      const Videokey = await Storage.put(`${uuid()}.mp4`, videoData, {
+        contentType: "video/mp4",
+      })
+
+      const Audiokey = await Storage.put(`${uuid()}.mp3`, audioData, {
+        contentType: "audio/mp3",
+      })
+      const Imagekey = await Storage.put(`${uuid()}.jpg`, audioData, {
+        contentType: "image/png,image/jpeg,image/jpg",
+      })
+      const createHeritageInput = {
+        id: uuid(),
+        title,
+        description,
+        Icon: title,
+        VideoName: Videokey,
+        AudioName: Audiokey,
+        SceneToLoad: "test",
+        uuid: 1,
+        user: creator,
+        latitude: toString(latitude),
+        longitude: toString(longitude),
+        ImageName: Imagekey,
+      }
+
+      await API.graphql(
+        graphqlOperation(createHeritage, { input: createHeritageInput })
+      )
+      fetchHeritages()
+    } catch (error) {
+      console.log("error when uploading is", error)
+    }
   }
 
   return (
