@@ -15,6 +15,7 @@ export const getHeritage = /* GraphQL */ `
       user
       latitude
       longitude
+      ImageName
       createdAt
       updatedAt
     }
@@ -39,6 +40,7 @@ export const listHeritages = /* GraphQL */ `
         user
         latitude
         longitude
+        ImageName
         createdAt
         updatedAt
       }

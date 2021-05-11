@@ -10,4 +10,5 @@ type Heritage @model {
   user: String!
   latitude: String!
   longitude: String!
+  ImageName: String!
 }

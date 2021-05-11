@@ -15,6 +15,7 @@ export const onCreateHeritage = /* GraphQL */ `
       user
       latitude
       longitude
+      ImageName
       createdAt
       updatedAt
     }
@@ -34,6 +35,7 @@ export const onUpdateHeritage = /* GraphQL */ `
       user
       latitude
       longitude
+      ImageName
       createdAt
       updatedAt
     }
@@ -53,6 +55,7 @@ export const onDeleteHeritage = /* GraphQL */ `
       user
       latitude
       longitude
+      ImageName
       createdAt
       updatedAt
     }

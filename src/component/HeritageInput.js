@@ -1,15 +1,19 @@
-import React, { useState } from "react";
-import { Form, Col, InputGroup } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
-import { Formik } from "formik";
-import { v4 as uuid } from "uuid";
-import * as yup from "yup";
-import Storage from "@aws-amplify/storage";
+import React, { useState } from "react"
+import { Form, Col, InputGroup } from "react-bootstrap"
+import Button from "react-bootstrap/Button"
+import { Formik } from "formik"
+import { v4 as uuid } from "uuid"
+import * as yup from "yup"
+import Storage from "@aws-amplify/storage"
+import API, { graphqlOperation } from "@aws-amplify/api"
+import { createHeritage } from "../graphql/mutations"
 
-export default function HeritageInput() {
-  const [videoData, setVideoData] = useState({});
-  const [audioData, setAudioData] = useState({});
-  const [imageData, setImageData] = useState({});
+export default function HeritageInput(props) {
+  const [videoData, setVideoData] = useState({})
+  const [audioData, setAudioData] = useState({})
+  const [imageData, setImageData] = useState({})
+  const { latitude, longitude, fetchHeritages } = props
+  console.log("typeeeee", typeof latitude)
   const schema = yup.object().shape({
     title: yup.string().required(),
     description: yup.string().required(),
@@ -19,26 +23,44 @@ export default function HeritageInput() {
     audio_file: yup.mixed().optional(),
     terms: yup.bool().required().oneOf([true], "terms must be accepted"),
     creator: yup.string().required(),
-  });
+  })
 
-  const AddHeritage = async values => {
-    const { title, description, creator, video_file } = values;
+  const AddHeritage = (values) => {
+    const { title, description, creator, video_file, audio_file, image_file } =
+      values
+    console.log(image_file)
 
-    alert(video_file);
-    // const { Videokey } = await Storage.put(`${uuid()}.mp3`, audioData, { contentType: 'audio/mp3' });
+    // const { Videokey } = await Storage.put(`${uuid()}.mp4`, videoData, {
+    //   contentType: "video/mp4",
+    // })
+    // const { Audiokey } = await Storage.put(`${uuid()}.mp3`, audioData, {
+    //   contentType: "audio/mp3",
+    // })
+    // const { Imagekey } = await Storage.put(`${uuid()}.mp3`, audioData, {
+    //   contentType: "image/png,image/jpeg,image/jpg",
+    // })
+    // const createHeritageInput = {
+    //   id: uuid(),
+    //   title,
+    //   description,
+    //   Icon: title,
+    //   VideoName: Videokey,
+    //   AudioName: Audiokey,
+    //   SceneToLoad: "",
+    //   uuid: uuid(),
+    //   user: creator,
+    //   latitude: toString(latitude),
+    //   longitude: toString(longitude),
+    //   ImageName: Imagekey,
+    // }
 
-    const createHeritageInput = {
-      id: uuid(),
-      title,
-      description,
-      creator,
-    };
-  };
+    // await API.graphql(graphqlOperation(createHeritage))
+  }
 
   return (
     <Formik
       validationSchema={schema}
-      onSubmit={values => AddHeritage(values)}
+      onSubmit={(values) => AddHeritage(values)}
       initialValues={{
         title: "",
         description: "",
@@ -102,7 +124,7 @@ export default function HeritageInput() {
                 optional
                 name="video_file"
                 label="Video"
-                onChange={e => setVideoData(e.target.files[0])}
+                onChange={(e) => setVideoData(e.target.files[0])}
                 isInvalid={!!errors.video_file}
                 feedback={errors.video_file}
                 id="validationFormik107"
@@ -116,7 +138,7 @@ export default function HeritageInput() {
                 optional
                 name="audio_file"
                 label="Audio"
-                onChange={e => setAudioData(e.target.files[0])}
+                onChange={(e) => setAudioData(e.target.files[0])}
                 isInvalid={!!errors.audio_file}
                 feedback={errors.audio_file}
                 id="validationFormik108"
@@ -130,11 +152,12 @@ export default function HeritageInput() {
                 optional
                 name="image_file"
                 label="Image"
-                onChange={e => setImageData(e.target.files[0])}
+                onChange={(e) => setImageData(e.target.files[0])}
                 isInvalid={!!errors.image_file}
                 feedback={errors.image_file}
                 id="validationFormik109"
                 feedbackTooltip
+                accept="image/png,image/jpeg,image/jpg"
               />
             </Form.Group>
             <Form.Group>
@@ -156,5 +179,5 @@ export default function HeritageInput() {
         </Form>
       )}
     </Formik>
-  );
+  )
 }

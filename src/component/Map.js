@@ -27,11 +27,13 @@ import { createHeritage } from "../graphql/mutations"
 import { v4 as uuid } from "uuid"
 import { HeritageContext } from "./Helpers/Context"
 import HeritageInput from "./HeritageInput"
+
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker"
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
-mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker")
+// mapboxgl.workerClass =
+//   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default
 
 export default function Map() {
   const mapRef = useRef()
@@ -55,25 +57,21 @@ export default function Map() {
     pitch: 0,
   })
 
-  //Fetched data
-  // const [allData, setAllData] = useState(null);
-  //Coverted the data into Dynamo Json
-  //Fetch resource to detect whether it is valid or not
-  const [resource, setResource] = useState(null)
+  // Fetched data
+  const [allData, setAllData] = useState(null)
+
   //Data for display
   const [clickInfo, setclickInfo] = useState(null)
-  //Dynamodata
-  const [dynamodata, setDynamodata] = useState(null)
 
   // Fetch the Layer GeoJson data for display
-  // useEffect(() => {
-  //   /* global fetch */
-  //   fetch(
-  //     "https://amplifylanguageappgidarjil114226-dev.s3-ap-southeast-2.amazonaws.com/public/wordlist/features.geojson"
-  //   )
-  //     .then(res => res.json())
-  //     .then(json => setAllData(json));
-  // }, []);
+  useEffect(() => {
+    /* global fetch */
+    fetch(
+      "https://amplifylanguageappgidarjil114226-dev.s3-ap-southeast-2.amazonaws.com/public/wordlist/features.geojson"
+    )
+      .then((res) => res.json())
+      .then((json) => setAllData(json))
+  }, [])
 
   const onClick = useCallback((event) => {
     // Destructure features from the click event data
@@ -190,23 +188,6 @@ export default function Map() {
   }
 
   // Add the lcal DynamoDB data to the database
-  const dataCreate = async (heritage) => {
-    try {
-      await API.graphql(graphqlOperation(createHeritage, { input: heritage }))
-      console.log("done the create")
-    } catch (error) {
-      console.log("error happened during load local data to dynamoDB", error)
-    }
-  }
-  const loadLocalData = (data) => {
-    data.map((heritage, id) => dataCreate(heritage))
-  }
-
-  // add the local json to the database
-  useEffect(() => {
-    // heritages && allData != null && Converte(allData.features);
-  }, [heritages])
-
   //covert the json to Dynamo Json
   const Converte = async (data) => {
     try {
@@ -222,6 +203,7 @@ export default function Map() {
         user: "Admin",
         uuid: 2,
         VideoName: heritage.properties.VideoName,
+        ImageName: "",
       }))
 
       loadLocalData(DynamoData)
@@ -230,6 +212,26 @@ export default function Map() {
       console.log("error on fetching heritages", error)
     }
   }
+  //Mapping the data into each heritage
+  const loadLocalData = (data) => {
+    data.map((heritage, id) => dataCreate(heritage))
+  }
+  //Create the heritage into the database
+  const dataCreate = async (heritage) => {
+    try {
+      await API.graphql(graphqlOperation(createHeritage, { input: heritage }))
+      console.log("done the create")
+    } catch (error) {
+      console.log("error happened during load local data to dynamoDB", error)
+    }
+  }
+
+  // add the local json to the database
+  useEffect(() => {
+    console.log(allData)
+    // allData != null && Converte(allData.features)
+  }, [])
+
   // Covert to Geojson
   const covertGeojson = (data) => {
     if (data && data.length != 0) {
@@ -242,6 +244,7 @@ export default function Map() {
           VideoName: heritage.VideoName,
           description: heritage.description,
           title: heritage.title,
+          ImageName: heritage.ImageName,
         },
         geometry: {
           coordinates: [
@@ -344,7 +347,11 @@ export default function Map() {
               onClose={() => setEnter(false)}
               anchor="bottom"
             >
-              <HeritageInput />
+              <HeritageInput
+                longitude={marker.longitude}
+                latitude={marker.latitude}
+                fetchHeritages={fetchHeritages}
+              />
             </Popup>
           )}
           {popup && clickInfo != null && clickInfo.properties.VideoName && (
