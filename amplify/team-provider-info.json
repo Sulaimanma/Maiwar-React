@@ -32,6 +32,12 @@
     "categories": {
       "auth": {
         "maiwarreactappc0e19078": {}
+      },
+      "function": {
+        "S3Triggerc40f8517": {
+          "deploymentBucketName": "amplify-maiwarreactapp-devsecond-04046-deployment",
+          "s3Key": "amplify-builds/S3Triggerc40f8517-5158316f2f6271456246-build.zip"
+        }
       }
     }
   }

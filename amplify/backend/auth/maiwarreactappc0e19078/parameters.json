@@ -1,6 +1,6 @@
 {
     "identityPoolName": "maiwarreactappc0e19078_identitypool_c0e19078",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "maiwarc0e19078",
     "userPoolName": "maiwarreactappc0e19078_userpool_c0e19078",
     "autoVerifiedAttributes": [
