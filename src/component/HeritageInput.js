@@ -1,10 +1,15 @@
-import React from "react"
-import { Form, Col, InputGroup } from "react-bootstrap"
-import Button from "react-bootstrap/Button"
-import { Formik } from "formik"
-import * as yup from "yup"
+import React, { useState } from "react";
+import { Form, Col, InputGroup } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+import { Formik } from "formik";
+import { v4 as uuid } from "uuid";
+import * as yup from "yup";
+import Storage from "@aws-amplify/storage";
 
 export default function HeritageInput() {
+  const [videoData, setVideoData] = useState({});
+  const [audioData, setAudioData] = useState({});
+  const [imageData, setImageData] = useState({});
   const schema = yup.object().shape({
     title: yup.string().required(),
     description: yup.string().required(),
@@ -14,14 +19,26 @@ export default function HeritageInput() {
     audio_file: yup.mixed().optional(),
     terms: yup.bool().required().oneOf([true], "terms must be accepted"),
     creator: yup.string().required(),
-  })
+  });
+
+  const AddHeritage = async values => {
+    const { title, description, creator, video_file } = values;
+
+    alert(video_file);
+    // const { Videokey } = await Storage.put(`${uuid()}.mp3`, audioData, { contentType: 'audio/mp3' });
+
+    const createHeritageInput = {
+      id: uuid(),
+      title,
+      description,
+      creator,
+    };
+  };
 
   return (
     <Formik
       validationSchema={schema}
-      onSubmit={(values) => {
-        alert(JSON.stringify(values, null, 2))
-      }}
+      onSubmit={values => AddHeritage(values)}
       initialValues={{
         title: "",
         description: "",
@@ -85,11 +102,12 @@ export default function HeritageInput() {
                 optional
                 name="video_file"
                 label="Video"
-                onChange={handleChange}
+                onChange={e => setVideoData(e.target.files[0])}
                 isInvalid={!!errors.video_file}
                 feedback={errors.video_file}
                 id="validationFormik107"
                 feedbackTooltip
+                accept="video/mp4"
               />
             </Form.Group>
             <Form.Group>
@@ -98,11 +116,12 @@ export default function HeritageInput() {
                 optional
                 name="audio_file"
                 label="Audio"
-                onChange={handleChange}
+                onChange={e => setAudioData(e.target.files[0])}
                 isInvalid={!!errors.audio_file}
                 feedback={errors.audio_file}
                 id="validationFormik108"
                 feedbackTooltip
+                accept="audio/mp3"
               />
             </Form.Group>
             <Form.Group>
@@ -110,8 +129,8 @@ export default function HeritageInput() {
                 className="position-relative"
                 optional
                 name="image_file"
-                label="Video"
-                onChange={handleChange}
+                label="Image"
+                onChange={e => setImageData(e.target.files[0])}
                 isInvalid={!!errors.image_file}
                 feedback={errors.image_file}
                 id="validationFormik109"
@@ -137,5 +156,5 @@ export default function HeritageInput() {
         </Form>
       )}
     </Formik>
-  )
+  );
 }
