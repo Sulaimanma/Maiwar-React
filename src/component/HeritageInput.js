@@ -26,10 +26,9 @@ export default function HeritageInput(props) {
   })
 
   const AddHeritage = (values) => {
-    const { title, description, creator, video_file, audio_file, image_file } =
-      values
-    console.log(values)
-
+    // const { title, description, creator, video_file, audio_file, image_file } =
+    //   values
+    // console.log(values)
     // const { Videokey } = await Storage.put(`${uuid()}.mp4`, videoData, {
     //   contentType: "video/mp4",
     // })
@@ -53,7 +52,6 @@ export default function HeritageInput(props) {
     //   longitude: toString(longitude),
     //   ImageName: Imagekey,
     // }
-
     // await API.graphql(graphqlOperation(createHeritage))
   }
 
