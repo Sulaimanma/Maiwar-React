@@ -65,6 +65,8 @@ export default function Map() {
   const [videoUrl, setVideoUrl] = useState("")
   const [audioUrl, setAudioUrl] = useState("")
   const [imageUrl, setImageUrl] = useState("")
+  //Spinner state control
+  const [loading, setLoading] = useState(false)
 
   // Fetch the Layer GeoJson data for display
   useEffect(() => {
@@ -357,15 +359,19 @@ export default function Map() {
             <Popup
               latitude={marker.latitude}
               longitude={marker.longitude}
-              closeButton={true}
+              closeButton={!loading}
               closeOnClick={false}
               onClose={() => setEnter(false)}
               anchor="bottom"
+              color="black"
             >
               <HeritageInput
                 longitude={marker.longitude}
                 latitude={marker.latitude}
                 fetchHeritages={fetchHeritages}
+                setEnter={setEnter}
+                loading={loading}
+                setLoading={setLoading}
               />
             </Popup>
           )}
