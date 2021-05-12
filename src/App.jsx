@@ -1,53 +1,54 @@
-import Amplify, { API, Auth, graphqlOperation } from "aws-amplify";
-import awsconfig from "./aws-exports";
+import Amplify, { API, Auth, graphqlOperation } from "aws-amplify"
+import awsconfig from "./aws-exports"
 
 import {
   AmplifyAuthenticator,
   AmplifySignUp,
   AmplifySignOut,
-} from "@aws-amplify/ui-react";
-import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
-import { useEffect, useState } from "react";
-import Map from "./component/Map";
-import "./App.css";
-import Sidebar from "./component/Sidebar/Sidebar";
-import { listHeritages } from "./graphql/queries";
-import { HeritageContext } from "./component/Helpers/Context";
-import { Route } from "react-router";
-import HeritageInput from "./component/HeritageInput";
+} from "@aws-amplify/ui-react"
+import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components"
+import { useEffect, useState } from "react"
+import Map from "./component/Map"
+import "./App.css"
+import Sidebar from "./component/Sidebar/Sidebar"
+import { listHeritages } from "./graphql/queries"
+import { HeritageContext } from "./component/Helpers/Context"
+import { Route } from "react-router"
+import HeritageInput from "./component/HeritageInput"
 
-Amplify.configure(awsconfig);
+Amplify.configure(awsconfig)
 
 function App() {
-  const [authState, setAuthState] = useState();
-  const [user, setUser] = useState();
-  const [heritages, setHeritages] = useState([]);
+  const [authState, setAuthState] = useState()
+  const [user, setUser] = useState()
+  const [heritages, setHeritages] = useState([])
 
   useEffect(() => {
-    fetchHeritages();
-  }, []);
+    fetchHeritages()
+  }, [])
 
   const fetchHeritages = async () => {
     try {
       const heritageData = await API.graphql(
         graphqlOperation(listHeritages, { limit: 500 })
-      );
-      const heritageList = heritageData.data.listHeritages.items;
+      )
+      const heritageList = heritageData.data.listHeritages.items
 
-      setHeritages(heritageList);
+      setHeritages(heritageList)
     } catch (error) {
-      console.log("error on fetching heritages", error);
+      console.log("error on fetching heritages", error)
     }
-  };
+  }
 
   //Load the user information
   useEffect(() => {
     return onAuthUIStateChange((nextAuthState, authData) => {
-      setAuthState(nextAuthState);
-      setUser(authData);
-    });
-  }, []);
-  console.log("heritages on the homepage", heritages);
+      setAuthState(nextAuthState)
+      setUser(authData)
+      console.log("用戶信息", authData)
+    })
+  }, [])
+  console.log("heritages on the homepage", heritages)
 
   return authState === AuthState.SignedIn && user ? (
     <div className="App" id="App">
@@ -57,7 +58,7 @@ function App() {
           <button
             className="signoutBtn"
             onClick={() => {
-              Auth.signOut();
+              Auth.signOut()
             }}
           >
             Sign Out
@@ -80,7 +81,7 @@ function App() {
         ]}
       />
     </AmplifyAuthenticator>
-  );
+  )
 }
 
-export default App;
+export default App

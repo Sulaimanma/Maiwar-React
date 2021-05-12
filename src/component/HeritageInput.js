@@ -25,7 +25,13 @@ export default function HeritageInput(props) {
     terms: yup.bool().required().oneOf([true], "terms must be accepted"),
     creator: yup.string().required(),
   })
-
+  const test_man = Storage.get(
+    "public/11023a8a-3e3d-4542-a93a-0de58d63b51f.mp4",
+    {
+      level: "private",
+    }
+  )
+  console.log("test_man", test_man)
   const AddHeritage = async (values) => {
     try {
       const {
@@ -39,6 +45,7 @@ export default function HeritageInput(props) {
 
       const Videokey = await Storage.put(`${uuid()}.mp4`, videoData, {
         contentType: "video/mp4",
+        level: "public",
       })
 
       const Audiokey = await Storage.put(`${uuid()}.mp3`, audioData, {
@@ -52,20 +59,22 @@ export default function HeritageInput(props) {
         title,
         description,
         Icon: title,
-        VideoName: Videokey,
-        AudioName: Audiokey,
+        VideoName: Videokey.key,
+        AudioName: Audiokey.key,
         SceneToLoad: "test",
         uuid: 1,
         user: creator,
-        latitude: toString(latitude),
-        longitude: toString(longitude),
-        ImageName: Imagekey,
+        latitude: latitude,
+        longitude: longitude,
+        ImageName: Imagekey.key,
       }
+      console.log("geooooooooooo", latitude, longitude)
 
       await API.graphql(
         graphqlOperation(createHeritage, { input: createHeritageInput })
       )
       fetchHeritages()
+      console.log("fetch done")
     } catch (error) {
       console.log("error when uploading is", error)
     }

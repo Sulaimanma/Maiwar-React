@@ -29,6 +29,7 @@ import { HeritageContext } from "./Helpers/Context"
 import HeritageInput from "./HeritageInput"
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker"
+import Storage from "@aws-amplify/storage"
 
 mapboxgl.workerClass = MapboxWorker
 
@@ -60,6 +61,11 @@ export default function Map() {
   //Data for display
   const [clickInfo, setclickInfo] = useState(null)
 
+  //Set up the Urls
+  const [videoUrl, setVideoUrl] = useState("")
+  const [audioUrl, setAudioUrl] = useState("")
+  const [imageUrl, setImageUrl] = useState("")
+
   // Fetch the Layer GeoJson data for display
   useEffect(() => {
     /* global fetch */
@@ -85,62 +91,71 @@ export default function Map() {
   }, [])
 
   //Video function to play the video according to the Video Name
-  const video = (VideoName) => {
-    const previousVideoChange = [
-      "Camp_Man_Kneel_Carving_Fire",
-      "Camp_Man_Woman_Fire_Flyover",
-      "Camp_ManThree_Shield_Fire",
-      "Camp_Woman_Two_Fire_Yarn",
-      "Corroboree_Elder_Man_Fire",
-      "Corroboree_Man_Woman_Fire_Spin",
-      "Ducks",
-      "Gathering Bush",
-      "Gathering Mangroves",
-      "Gathering Stream",
-      "Goanna_Bush_Stream_Walking",
-      "Kangaroo_Bush_Graze",
-      "Kangaroo_Grass_Stays",
-      "Kangaroo_Three_Stream_Fight1",
-      "Man_Group_River_Spearfishing",
-      "Man_River_Canoe_Crossing",
-      "Man_Three_River_Canoe_PanShot",
-      "Man_Walking_Group_Spears_Shields_Grass_Emu",
-      "Man_Walking_Shield_Spear_Morning",
-      "Man_Walking_Spears_Shields_River",
-      "ManThree_River_Canoe",
-      "Men_Three_Spearfish_DroppedSpear1",
-      "Men_Three_Spearfish_DroppedSpear2",
-      "Men_Three_Spearfish_DroppedSpear3",
-      "Midden",
-      "Pelican_Flying_Water_Low_SeeIntoRiver",
-      "Possum_Kangaroo_Tree_River_Bush",
-      "River_Bass_Loop",
-      "Tournament",
-      "Woman_Flyover_Birds_Emu",
-      "Woman_Tree_Dillybag_PurpleFlowers",
-      "Woman_Tree_Dillybag1",
-      "Woman_Two_Tree_Dillybag1",
-      "Woman_WaterStream_Goanna_Coolamon1",
-    ]
-    // if (previousVideoChange.includes(VideoName)) {
-    //   var path =
-    //     "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
-    //     VideoName +
-    //     ".mp4"
-    // }
-    if (VideoName === "Ducks" || VideoName === "Gathering Bush") {
-      var path =
-        "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/Camp_Bush_Children_Running.mp4"
-    } else if (VideoName.length != 0) {
-      var path =
-        "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
-        VideoName +
-        ".mp4"
-    } else {
-      var path =
-        "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/Camp_Bush_Children_Running.mp4"
+  const video = async (VideoName) => {
+    try {
+      const previousVideoChange = [
+        "Camp_Man_Kneel_Carving_Fire",
+        "Camp_Man_Woman_Fire_Flyover",
+        "Camp_ManThree_Shield_Fire",
+        "Camp_Woman_Two_Fire_Yarn",
+        "Corroboree_Elder_Man_Fire",
+        "Corroboree_Man_Woman_Fire_Spin",
+        "Ducks",
+        "Gathering Bush",
+        "Gathering Mangroves",
+        "Gathering Stream",
+        "Goanna_Bush_Stream_Walking",
+        "Kangaroo_Bush_Graze",
+        "Kangaroo_Grass_Stays",
+        "Kangaroo_Three_Stream_Fight1",
+        "Man_Group_River_Spearfishing",
+        "Man_River_Canoe_Crossing",
+        "Man_Three_River_Canoe_PanShot",
+        "Man_Walking_Group_Spears_Shields_Grass_Emu",
+        "Man_Walking_Shield_Spear_Morning",
+        "Man_Walking_Spears_Shields_River",
+        "ManThree_River_Canoe",
+        "Men_Three_Spearfish_DroppedSpear1",
+        "Men_Three_Spearfish_DroppedSpear2",
+        "Men_Three_Spearfish_DroppedSpear3",
+        "Midden",
+        "Pelican_Flying_Water_Low_SeeIntoRiver",
+        "Possum_Kangaroo_Tree_River_Bush",
+        "River_Bass_Loop",
+        "Tournament",
+        "Woman_Flyover_Birds_Emu",
+        "Woman_Tree_Dillybag_PurpleFlowers",
+        "Woman_Tree_Dillybag1",
+        "Woman_Two_Tree_Dillybag1",
+        "Woman_WaterStream_Goanna_Coolamon1",
+      ]
+      if (VideoName === "Ducks" || VideoName === "Gathering Bush") {
+        var path =
+          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
+          "Camp_Bush_Children_Running.mp4"
+      } else if (previousVideoChange.includes(VideoName)) {
+        var path =
+          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
+          VideoName +
+          ".mp4"
+      } else if (VideoName.length != 0) {
+        var path = await Storage.get(VideoName, {
+          level: "public",
+        })
+        // setVideoUrl(path)
+        // var path =
+        //   "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
+        //   VideoName
+      } else {
+        var path =
+          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
+          "Camp_Bush_Children_Running.mp4"
+      }
+      // Make sure each Url is valid
+    } catch (error) {
+      console.log("error happens on getting videos", error)
     }
-    // Make sure each Url is valid
+    console.log("pathhhhhhhhhhhhhhh", path)
 
     return path
   }
@@ -363,8 +378,15 @@ export default function Map() {
               onClose={() => setPopup(false)}
               anchor="bottom"
             >
+              {console.log(
+                "VideoURLLLLLLLLLLLLLLLLLL",
+                video(clickInfo.properties.VideoName).then((result) => {
+                  setVideoUrl(result)
+                })
+              )}
+
               <PopInfo
-                src={video(clickInfo.properties.VideoName)}
+                src={videoUrl}
                 description={clickInfo.properties.description}
                 title={clickInfo.properties.title}
               />
