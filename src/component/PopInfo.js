@@ -8,7 +8,6 @@ export default function PopInfo(props) {
       {src && src != "" && (
         <video autoPlay loop muted width="300px" src={src} />
       )}
-      {console.log("srccccccc", src)}
 
       <p className="description">{description}</p>
     </div>
