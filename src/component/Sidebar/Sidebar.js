@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { elastic as Menu } from "react-burger-menu"
-
+import Dropzone from "react-dropzone"
+import ModalDrop from "../ModalDrop"
 export default (props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const handleClick = () => {
@@ -26,17 +27,19 @@ export default (props) => {
         onClick={handleClick}
         style={{ cursor: "pointer" }}
       >
-        Drop Pin to Add Heritages
+        Add heritage pin
       </p>
-
-      <p className="menu-item" style={{ cursor: "pointer" }}>
-        Upload Heritages
-      </p>
-
+      {/* <p className="menu-item" style={{ cursor: "pointer" }}>
+        Upload Heritages Data
+      </p> */}
+      <ModalDrop
+        CloseFunction={(props) => {
+          setIsMenuOpen(props)
+        }}
+      />
       <p className="menu-item" style={{ cursor: "pointer" }}>
         Services
       </p>
-
       <p className="menu-item" style={{ cursor: "pointer" }}>
         Contact us
       </p>

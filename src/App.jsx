@@ -49,7 +49,6 @@ function App() {
     return onAuthUIStateChange((nextAuthState, authData) => {
       setAuthState(nextAuthState)
       setUser(authData)
-      console.log("用戶信息", authData)
     })
   }, [])
   console.log("heritages on the homepage", heritages)
