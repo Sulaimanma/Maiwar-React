@@ -31,17 +31,19 @@ export default function ModalDrop(props) {
     reader.onload = () => {
       // Parse CSV file
       csv.parse(reader.result, (err, data) => {
-        console.log("Parsed CSV data: ", convertToArrayOfObjects(data))
-        const cleanData = convertToArrayOfObjects(data).stringify
-
-        console.log("Parsed CSV json ", convertToArrayOfObjects(data))
+        console.log(
+          "Parsed CSV data: ",
+          convertToArrayOfObjects(data).slice(0, 100)
+        )
+        const cleanData = convertToArrayOfObjects(data).slice(0, 100)
+        console.log("Parsed CSV json ", cleanData)
       })
     }
 
     // read file contents
     acceptedFiles.forEach((file) => reader.readAsBinaryString(file))
   }, [])
-  uploadData && console.log("eid mubarak", uploadData)
+  // uploadData && console.log("eid mubarak", uploadData)
 
   return (
     <>

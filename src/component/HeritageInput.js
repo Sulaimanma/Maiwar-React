@@ -68,9 +68,7 @@ export default function HeritageInput(props) {
         latitude: latitude,
         longitude: longitude,
         ImageName: Imagekey.key,
-        rivised: false,
       }
-      console.log("geooooooooooo", latitude, longitude)
 
       await API.graphql(
         graphqlOperation(createHeritage, { input: createHeritageInput })
@@ -78,6 +76,7 @@ export default function HeritageInput(props) {
       fetchHeritages()
         .then(() => setLoading(false))
         .then(() => setEnter(false))
+        .then(() => console.log("fetch good boy"))
     } catch (error) {
       console.log("error when uploading is", error)
     }
