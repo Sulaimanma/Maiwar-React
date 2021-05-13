@@ -26,11 +26,11 @@ export default (props) => {
         onClick={handleClick}
         style={{ cursor: "pointer" }}
       >
-        Drop Pin
+        Drop Pin to Add Heritages
       </p>
 
       <p className="menu-item" style={{ cursor: "pointer" }}>
-        About
+        Upload Heritages
       </p>
 
       <p className="menu-item" style={{ cursor: "pointer" }}>

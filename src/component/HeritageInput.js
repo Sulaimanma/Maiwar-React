@@ -68,6 +68,7 @@ export default function HeritageInput(props) {
         latitude: latitude,
         longitude: longitude,
         ImageName: Imagekey.key,
+        rivised: false,
       }
       console.log("geooooooooooo", latitude, longitude)
 

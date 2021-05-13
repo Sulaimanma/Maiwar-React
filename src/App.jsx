@@ -32,7 +32,11 @@ function App() {
       const heritageData = await API.graphql(
         graphqlOperation(listHeritages, { limit: 500 })
       )
-      const heritageList = heritageData.data.listHeritages.items
+      const heritageList = heritageData.data.listHeritages.items.filter(
+        function (place) {
+          return place.uuid === 2
+        }
+      )
 
       setHeritages(heritageList)
     } catch (error) {
