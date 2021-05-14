@@ -2,6 +2,9 @@ import react, { useCallback, useEffect, useState } from "react"
 import { Button, Modal } from "react-bootstrap"
 import Dropzone from "react-dropzone"
 import csv from "csv"
+import { v4 as uuid } from "uuid"
+import API, { graphqlOperation } from "@aws-amplify/api"
+import { createHeritage } from "../graphql/mutations"
 
 export default function ModalDrop(props) {
   const [uploadData, setUploadData] = useState(null)
@@ -11,6 +14,11 @@ export default function ModalDrop(props) {
   const handleShow = () => {
     setShow(true)
     props.CloseFunction(false)
+  }
+  const handleUpload = () => {
+    setShow(false)
+    UploadHeritages(uploadData)
+    console.log("Finished Upload")
   }
   function convertToArrayOfObjects(data) {
     var keys = data.shift()
@@ -31,20 +39,86 @@ export default function ModalDrop(props) {
     reader.onload = () => {
       // Parse CSV file
       csv.parse(reader.result, (err, data) => {
-        console.log(
-          "Parsed CSV data: ",
-          convertToArrayOfObjects(data).slice(0, 100)
-        )
-        const cleanData = convertToArrayOfObjects(data).slice(0, 100)
-        console.log("Parsed CSV json ", cleanData)
+        setUploadData(convertToArrayOfObjects(data))
       })
     }
-
     // read file contents
     acceptedFiles.forEach((file) => reader.readAsBinaryString(file))
   }, [])
-  // uploadData && console.log("eid mubarak", uploadData)
 
+  const UploadHeritages = async (data) => {
+    // const Videokey = await Storage.put(`${uuid()}.mp4`, videoData, {
+    //   contentType: "video/mp4",
+    //   level: "public",
+    // })
+
+    // const Audiokey = await Storage.put(`${uuid()}.mp3`, audioData, {
+    //   contentType: "audio/mp3",
+    // })
+    // const Imagekey = await Storage.put(`${uuid()}.jpg`, audioData, {
+    //   contentType: "image/png,image/jpeg,image/jpg",
+    // })
+    try {
+      for (let i = 0; i < data.length; i++) {
+        var createHeritageInput = {
+          id: uuid(),
+          title: data[i].title,
+          description: data[i].description,
+          Icon: data[i].title,
+          VideoName: data[i].VideoName,
+          AudioName: data[i].AudioName,
+          SceneToLoad: "test",
+          uuid: 1,
+          user: data[i].user,
+          latitude: data[i].latitude,
+          longitude: data[i].longitude,
+          ImageName: data[i].ImageName,
+        }
+
+        createHeritageInput &&
+          (await API.graphql(
+            graphqlOperation(createHeritage, { input: createHeritageInput })
+          ))
+
+        console.log("计数", i)
+      }
+      console.log("donedone")
+    } catch (error) {
+      console.log("Upload error is", error)
+    }
+
+    // data.map(
+    //   (req, id) =>{
+    //     createHeritageInput = {
+    //       id: uuid(),
+    //       title: req.title,
+    //       description: req.description,
+    //       Icon: req.title,
+    //       VideoName: req.VideoName,
+    //       AudioName: req.AudioName,
+    //       SceneToLoad: "test",
+    //       uuid: 1,
+    //       user: req.creator,
+    //       latitude: req.latitude,
+    //       longitude: req.longitude,
+    //       ImageName: req.ImageName,
+    //     }
+    //     API.graphql(
+    //       graphqlOperation(createHeritage, { input: createHeritageInput }))
+
+    //   }
+    // )
+
+    //   fetchHeritages()
+    //     .then(() => setLoading(false))
+    //     .then(() => setEnter(false))
+    //     .then(() => console.log("fetch good boy"))
+    // } catch (error) {
+    //   console.log("error when uploading is", error)
+    // }
+  }
+
+  console.log("uploaddataaaaa", uploadData)
   return (
     <>
       <p
@@ -98,7 +172,7 @@ export default function ModalDrop(props) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleUpload}>
             Upload
           </Button>
         </Modal.Footer>
