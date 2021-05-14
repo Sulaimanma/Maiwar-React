@@ -384,9 +384,12 @@ export default function Map() {
               onClose={() => setPopup(false)}
               anchor="bottom"
             >
-              {video(clickInfo.properties.VideoName).then((result) => {
-                setVideoUrl(result)
-              })}
+              {console.log(
+                "VideoURLLLLLLLLLLLLLLLLLL",
+                video(clickInfo.properties.VideoName).then((result) => {
+                  setVideoUrl(result)
+                })
+              )}
 
               <PopInfo
                 src={videoUrl}
