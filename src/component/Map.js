@@ -19,7 +19,7 @@ import "./map.css"
 import { clusterLayer, clusterCountLayer, unclusteredPointLayer } from "./layer"
 
 import PopInfo from "./PopInfo"
-import Pins from "./Pins"
+// import Pins from "./Pins"
 import Sidebar from "./Sidebar/Sidebar"
 import DragPin from "./DragPin"
 import API, { graphqlOperation } from "@aws-amplify/api"
@@ -69,14 +69,14 @@ export default function Map() {
   const [loading, setLoading] = useState(false)
 
   // Fetch the Layer GeoJson data for display
-  useEffect(() => {
-    /* global fetch */
-    fetch(
-      "https://amplifylanguageappgidarjil114226-dev.s3-ap-southeast-2.amazonaws.com/public/wordlist/features.geojson"
-    )
-      .then((res) => res.json())
-      .then((json) => setAllData(json))
-  }, [])
+  // useEffect(() => {
+  //   /* global fetch */
+  //   fetch(
+  //     "https://amplifylanguageappgidarjil114226-dev.s3-ap-southeast-2.amazonaws.com/public/wordlist/features.geojson"
+  //   )
+  //     .then((res) => res.json())
+  //     .then((json) => setAllData(json))
+  // }, [])
 
   const onClick = useCallback((event) => {
     // Destructure features from the click event data
@@ -89,7 +89,6 @@ export default function Map() {
     setclickInfo(clickedFeature)
 
     var featuresss = mapRef.current.queryRenderedFeatures(event.point)
-    console.log("featuressssss", clickedFeature)
   }, [])
 
   //Video function to play the video according to the Video Name
@@ -144,10 +143,6 @@ export default function Map() {
         var path = await Storage.get(VideoName, {
           level: "public",
         })
-        // setVideoUrl(path)
-        // var path =
-        //   "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
-        //   VideoName
       } else {
         var path =
           "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
@@ -157,7 +152,6 @@ export default function Map() {
     } catch (error) {
       console.log("error happens on getting videos", error)
     }
-    console.log("pathhhhhhhhhhhhhhh", path)
 
     return path
   }
@@ -224,7 +218,6 @@ export default function Map() {
       }))
 
       loadLocalData(DynamoData)
-      console.log("Add the local data finished")
     } catch (error) {
       console.log("error on fetching heritages", error)
     }
@@ -237,17 +230,16 @@ export default function Map() {
   const dataCreate = async (heritage) => {
     try {
       await API.graphql(graphqlOperation(createHeritage, { input: heritage }))
-      console.log("done the create")
     } catch (error) {
       console.log("error happened during load local data to dynamoDB", error)
     }
   }
 
   // add the local json to the database
-  useEffect(() => {
-    console.log(allData)
-    // allData != null && Converte(allData.features)
-  }, [])
+  // useEffect(() => {
+  //   console.log(allData)
+  // allData != null && Converte(allData.features)
+  // }, [])
 
   // Covert to Geojson
   const covertGeojson = (data) => {
@@ -289,7 +281,6 @@ export default function Map() {
   }, [heritages])
   var geoConvertedjson = null
   geojson && (geoConvertedjson = geojson)
-  console.log("顯示了幾遍")
 
   return (
     <div className="body" id="body">
@@ -362,7 +353,7 @@ export default function Map() {
               closeButton={!loading}
               closeOnClick={false}
               onClose={() => setEnter(false)}
-              anchor="bottom"
+              anchor="right"
               color="black"
             >
               <HeritageInput

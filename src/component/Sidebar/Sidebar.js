@@ -21,7 +21,6 @@ export default (props) => {
         setIsMenuOpen(false)
       }}
     >
-      {console.log("開了沒", isMenuOpen)}
       <p
         className="menu-item"
         onClick={handleClick}

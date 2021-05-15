@@ -16,15 +16,9 @@ export default function HeritageInput(props) {
   const [audioData, setAudioData] = useState("")
   const [imageData, setImageData] = useState("")
 
-  const {
-    latitude,
-    longitude,
-    fetchHeritages,
-    setEnter,
-    loading,
-    setLoading,
-  } = props
-  console.log("typeeeee", typeof latitude)
+  const { latitude, longitude, fetchHeritages, setEnter, loading, setLoading } =
+    props
+
   const schema = yup.object().shape({
     title: yup.string().required(),
     description: yup.string().required(),
@@ -54,7 +48,6 @@ export default function HeritageInput(props) {
         contentType: "video/mp4",
         level: "public",
       })
-      console.log("finished uploading video")
 
       const Audiokey = await Storage.put(`${uuid()}.mp3`, audioData, {
         contentType: "audio/mp3",
@@ -76,11 +69,11 @@ export default function HeritageInput(props) {
         longitude: longitude,
         ImageName: Imagekey.key,
       }
-      console.log("running uploading")
+
       await API.graphql(
         graphqlOperation(createHeritage, { input: createHeritageInput })
       )
-      console.log("running uploading end")
+
       fetchHeritages()
         .then(() => setLoading(false))
         .then(() => setEnter(false))

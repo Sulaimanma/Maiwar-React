@@ -1,14 +1,15 @@
 import react, { useCallback, useEffect, useState } from "react"
-import { Button, Modal } from "react-bootstrap"
+import { Button, Col, Modal, Row } from "react-bootstrap"
 import Dropzone from "react-dropzone"
 import csv from "csv"
 import { v4 as uuid } from "uuid"
 import API, { graphqlOperation } from "@aws-amplify/api"
 import { createHeritage } from "../graphql/mutations"
-
+import { AiFillDelete } from "react-icons/ai"
 export default function ModalDrop(props) {
   const [uploadData, setUploadData] = useState(null)
   const [show, setShow] = useState(false)
+  const [fileList, setFilelist] = useState(null)
 
   const handleClose = () => setShow(false)
   const handleShow = () => {
@@ -31,7 +32,8 @@ export default function ModalDrop(props) {
 
     return data
   }
-  const onDrop = useCallback((acceptedFiles) => {
+  //Drop the heritages information
+  const onDropInformation = useCallback((acceptedFiles) => {
     const reader = new FileReader()
 
     reader.onabort = () => console.log("file reading was aborted")
@@ -43,9 +45,35 @@ export default function ModalDrop(props) {
       })
     }
     // read file contents
-    acceptedFiles.forEach((file) => reader.readAsBinaryString(file))
-  }, [])
 
+    acceptedFiles.forEach((file) => {
+      reader.readAsBinaryString(file)
+      var fileItem = []
+      fileItem.push(file.name)
+      setFilelist(fileItem)
+    })
+  }, [])
+  //Drop the heritage media
+  // const onDropMedia = useCallback((acceptedFiles) => {
+  //   const reader = new FileReader()
+
+  //   reader.onabort = () => console.log("file reading was aborted")
+  //   reader.onerror = () => console.log("file reading failed")
+  //   reader.onload = () => {
+  //     // Parse CSV file
+  //     csv.parse(reader.result, (err, data) => {
+  //       setUploadData(convertToArrayOfObjects(data))
+  //     })
+  //   }
+  //   // read file contents
+
+  //   acceptedFiles.forEach((file) => {
+  //     reader.readAsBinaryString(file)
+  //     var fileItem = []
+  //     fileItem.push(file.name)
+  //     setFilelist(fileItem)
+  //   })
+  // }, [])
   const UploadHeritages = async (data) => {
     // const Videokey = await Storage.put(`${uuid()}.mp4`, videoData, {
     //   contentType: "video/mp4",
@@ -79,46 +107,12 @@ export default function ModalDrop(props) {
           (await API.graphql(
             graphqlOperation(createHeritage, { input: createHeritageInput })
           ))
-
-        console.log("计数", i)
       }
-      console.log("donedone")
     } catch (error) {
       console.log("Upload error is", error)
     }
-
-    // data.map(
-    //   (req, id) =>{
-    //     createHeritageInput = {
-    //       id: uuid(),
-    //       title: req.title,
-    //       description: req.description,
-    //       Icon: req.title,
-    //       VideoName: req.VideoName,
-    //       AudioName: req.AudioName,
-    //       SceneToLoad: "test",
-    //       uuid: 1,
-    //       user: req.creator,
-    //       latitude: req.latitude,
-    //       longitude: req.longitude,
-    //       ImageName: req.ImageName,
-    //     }
-    //     API.graphql(
-    //       graphqlOperation(createHeritage, { input: createHeritageInput }))
-
-    //   }
-    // )
-
-    //   fetchHeritages()
-    //     .then(() => setLoading(false))
-    //     .then(() => setEnter(false))
-    //     .then(() => console.log("fetch good boy"))
-    // } catch (error) {
-    //   console.log("error when uploading is", error)
-    // }
   }
-
-  console.log("uploaddataaaaa", uploadData)
+  console.log("上传文件列表", uploadData)
   return (
     <>
       <p
@@ -133,7 +127,42 @@ export default function ModalDrop(props) {
           <Modal.Title>Add heritages data</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Dropzone onDrop={onDrop}>
+          {/* <Dropzone onDrop={onDropMedia}>
+            {({ getRootProps, getInputProps }) => (
+              <div>
+                <section
+                  style={{
+                    backgroundColor: "##fafafa",
+                    height: "200px",
+                    borderWidth: "2px",
+                    borderRadius: "2px",
+                    borderColor: "#eeeeee",
+                    borderStyle: "dashed",
+                    color: "#bdbdbd",
+                  }}
+                >
+                  <div
+                    {...getRootProps()}
+                    style={{
+                      height: "200px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <input {...getInputProps()} />
+                    <p>
+                      Drag 'n' drop your ".csv" file here, or click to select
+                      files
+                    </p>
+                  </div>
+                </section>
+                <div></div>
+              </div>
+            )}
+          </Dropzone> */}
+
+          <Dropzone onDrop={onDropInformation}>
             {({ getRootProps, getInputProps }) => (
               <div>
                 <section
@@ -167,6 +196,24 @@ export default function ModalDrop(props) {
               </div>
             )}
           </Dropzone>
+          {fileList && (
+            <div>
+              <Row>
+                <Col md={10}>
+                  <p>{fileList}</p>
+                </Col>
+                <Col md={2}>
+                  <AiFillDelete
+                    style={{ color: "#0d6efd", cursor: "pointer" }}
+                    onClick={() => {
+                      setFilelist(null)
+                      setUploadData(null)
+                    }}
+                  />
+                </Col>
+              </Row>
+            </div>
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
