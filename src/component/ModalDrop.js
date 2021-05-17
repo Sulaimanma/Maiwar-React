@@ -6,6 +6,7 @@ import { v4 as uuid } from "uuid"
 import API, { graphqlOperation } from "@aws-amplify/api"
 import { createHeritage } from "../graphql/mutations"
 import { AiFillDelete } from "react-icons/ai"
+import Storage from "@aws-amplify/storage"
 export default function ModalDrop(props) {
   const [uploadData, setUploadData] = useState(null)
   const [show, setShow] = useState(false)
@@ -20,7 +21,7 @@ export default function ModalDrop(props) {
   }
   const handleUpload = () => {
     setShow(false)
-    UploadHeritages(uploadData)
+    UploadHeritages(uploadData, videosUpload)
     console.log("Finished Upload")
   }
   function convertToArrayOfObjects(data) {
@@ -67,18 +68,20 @@ export default function ModalDrop(props) {
     // })
   }, [])
 
-  const UploadHeritages = async (data) => {
-    // const Videokey = await Storage.put(`${uuid()}.mp4`, videoData, {
-    //   contentType: "video/mp4",
-    //   level: "public",
-    // })
-
+  const UploadHeritages = async (data, videos) => {
     // const Audiokey = await Storage.put(`${uuid()}.mp3`, audioData, {
     //   contentType: "audio/mp3",
     // })
     // const Imagekey = await Storage.put(`${uuid()}.jpg`, audioData, {
     //   contentType: "image/png,image/jpeg,image/jpg",
     // })
+
+    videos.map((video) => {
+      Storage.put(`${video.path}`, video, {
+        contentType: "video/mp4",
+        level: "public",
+      })
+    })
     try {
       for (let i = 0; i < data.length; i++) {
         var createHeritageInput = {

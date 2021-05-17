@@ -140,7 +140,7 @@ export default function Map() {
           VideoName +
           ".mp4"
       } else if (VideoName.length != 0) {
-        var path = await Storage.get(VideoName, {
+        var path = await Storage.get(`${VideoName}.mp4`, {
           level: "public",
         })
       } else {
