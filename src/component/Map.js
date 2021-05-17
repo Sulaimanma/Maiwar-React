@@ -27,6 +27,8 @@ import { createHeritage } from "../graphql/mutations"
 import { v4 as uuid } from "uuid"
 import { HeritageContext } from "./Helpers/Context"
 import HeritageInput from "./HeritageInput"
+import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css"
+import Geocoder from "react-map-gl-geocoder"
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker"
 import Storage from "@aws-amplify/storage"
@@ -282,6 +284,29 @@ export default function Map() {
   var geoConvertedjson = null
   geojson && (geoConvertedjson = geojson)
 
+  const handleViewportChange = useCallback((viewpoint) => {
+    setViewpoint(viewpoint)
+  }, [])
+
+  const handleGeocoderViewportChange = useCallback(
+    (newViewport) => {
+      console.log("New viewpoint", newViewport)
+      setMarker({
+        longitude: newViewport.longitude,
+        latitude: newViewport.latitude,
+      })
+
+      setViewpoint({
+        ...viewpoint,
+        longitude: newViewport.longitude,
+        latitude: newViewport.latitude,
+        zoom: 15,
+        transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
+        transitionDuration: "auto",
+      })
+    },
+    [handleViewportChange]
+  )
   return (
     <div className="body" id="body">
       <Sidebar
@@ -294,14 +319,21 @@ export default function Map() {
           ref={mapRef}
           {...viewpoint}
           mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
-          onViewportChange={(viewpoint) => {
-            setViewpoint(viewpoint)
-          }}
+          onViewportChange={handleViewportChange}
           mapStyle="mapbox://styles/guneriboi/ck2s4jkxp0vin1cnzzrgslsnm"
           //Define the interactive layer
           interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
+          width="100%"
+          height="100%"
         >
+          <Geocoder
+            mapRef={mapRef}
+            marker={false}
+            onViewportChange={handleGeocoderViewportChange}
+            mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
+            position="top-right"
+          />
           <div id="logo">
             <img
               src="https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/img/logo.svg"
@@ -309,6 +341,7 @@ export default function Map() {
             />
             <h1>VIRTUAL SONGLINES</h1>
           </div>
+
           {/* Load the Layer source data*/}
           {geoConvertedjson != null && (
             <Source

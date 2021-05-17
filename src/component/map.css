@@ -184,7 +184,11 @@ body {
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
 }
-
+/* Searchbar  */
+.mapboxgl-ctrl-top-right {
+  position: absolute;
+  top: 48px;
+}
 @media only screen and (max-width: 600px) {
   #logo {
     font-size: 0.5em;

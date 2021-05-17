@@ -26,7 +26,7 @@ export default (props) => {
         onClick={handleClick}
         style={{ cursor: "pointer" }}
       >
-        Add heritage pin
+        Add a heritage by pin
       </p>
       {/* <p className="menu-item" style={{ cursor: "pointer" }}>
         Upload Heritages Data
