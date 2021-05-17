@@ -10,6 +10,8 @@ export default function ModalDrop(props) {
   const [uploadData, setUploadData] = useState(null)
   const [show, setShow] = useState(false)
   const [fileList, setFilelist] = useState(null)
+  var videoList = []
+  const [videosUpload, setVideosUpload] = useState(null)
 
   const handleClose = () => setShow(false)
   const handleShow = () => {
@@ -54,26 +56,17 @@ export default function ModalDrop(props) {
     })
   }, [])
   //Drop the heritage media
-  // const onDropMedia = useCallback((acceptedFiles) => {
-  //   const reader = new FileReader()
+  const onDropMedia = useCallback((acceptedFiles) => {
+    console.log("AcceptedFiles", acceptedFiles)
+    setVideosUpload(acceptedFiles)
 
-  //   reader.onabort = () => console.log("file reading was aborted")
-  //   reader.onerror = () => console.log("file reading failed")
-  //   reader.onload = () => {
-  //     // Parse CSV file
-  //     csv.parse(reader.result, (err, data) => {
-  //       setUploadData(convertToArrayOfObjects(data))
-  //     })
-  //   }
-  //   // read file contents
+    // acceptedFiles.forEach((file) => {
+    //   videoList.push({ file })
+    //   console.log("resultttttttttt", videoList)
+    //   setVideosUpload(videoList)
+    // })
+  }, [])
 
-  //   acceptedFiles.forEach((file) => {
-  //     reader.readAsBinaryString(file)
-  //     var fileItem = []
-  //     fileItem.push(file.name)
-  //     setFilelist(fileItem)
-  //   })
-  // }, [])
   const UploadHeritages = async (data) => {
     // const Videokey = await Storage.put(`${uuid()}.mp4`, videoData, {
     //   contentType: "video/mp4",
@@ -112,7 +105,15 @@ export default function ModalDrop(props) {
       console.log("Upload error is", error)
     }
   }
-  console.log("上传文件列表", uploadData)
+  const handleVideoDelete = (video) => {
+    var videoNameList = []
+    videosUpload.map((video) => {
+      videoNameList.push(video.path)
+    })
+    const index = videoNameList.indexOf(video.path)
+    setVideosUpload(videosUpload.filter((item, id) => id !== index))
+  }
+
   return (
     <>
       <p
@@ -127,13 +128,14 @@ export default function ModalDrop(props) {
           <Modal.Title>Add heritages data</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* <Dropzone onDrop={onDropMedia}>
+          <p style={{ fontWeight: "bold" }}>Upload video</p>
+          <Dropzone accept="video/mp4" onDrop={onDropMedia}>
             {({ getRootProps, getInputProps }) => (
               <div>
                 <section
                   style={{
                     backgroundColor: "##fafafa",
-                    height: "200px",
+                    height: "100px",
                     borderWidth: "2px",
                     borderRadius: "2px",
                     borderColor: "#eeeeee",
@@ -144,7 +146,7 @@ export default function ModalDrop(props) {
                   <div
                     {...getRootProps()}
                     style={{
-                      height: "200px",
+                      height: "100px",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -160,8 +162,22 @@ export default function ModalDrop(props) {
                 <div></div>
               </div>
             )}
-          </Dropzone> */}
-
+          </Dropzone>
+          {videosUpload &&
+            videosUpload.map((video) => (
+              <Row key={video.path}>
+                <Col md={10}>{video.path && <p>{video.path}</p>}</Col>
+                <Col md={2}>
+                  <AiFillDelete
+                    style={{ color: "#0d6efd", cursor: "pointer" }}
+                    onClick={() => {
+                      handleVideoDelete(video)
+                    }}
+                  />
+                </Col>
+              </Row>
+            ))}
+          <p style={{ fontWeight: "bold" }}>Upload heritage form</p>
           <Dropzone onDrop={onDropInformation}>
             {({ getRootProps, getInputProps }) => (
               <div>
