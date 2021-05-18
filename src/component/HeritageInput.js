@@ -44,15 +44,15 @@ export default function HeritageInput(props) {
         image_file,
       } = values
       setLoading(true)
-      const Videokey = await Storage.put(`${uuid()}.mp4`, videoData, {
+      const Videokey = await Storage.put(`video/${uuid()}.mp4`, videoData, {
         contentType: "video/mp4",
         level: "public",
       })
 
-      const Audiokey = await Storage.put(`${uuid()}.mp3`, audioData, {
+      const Audiokey = await Storage.put(`audio/${uuid()}.mp3`, audioData, {
         contentType: "audio/mp3",
       })
-      const Imagekey = await Storage.put(`${uuid()}.jpg`, audioData, {
+      const Imagekey = await Storage.put(`img/${uuid()}.jpg`, audioData, {
         contentType: "image/png,image/jpeg,image/jpg",
       })
       const createHeritageInput = {

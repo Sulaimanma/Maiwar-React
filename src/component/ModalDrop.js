@@ -77,7 +77,7 @@ export default function ModalDrop(props) {
     // })
 
     videos.map((video) => {
-      Storage.put(`${video.path}`, video, {
+      Storage.put(`video/${video.path}`, video, {
         contentType: "video/mp4",
         level: "public",
       })

@@ -134,20 +134,20 @@ export default function Map() {
       ]
       if (VideoName === "Ducks" || VideoName === "Gathering Bush") {
         var path =
-          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
+          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
           "Camp_Bush_Children_Running.mp4"
       } else if (previousVideoChange.includes(VideoName)) {
         var path =
-          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
+          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
           VideoName +
           ".mp4"
       } else if (VideoName.length != 0) {
-        var path = await Storage.get(`${VideoName}.mp4`, {
+        var path = await Storage.get(`${VideoName}`, {
           level: "public",
         })
       } else {
         var path =
-          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/" +
+          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
           "Camp_Bush_Children_Running.mp4"
       }
       // Make sure each Url is valid
