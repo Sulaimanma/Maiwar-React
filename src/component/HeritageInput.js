@@ -28,6 +28,20 @@ export default function HeritageInput(props) {
     audio_file: yup.mixed().optional(),
     terms: yup.bool().required().oneOf([true], "terms must be accepted"),
     creator: yup.string().required(),
+    //new scgema
+    // const schema = yup.object().shape({
+    // survey_date: yup.date().required("Survey date is required"),
+    // site_number: yup.string().required("Site number is required"),
+    // GPS_coordinates: yup.array().of(
+    //   yup.object().shape({
+    //     datum: yup.string().required("Datum is required"),
+    //     easting: yup.string().required,
+    //     northing: yup.string().required,
+    //   })
+    // ),
+
+    // route_examined: yup.boolean().required,
+    // examined_route_location: yup.string().optional(),
   })
 
   //Spinner
