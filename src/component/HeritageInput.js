@@ -17,30 +17,29 @@ export default function HeritageInput(props) {
   const [imageData, setImageData] = useState("")
   const [examined, setExamined] = useState(true)
   const [identified, setIdentified] = useState(true)
+  const [routeNumber, setRouteNumber] = useState(0)
 
   const { latitude, longitude, fetchHeritages, setEnter, loading, setLoading } =
     props
 
   const schema = yup.object().shape({
-    title: yup.string().required(),
-    description: yup.string().required(),
+    // title: yup.string().required(),
+    // description: yup.string().required(),
 
-    video_file: yup.mixed().optional(),
-    image_file: yup.mixed().optional(),
-    audio_file: yup.mixed().optional(),
-    terms: yup.bool().required().oneOf([true], "terms must be accepted"),
-    creator: yup.string().required(),
+    // video_file: yup.mixed().optional(),
+    // image_file: yup.mixed().optional(),
+    // audio_file: yup.mixed().optional(),
+    // terms: yup.bool().required().oneOf([true], "terms must be accepted"),
+    // creator: yup.string().required(),
     //new scgema
 
     surveyDate: yup.date("date is invalid").required("Survey date is required"),
     siteNumber: yup.string().required("Site number is required"),
-    GPSCoordinates: yup.array().of(
-      yup.object().shape({
-        datum: yup.string().required("Datum is required"),
-        easting: yup.string().required("Easting is required"),
-        northing: yup.string().required("Northing is required"),
-      })
-    ),
+    GPSCoordinates: yup.object().shape({
+      datum: yup.string().required("Datum is required"),
+      easting: yup.string().required("Easting is required"),
+      northing: yup.string().required("Northing is required"),
+    }),
     routeExaminedOrNot: yup
       .boolean()
       .required("Existing access route examined or not is required"),
@@ -61,7 +60,7 @@ export default function HeritageInput(props) {
     siteIssue: yup.string().optional(),
     identifiedOrNot: yup.boolean().required("required"),
     additionalComments: yup.string().optional(),
-    clearedToProceed: yup.boolean().optional,
+    clearedToProceed: yup.boolean().optional(),
     HeritageFieldOfficer: yup.string().required(),
     technicalAdvisor: yup.string().required(),
     coordinator: yup.string().required(),
@@ -141,6 +140,9 @@ export default function HeritageInput(props) {
       console.log("error when uploading is", error)
     }
   }
+  const onSubmit = async (values) => {
+    alert(JSON.stringify(values, null, 2))
+  }
 
   return (
     <div>
@@ -149,7 +151,7 @@ export default function HeritageInput(props) {
       ) : (
         <Formik
           validationSchema={schema}
-          onSubmit={(values) => AddHeritage(values)}
+          onSubmit={onSubmit}
           initialValues={initialValues}
         >
           {({
@@ -164,90 +166,80 @@ export default function HeritageInput(props) {
             <Form onSubmit={handleSubmit}>
               <Form.Row>
                 <Col>
-                  <Form.Group as={Col} md="4" controlId="validationFormik101">
+                  <Form.Group>
                     <Form.Label>Survey date:</Form.Label>
                     <Form.Control
                       type="date"
                       name="surveyDate"
                       value={values.surveyDate}
                       onChange={handleChange}
-                      isValid={touched.surveyDate && !errors.surveyDate}
+                      // isValid={touched.surveyDate && !errors.surveyDate}
                     />
-                    <Form.Control.Feedback tooltip>
-                      Looks good!
-                    </Form.Control.Feedback>
+                    {errors.surveyDate && touched.surveyDate ? (
+                      <div>{errors.surveyDate}</div>
+                    ) : null}
                   </Form.Group>
                 </Col>
                 <Col>
-                  <Form.Group as={Col} md="4" controlId="validationFormik102">
+                  <Form.Group>
                     <Form.Label>Site number: </Form.Label>
                     <Form.Control
                       type="text"
                       name="siteNumber"
                       value={values.siteNumber}
                       onChange={handleChange}
-                      isValid={touched.siteNumber && !errors.siteNumber}
+                      // isValid={touched.siteNumber && !errors.siteNumber}
                     />
-
-                    <Form.Control.Feedback tooltip>
-                      Looks good!
-                    </Form.Control.Feedback>
+                    {errors.siteNumber && touched.siteNumber ? (
+                      <div>{errors.siteNumber}</div>
+                    ) : null}
                   </Form.Group>
                 </Col>
               </Form.Row>
               <Form.Row>
-                <p>GPS coordinates of Survey Area:</p>
+                <Form.Label>GPS coordinates of Survey Area:</Form.Label>
                 <Col>
-                  <Form.Group controlId="validationFormik103">
+                  <Form.Group>
                     <Form.Label>Datum</Form.Label>
                     <Form.Control
                       type="text"
                       name="datum"
                       value={values.datum}
                       onChange={handleChange}
-                      isValid={touched.datum && !errors.datum}
+                      // isValid={touched.datum && !errors.datum}
                     />
-
-                    <Form.Control.Feedback tooltip>
-                      Looks good!
-                    </Form.Control.Feedback>
+                    {errors.datum && touched.datum ? (
+                      <div>{errors.datum}</div>
+                    ) : null}
                   </Form.Group>
                 </Col>
                 <Col>
-                  <Form.Group controlId="validationFormik103">
+                  <Form.Group>
                     <Form.Label>Easting</Form.Label>
                     <Form.Control
                       type="text"
                       name="easting"
                       value={values.easting}
                       onChange={handleChange}
-                      isValid={touched.easting && !errors.easting}
+                      // isValid={touched.easting && !errors.easting}
                     />
-
-                    <Form.Control.Feedback tooltip>
-                      Looks good!
-                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col>
-                  <Form.Group controlId="validationFormik103">
+                  <Form.Group>
                     <Form.Label>Northing</Form.Label>
                     <Form.Control
                       type="text"
                       name="northing"
                       value={values.northing}
                       onChange={handleChange}
-                      isValid={touched.northing && !errors.northing}
+                      // isValid={touched.northing && !errors.northing}
                     />
-
-                    <Form.Control.Feedback tooltip>
-                      Looks good!
-                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Form.Row>
               <fieldset>
-                <Form.Group as={Row}>
+                <Form.Group>
                   <Form.Label>
                     Existing access route examined or not?
                   </Form.Label>
@@ -273,24 +265,21 @@ export default function HeritageInput(props) {
                 </Form.Group>
               </fieldset>
               {examined ? (
-                <Form.Group controlId="validationFormik101">
+                <Form.Group>
                   <Form.Label>Location:</Form.Label>
                   <Form.Control
                     type="text"
                     name="examinedRouteLocation"
                     value={values.examinedRouteLocation}
                     onChange={handleChange}
-                    isValid={
-                      touched.examinedRouteLocation &&
-                      !errors.examinedRouteLocation
-                    }
+                    // isValid={
+                    //   touched.examinedRouteLocation &&
+                    //   !errors.examinedRouteLocation
+                    // }
                   />
-                  <Form.Control.Feedback tooltip>
-                    Looks good!
-                  </Form.Control.Feedback>
                 </Form.Group>
               ) : (
-                <Form.Group controlId="validationFormik101">
+                <Form.Group>
                   <Form.Label>
                     Select number of access route coordinates if no existing
                     track:
@@ -300,10 +289,10 @@ export default function HeritageInput(props) {
                     as="select"
                     name="numberOfAccessRoute"
                     value={values.numberOfAccessRoute}
-                    onChange={handleChange}
-                    isValid={
-                      touched.numberOfAccessRoute && !errors.numberOfAccessRoute
-                    }
+                    onChange={(e) => setRouteNumber(e.target.value)}
+                    // isValid={
+                    //   touched.numberOfAccessRoute && !errors.numberOfAccessRoute
+                    // }
                   >
                     <option value=""></option>
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
@@ -312,11 +301,9 @@ export default function HeritageInput(props) {
                       </option>
                     ))}
                   </Form.Control>
-                  <Form.Control.Feedback tooltip>
-                    Looks good!
-                  </Form.Control.Feedback>
                 </Form.Group>
               )}
+              <pre>{JSON.stringify(values, 0, 2)}</pre>
               {/* <Form.Group as={Col} md="4" controlId="validationFormik103">
                 <Form.Label>Creator</Form.Label>
                 <Form.Control
