@@ -60,12 +60,6 @@ export default function ModalDrop(props) {
   const onDropMedia = useCallback((acceptedFiles) => {
     console.log("AcceptedFiles", acceptedFiles)
     setVideosUpload(acceptedFiles)
-
-    // acceptedFiles.forEach((file) => {
-    //   videoList.push({ file })
-    //   console.log("resultttttttttt", videoList)
-    //   setVideosUpload(videoList)
-    // })
   }, [])
 
   const UploadHeritages = async (data, videos) => {
@@ -75,7 +69,6 @@ export default function ModalDrop(props) {
     // const Imagekey = await Storage.put(`${uuid()}.jpg`, audioData, {
     //   contentType: "image/png,image/jpeg,image/jpg",
     // })
-
     videos.map((video) => {
       Storage.put(`video/${video.path}`, video, {
         contentType: "video/mp4",

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { Col, Row } from "react-bootstrap"
 import Button from "react-bootstrap/Button"
+import { Form as Bootform } from "react-bootstrap"
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik"
 import { v4 as uuid } from "uuid"
 import * as yup from "yup"
+
 import { AiFillDelete } from "react-icons/ai"
 import API, { graphqlOperation } from "@aws-amplify/api"
 import { createHeritage } from "../graphql/mutations"
@@ -16,7 +18,7 @@ export default function HeritageInput(props) {
   const [audioData, setAudioData] = useState("")
   const [imageData, setImageData] = useState("")
   const [examined, setExamined] = useState("false")
-  const [identified, setIdentified] = useState(true)
+  const [identified, setIdentified] = useState("false")
 
   const { latitude, longitude, fetchHeritages, setEnter, loading, setLoading } =
     props
@@ -339,7 +341,6 @@ export default function HeritageInput(props) {
                             : null}
                           <Row>
                             <Col>
-                              {" "}
                               <Button
                                 variant="success"
                                 size="small"
@@ -360,75 +361,213 @@ export default function HeritageInput(props) {
                   ></FieldArray>
                 </div>
               )}
+              <Row>
+                <Col>
+                  <label>Who conducted the inspection?</label>
+                  <Field
+                    placeholder="Who conducted the inspection?"
+                    name={`inspectionPerson`}
+                  ></Field>
+                  <ErrorMessage
+                    name={`inspectionPerson`}
+                    className="invalid-feedback"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <label>How was the Inspection carried out?</label>
+                  <Field
+                    placeholder="How was the Inspection carried out?"
+                    name={`InspectionCarriedOut`}
+                  ></Field>
+                  <ErrorMessage
+                    name={`InspectionCarriedOut`}
+                    className="invalid-feedback"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Bootform.Group>
+                  <Bootform.File
+                    className="position-relative"
+                    name="photo"
+                    label="Photographs: "
+                    onChange={(e) => setImageData(e.target.files[0])}
+                    accept="image/"
+                  />
+                  <ErrorMessage name={`photo`} className="invalid-feedback" />
+                </Bootform.Group>
+              </Row>
+              <Row>
+                <Col>
+                  <label>Description of the photo: </label>
+                  <Field
+                    placeholder="Description of the photo"
+                    name={`photoDescription`}
+                  ></Field>
+                  <ErrorMessage
+                    name={`photoDescription`}
+                    className="invalid-feedback"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Bootform.Group>
+                  <Bootform.File
+                    className="position-relative"
+                    name="video"
+                    label="Videos: "
+                    onChange={(e) => setVideoData(e.target.files[0])}
+                    accept="video"
+                  />
+                  <ErrorMessage name={`video`} className="invalid-feedback" />
+                </Bootform.Group>
+              </Row>
+              <Row>
+                <Col>
+                  <label>Description of the video: </label>
+                  <Field
+                    placeholder="Description of the video: "
+                    name={`videoDescription`}
+                  ></Field>
+                  <ErrorMessage
+                    name={`videoDescription`}
+                    className="invalid-feedback"
+                  />
+                </Col>
+              </Row>
 
-              {/* 
-           
-              
-              <fieldset>
-                <Form.Group>
-                  <Form.Label>
-                    Existing access route examined or not?
-                  </Form.Label>
+              <Row>
+                <label>
+                  Characteristics of area – visibility of the ground: (grassy,
+                  low surface visibility, high surface visibility, rocky etc)
+                </label>
+              </Row>
+              <Row>
+                <Col md={{ span: 8 }}>
+                  <Field
+                    as="textarea"
+                    placeholder="Characteristics of area: "
+                    name={`visibility`}
+                  ></Field>
+                  <ErrorMessage
+                    name={`visibility`}
+                    className="invalid-feedback"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <label>
+                  If discussion of site specific issues, then summarise:
+                </label>
+              </Row>
+              <Row>
+                <Col md={{ span: 8 }}>
+                  <Field
+                    as="textarea"
+                    placeholder="Site issue summarize: "
+                    name={`siteIssue`}
+                  ></Field>
+                  <ErrorMessage
+                    name={`siteIssue`}
+                    className="invalid-feedback"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <label>Was any Aboriginal Cultural Heritage identified?</label>
+              </Row>
+              <Row
+                onChange={(e) => {
+                  setIdentified(e.target.value)
+                }}
+              >
+                <label>
+                  <Field
+                    type="radio"
+                    name="identifiedOrNot"
+                    value={`${true}`}
+                  />
+                  Yes
+                </label>
+                <ErrorMessage
+                  name={`identifiedOrNot`}
+                  className="invalid-feedback"
+                />
 
-                  <Form.Check
+                <label>
+                  <Field
                     type="radio"
-                    label="Yes"
-                    onChange={() => {
-                      setExamined(true)
-                    }}
-                    name="routeExaminedOrNot"
-                    id="formHorizontalRadios1"
+                    name="identifiedOrNot"
+                    value={`${false}`}
                   />
-                  <Form.Check
-                    type="radio"
-                    label="No"
-                    onChange={() => {
-                      setExamined(false)
-                    }}
-                    name="routeExaminedOrNot"
-                    id="formHorizontalRadios2"
-                  />
-                </Form.Group>
-              </fieldset>
-              {examined ? (
-                <Form.Group>
-                  <Form.Label>Location:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="examinedRouteLocation"
-                    value={values.examinedRouteLocation}
-                    onChange={handleChange}
-                    // isValid={
-                    //   touched.examinedRouteLocation &&
-                    //   !errors.examinedRouteLocation
-                    // }
-                  />
-                </Form.Group>
+                  No
+                </label>
+                <ErrorMessage
+                  name={`identifiedOrNot`}
+                  className="invalid-feedback"
+                />
+              </Row>
+              {identified === "true" ? (
+                <div>
+                  <Row>
+                    <label>Please add additional comments:</label>
+                  </Row>
+                  <Row>
+                    <Col md={{ span: 8 }}>
+                      <Field
+                        as="textarea"
+                        placeholder="Recommendations "
+                        name={`additionalComments`}
+                      ></Field>
+                      <ErrorMessage
+                        name={`additionalComments`}
+                        className="invalid-feedback"
+                      />
+                    </Col>
+                  </Row>
+                </div>
               ) : (
-                <Form.Group>
-                  <Form.Label>
-                    Select number of access route coordinates if no existing
-                    track:
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    as="select"
-                    name="numberOfAccessRoute"
-                    value={values.numberOfAccessRoute}
-                    onChange={(e) => setRouteNumber(e.target.value)}
-                    // isValid={
-                    //   touched.numberOfAccessRoute && !errors.numberOfAccessRoute
-                    // }
-                  >
-                    <option value=""></option>
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
-                      <option key={i} value={i}>
-                        {i}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
-              )} */}
+                <div>
+                  <Row>
+                    <Col>
+                      <label>
+                        If NO, are Project Activities cleared to proceed
+                        immediately?
+                      </label>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <label>
+                      <Field
+                        type="radio"
+                        name="clearedToProceed"
+                        value={`${true}`}
+                      />
+                      Yes
+                    </label>
+                    <ErrorMessage
+                      name={`clearedToProceed`}
+                      className="invalid-feedback"
+                    />
+
+                    <label>
+                      <Field
+                        type="radio"
+                        name="clearedToProceed"
+                        value={`${false}`}
+                      />
+                      No
+                    </label>
+                    <ErrorMessage
+                      name={`clearedToProceed`}
+                      className="invalid-feedback"
+                    />
+                  </Row>
+                </div>
+              )}
+
               <pre>{JSON.stringify(values, 0, 2)}</pre>
               {/* <Form.Group as={Col} md="4" controlId="validationFormik103">
                 <Form.Label>Creator</Form.Label>
