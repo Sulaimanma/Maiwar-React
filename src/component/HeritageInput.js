@@ -1,10 +1,10 @@
-import React, { useState } from "react"
-import { Form, Col, InputGroup, Row } from "react-bootstrap"
+import React, { useEffect, useState } from "react"
+import { Col, Row } from "react-bootstrap"
 import Button from "react-bootstrap/Button"
-import { Formik } from "formik"
+import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik"
 import { v4 as uuid } from "uuid"
 import * as yup from "yup"
-
+import { AiFillDelete } from "react-icons/ai"
 import API, { graphqlOperation } from "@aws-amplify/api"
 import { createHeritage } from "../graphql/mutations"
 import Storage from "@aws-amplify/storage"
@@ -15,13 +15,11 @@ export default function HeritageInput(props) {
   const [videoData, setVideoData] = useState("")
   const [audioData, setAudioData] = useState("")
   const [imageData, setImageData] = useState("")
-  const [examined, setExamined] = useState(true)
+  const [examined, setExamined] = useState("false")
   const [identified, setIdentified] = useState(true)
-  const [routeNumber, setRouteNumber] = useState(0)
 
   const { latitude, longitude, fetchHeritages, setEnter, loading, setLoading } =
     props
-
   const schema = yup.object().shape({
     // title: yup.string().required(),
     // description: yup.string().required(),
@@ -32,24 +30,26 @@ export default function HeritageInput(props) {
     // terms: yup.bool().required().oneOf([true], "terms must be accepted"),
     // creator: yup.string().required(),
     //new scgema
-
     surveyDate: yup.date("date is invalid").required("Survey date is required"),
     siteNumber: yup.string().required("Site number is required"),
-    GPSCoordinates: yup.object().shape({
-      datum: yup.string().required("Datum is required"),
-      easting: yup.string().required("Easting is required"),
-      northing: yup.string().required("Northing is required"),
-    }),
+    GPSCoordinates: yup.array().of(
+      yup.object().shape({
+        datum: yup.string().required("Datum is required"),
+        easting: yup.string().required("Easting is required"),
+        northing: yup.string().required("Northing is required"),
+      })
+    ),
     routeExaminedOrNot: yup
       .boolean()
       .required("Existing access route examined or not is required"),
     examinedRouteLocation: yup.string().optional(),
-    numberOfAccessRoute: yup
-      .string()
-      .required("Number of access route is required"),
-    accessRouteCoordinate: yup
-      .array()
-      .of(yup.string().required("Access route is required")),
+
+    accessRouteCoordinate: yup.array().of(
+      yup.object().shape({
+        routeCoordinate: yup.string().optional("Access route is required"),
+      })
+    ),
+
     inspectionPerson: yup.string().required("required"),
     InspectionCarriedOut: yup.string().required("required"),
     photo: yup.mixed().optional(),
@@ -68,11 +68,21 @@ export default function HeritageInput(props) {
   const initialValues = {
     surveyDate: "",
     siteNumber: "",
-    GPSCoordinates: [],
+    GPSCoordinates: [
+      {
+        datum: "",
+        easting: "",
+        northing: "",
+      },
+    ],
     routeExaminedOrNot: false,
     examinedRouteLocation: "",
-    numberOfAccessRoute: "",
-    accessRouteCoordinate: [],
+
+    accessRouteCoordinate: [
+      {
+        routeCoordinate: "",
+      },
+    ],
     inspectionPerson: "",
     InspectionCarriedOut: "",
     photo: "",
@@ -153,91 +163,207 @@ export default function HeritageInput(props) {
           validationSchema={schema}
           onSubmit={onSubmit}
           initialValues={initialValues}
-        >
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            values,
-            touched,
-            isValid,
-            errors,
-          }) => (
+          render={({ values, handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
-              <Form.Row>
+              <Row>
                 <Col>
-                  <Form.Group>
-                    <Form.Label>Survey date:</Form.Label>
-                    <Form.Control
-                      type="date"
-                      name="surveyDate"
-                      value={values.surveyDate}
-                      onChange={handleChange}
-                      // isValid={touched.surveyDate && !errors.surveyDate}
-                    />
-                    {errors.surveyDate && touched.surveyDate ? (
-                      <div>{errors.surveyDate}</div>
-                    ) : null}
-                  </Form.Group>
+                  <label>Survey date:</label>
+                  <Field placeholder="Survey date:" name={`surveyDate`}></Field>
+                  <ErrorMessage
+                    name={`surveyDate`}
+                    className="invalid-feedback"
+                  />
                 </Col>
                 <Col>
-                  <Form.Group>
-                    <Form.Label>Site number: </Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="siteNumber"
-                      value={values.siteNumber}
-                      onChange={handleChange}
-                      // isValid={touched.siteNumber && !errors.siteNumber}
-                    />
-                    {errors.siteNumber && touched.siteNumber ? (
-                      <div>{errors.siteNumber}</div>
-                    ) : null}
-                  </Form.Group>
+                  <label>Site number:</label>
+                  <Field placeholder="Site number:" name={`siteNumber`}></Field>
+                  <ErrorMessage
+                    name={`siteNumber`}
+                    className="invalid-feedback"
+                  />
                 </Col>
-              </Form.Row>
-              <Form.Row>
-                <Form.Label>GPS coordinates of Survey Area:</Form.Label>
-                <Col>
-                  <Form.Group>
-                    <Form.Label>Datum</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="datum"
-                      value={values.datum}
-                      onChange={handleChange}
-                      // isValid={touched.datum && !errors.datum}
+              </Row>
+              <Row>
+                <label>GPS coordinates of Survey Area:</label>
+              </Row>
+
+              <FieldArray
+                name=" GPSCoordinates"
+                render={(arrayHelpers) => {
+                  const GPSCoordinates = values.GPSCoordinates
+                  return (
+                    <div>
+                      {GPSCoordinates && GPSCoordinates.length > 0
+                        ? GPSCoordinates.map((coordinate, index) => (
+                            <div>
+                              <Row key={index} style={{ width: "100%" }}>
+                                <Col>
+                                  <label>Datum:</label>
+                                  <Field
+                                    placeholder="datum"
+                                    name={`GPSCoordinates.${index}.datum`}
+                                  ></Field>
+                                  <ErrorMessage
+                                    name={`GPSCoordinates.${index}.datum`}
+                                    className="invalid-feedback"
+                                  />
+                                </Col>
+                                <Col>
+                                  <label>Easting:</label>
+                                  <Field
+                                    placeholder="easting"
+                                    name={`GPSCoordinates.${index}.easting`}
+                                  ></Field>
+                                  <ErrorMessage
+                                    name={`GPSCoordinates.${index}.easting`}
+                                    className="invalid-feedback"
+                                  />
+                                </Col>
+                                <Col>
+                                  <label>Northing:</label>
+                                  <Field
+                                    placeholder="northing"
+                                    name={`GPSCoordinates.${index}.northing`}
+                                  ></Field>
+                                  <ErrorMessage
+                                    name={`GPSCoordinates.${index}.northing`}
+                                    className="invalid-feedback"
+                                  />
+                                </Col>
+                              </Row>
+                            </div>
+                          ))
+                        : null}
+                    </div>
+                  )
+                }}
+              ></FieldArray>
+
+              <Row>
+                <label>Existing access route examined or not?</label>
+              </Row>
+              <Row
+                onChange={(e) => {
+                  setExamined(e.target.value)
+                  console.log("examined", examined)
+                }}
+              >
+                <label>
+                  <Field
+                    type="radio"
+                    name="routeExaminedOrNot"
+                    value={`${true}`}
+                  />
+                  Yes
+                </label>
+                <ErrorMessage
+                  name={`routeExaminedOrNot`}
+                  className="invalid-feedback"
+                />
+
+                <label>
+                  <Field
+                    type="radio"
+                    name="routeExaminedOrNot"
+                    value={`${false}`}
+                  />
+                  No
+                </label>
+                <ErrorMessage
+                  name={`routeExaminedOrNot`}
+                  className="invalid-feedback"
+                />
+              </Row>
+
+              {examined === "true" ? (
+                <Row>
+                  <Col md={{ span: 8 }}>
+                    <label>Existing access route examined location:</label>
+                    <Field
+                      placeholder="Location"
+                      name={`examinedRouteLocation`}
+                    ></Field>
+                    <ErrorMessage
+                      name={`examinedRouteLocation`}
+                      className="invalid-feedback"
                     />
-                    {errors.datum && touched.datum ? (
-                      <div>{errors.datum}</div>
-                    ) : null}
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group>
-                    <Form.Label>Easting</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="easting"
-                      value={values.easting}
-                      onChange={handleChange}
-                      // isValid={touched.easting && !errors.easting}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group>
-                    <Form.Label>Northing</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="northing"
-                      value={values.northing}
-                      onChange={handleChange}
-                      // isValid={touched.northing && !errors.northing}
-                    />
-                  </Form.Group>
-                </Col>
-              </Form.Row>
+                  </Col>
+                </Row>
+              ) : (
+                <div>
+                  <Row>
+                    <label>
+                      Access route coordinates if no existing track:
+                    </label>
+                  </Row>
+
+                  <FieldArray
+                    name="accessRouteCoordinate"
+                    render={(arrayHelpers) => {
+                      const accessRouteCoordinate = values.accessRouteCoordinate
+                      return (
+                        <div>
+                          {accessRouteCoordinate &&
+                          accessRouteCoordinate.length > 0
+                            ? accessRouteCoordinate.map((coordinate, index) => (
+                                <div>
+                                  <Row key={index}>
+                                    <Col>
+                                      <label
+                                        style={{ marginRight: "15px" }}
+                                      >{`Access route ${index + 1}:`}</label>
+                                      <Field
+                                        placeholder="routeCoordinate"
+                                        name={`accessRouteCoordinate.${index}.routeCoordinate`}
+                                      ></Field>
+                                      <ErrorMessage
+                                        name={`accessRouteCoordinate.${index}.routeCoordinate`}
+                                        className="invalid-feedback"
+                                      />
+                                    </Col>
+                                    <Col>
+                                      <AiFillDelete
+                                        style={{
+                                          color: "red",
+                                          cursor: "pointer",
+                                          fontSize: "27px",
+                                        }}
+                                        onClick={() =>
+                                          arrayHelpers.remove(index)
+                                        } // remove a route from the list
+                                      />
+                                    </Col>
+                                  </Row>
+                                </div>
+                              ))
+                            : null}
+                          <Row>
+                            <Col>
+                              {" "}
+                              <Button
+                                variant="success"
+                                size="small"
+                                block
+                                onClick={() =>
+                                  arrayHelpers.push({
+                                    routeCoordinate: "",
+                                  })
+                                } // insert an empty string at a position
+                              >
+                                Add a route
+                              </Button>
+                            </Col>
+                          </Row>
+                        </div>
+                      )
+                    }}
+                  ></FieldArray>
+                </div>
+              )}
+
+              {/* 
+           
+              
               <fieldset>
                 <Form.Group>
                   <Form.Label>
@@ -302,7 +428,7 @@ export default function HeritageInput(props) {
                     ))}
                   </Form.Control>
                 </Form.Group>
-              )}
+              )} */}
               <pre>{JSON.stringify(values, 0, 2)}</pre>
               {/* <Form.Group as={Col} md="4" controlId="validationFormik103">
                 <Form.Label>Creator</Form.Label>
@@ -378,6 +504,16 @@ export default function HeritageInput(props) {
               </Button>
             </Form>
           )}
+        >
+          {/* {({
+            handleSubmit,
+            handleChange,
+            handleBlur,
+            values,
+            touched,
+            isValid,
+            errors,
+          }) => } */}
         </Formik>
       )}
     </div>
