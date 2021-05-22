@@ -28,7 +28,7 @@ export default function HeritageInput(props) {
   const schema = yup.object().shape({
     // terms: yup.bool().required().oneOf([true], "terms must be accepted"),
     //new scgema
-    surveyDate: yup.date("date is invalid").required("Survey date is required"),
+    surveyDate: yup.date().required("Survey date is required"),
     siteNumber: yup.string().required("Site number is required"),
     GPSCoordinates: yup.array().of(
       yup.object().shape({
@@ -163,7 +163,14 @@ export default function HeritageInput(props) {
   }
 
   return (
-    <div style={{ height: "400px", overflowY: "scroll", overflowX: "hidden" }}>
+    <div
+      style={{
+        height: "400px",
+        width: "800px",
+        overflowY: "scroll",
+        overflowX: "hidden",
+      }}
+    >
       {loading ? (
         <RingLoader />
       ) : (
@@ -177,18 +184,27 @@ export default function HeritageInput(props) {
                 <Col>
                   <label>Survey date:</label>
                   <Field placeholder="Survey date:" name={`surveyDate`}></Field>
-                  <ErrorMessage
-                    name={`surveyDate`}
-                    className="invalid-feedback"
-                  />
+
+                  <Row>
+                    <Col className="errorMessage">
+                      <ErrorMessage
+                        name={`surveyDate`}
+                        className="invalid-feedback"
+                      />
+                    </Col>
+                  </Row>
                 </Col>
                 <Col>
                   <label>Site number:</label>
                   <Field placeholder="Site number:" name={`siteNumber`}></Field>
-                  <ErrorMessage
-                    name={`siteNumber`}
-                    className="invalid-feedback"
-                  />
+                  <Row>
+                    <Col className="errorMessage">
+                      <ErrorMessage
+                        name={`siteNumber`}
+                        className="invalid-feedback"
+                      />
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
               <Row>
@@ -207,14 +223,23 @@ export default function HeritageInput(props) {
                               <Row key={index} style={{ width: "100%" }}>
                                 <Col>
                                   <label>Datum:</label>
-                                  <Field
-                                    placeholder="datum"
-                                    name={`GPSCoordinates.${index}.datum`}
-                                  ></Field>
-                                  <ErrorMessage
-                                    name={`GPSCoordinates.${index}.datum`}
-                                    className="invalid-feedback"
-                                  />
+                                  <Row>
+                                    <Col>
+                                      {" "}
+                                      <Field
+                                        placeholder="datum"
+                                        name={`GPSCoordinates.${index}.datum`}
+                                      ></Field>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="errorMessage">
+                                      <ErrorMessage
+                                        name={`GPSCoordinates.${index}.datum`}
+                                        className="errorMessage"
+                                      />
+                                    </Col>
+                                  </Row>
                                 </Col>
                                 <Col>
                                   <label>Easting:</label>
@@ -222,10 +247,14 @@ export default function HeritageInput(props) {
                                     placeholder="easting"
                                     name={`GPSCoordinates.${index}.easting`}
                                   ></Field>
-                                  <ErrorMessage
-                                    name={`GPSCoordinates.${index}.easting`}
-                                    className="invalid-feedback"
-                                  />
+                                  <Row>
+                                    <Col className="errorMessage">
+                                      <ErrorMessage
+                                        name={`GPSCoordinates.${index}.easting`}
+                                        className="invalid-feedback"
+                                      />
+                                    </Col>
+                                  </Row>
                                 </Col>
                                 <Col>
                                   <label>Northing:</label>
@@ -233,10 +262,14 @@ export default function HeritageInput(props) {
                                     placeholder="northing"
                                     name={`GPSCoordinates.${index}.northing`}
                                   ></Field>
-                                  <ErrorMessage
-                                    name={`GPSCoordinates.${index}.northing`}
-                                    className="invalid-feedback"
-                                  />
+                                  <Row>
+                                    <Col className="errorMessage">
+                                      <ErrorMessage
+                                        name={`GPSCoordinates.${index}.northing`}
+                                        className="invalid-feedback"
+                                      />
+                                    </Col>
+                                  </Row>
                                 </Col>
                               </Row>
                             </div>
@@ -253,7 +286,6 @@ export default function HeritageInput(props) {
               <Row
                 onChange={(e) => {
                   setExamined(e.target.value)
-                  console.log("examined", examined)
                 }}
               >
                 <label>
@@ -615,7 +647,7 @@ export default function HeritageInput(props) {
                                       }
                                       accept="image/"
                                     />
-                                    {console.log("Sign", officerSignature)}
+
                                     <ErrorMessage
                                       name={`officerSignature`}
                                       className="invalid-feedback"
@@ -711,92 +743,14 @@ export default function HeritageInput(props) {
                   </Bootform.Group>
                 </Col>
               </Row>
-              {console.log(JSON.stringify(values, 0, 2))}
-              {/* <Form.Group as={Col} md="4" controlId="validationFormik103">
-                <Form.Label>Creator</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="creator"
-                  value={values.creator}
-                  onChange={handleChange}
-                  isValid={touched.creator && !errors.creator}
-                />
-
-                <Form.Control.Feedback tooltip>
-                  Looks good!
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group>
-                <Form.File
-                  className="position-relative"
-                  optional
-                  name="video_file"
-                  label="Video"
-                  onChange={(e) => setVideoData(e.target.files[0])}
-                  isInvalid={!!errors.video_file}
-                  feedback={errors.video_file}
-                  id="validationFormik107"
-                  feedbackTooltip
-                  accept="video/mp4"
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.File
-                  className="position-relative"
-                  optional
-                  name="audio_file"
-                  label="Audio"
-                  onChange={(e) => setAudioData(e.target.files[0])}
-                  isInvalid={!!errors.audio_file}
-                  feedback={errors.audio_file}
-                  id="validationFormik108"
-                  feedbackTooltip
-                  accept="audio/mp3"
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.File
-                  className="position-relative"
-                  optional
-                  name="image_file"
-                  label="Image"
-                  onChange={(e) => setImageData(e.target.files[0])}
-                  isInvalid={!!errors.image_file}
-                  feedback={errors.image_file}
-                  id="validationFormik109"
-                  feedbackTooltip
-                  accept="image/png,image/jpeg,image/jpg"
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.Check
-                  required
-                  name="terms"
-                  label="Agree to terms and conditions"
-                  onChange={handleChange}
-                  isInvalid={!!errors.terms}
-                  feedback={errors.terms}
-                  id="validationFormik106"
-                  feedbackTooltip
-                />
-              </Form.Group> */}
+              <pre>{JSON.stringify(values, 0, 2)}</pre>
 
               <Button variant="primary" type="submit">
                 Submit form
               </Button>
             </Form>
           )}
-        >
-          {/* {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            values,
-            touched,
-            isValid,
-            errors,
-          }) => } */}
-        </Formik>
+        ></Formik>
       )}
     </div>
   )
