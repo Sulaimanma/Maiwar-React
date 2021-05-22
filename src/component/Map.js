@@ -388,6 +388,7 @@ export default function Map() {
               onClose={() => setEnter(false)}
               anchor="right"
               color="black"
+              captureScroll={true}
             >
               <HeritageInput
                 longitude={marker.longitude}

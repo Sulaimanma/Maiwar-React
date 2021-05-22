@@ -5,7 +5,7 @@ import { Form as Bootform } from "react-bootstrap"
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik"
 import { v4 as uuid } from "uuid"
 import * as yup from "yup"
-
+import "./heritageInput.css"
 import { AiFillDelete } from "react-icons/ai"
 import API, { graphqlOperation } from "@aws-amplify/api"
 import { createHeritage } from "../graphql/mutations"
@@ -17,20 +17,16 @@ export default function HeritageInput(props) {
   const [videoData, setVideoData] = useState("")
   const [audioData, setAudioData] = useState("")
   const [imageData, setImageData] = useState("")
+  const [officerSignature, setOfficerSignature] = useState([])
+  const [advisorSignature, setAdvisor] = useState("")
+  const [coordinator, setCoordinator] = useState("")
   const [examined, setExamined] = useState("false")
   const [identified, setIdentified] = useState("false")
 
   const { latitude, longitude, fetchHeritages, setEnter, loading, setLoading } =
     props
   const schema = yup.object().shape({
-    // title: yup.string().required(),
-    // description: yup.string().required(),
-
-    // video_file: yup.mixed().optional(),
-    // image_file: yup.mixed().optional(),
-    // audio_file: yup.mixed().optional(),
     // terms: yup.bool().required().oneOf([true], "terms must be accepted"),
-    // creator: yup.string().required(),
     //new scgema
     surveyDate: yup.date("date is invalid").required("Survey date is required"),
     siteNumber: yup.string().required("Site number is required"),
@@ -63,7 +59,12 @@ export default function HeritageInput(props) {
     identifiedOrNot: yup.boolean().required("required"),
     additionalComments: yup.string().optional(),
     clearedToProceed: yup.boolean().optional(),
-    HeritageFieldOfficer: yup.string().required(),
+    heritageFieldOfficer: yup.array().of(
+      yup.object().shape({
+        officerName: yup.string().optional("Access route is required"),
+        officerSignature: yup.string().optional("Access route is required"),
+      })
+    ),
     technicalAdvisor: yup.string().required(),
     coordinator: yup.string().required(),
   })
@@ -96,7 +97,12 @@ export default function HeritageInput(props) {
     identifiedOrNot: false,
     additionalComments: "",
     clearedToProceed: false,
-    HeritageFieldOfficer: "",
+    heritageFieldOfficer: [
+      {
+        officerName: "",
+        officerSignature: "",
+      },
+    ],
     technicalAdvisor: "",
     coordinator: "",
   }
@@ -157,7 +163,7 @@ export default function HeritageInput(props) {
   }
 
   return (
-    <div>
+    <div style={{ height: "400px", overflowY: "scroll", overflowX: "hidden" }}>
       {loading ? (
         <RingLoader />
       ) : (
@@ -567,8 +573,145 @@ export default function HeritageInput(props) {
                   </Row>
                 </div>
               )}
+              <Row>
+                <label>
+                  The Cultural Heritage Field Officers warrant they have
+                  traditional knowledge and authority for the Activity Area:
+                </label>
+              </Row>
+              <FieldArray
+                name="heritageFieldOfficer"
+                render={(arrayHelpers) => {
+                  const heritageFieldOfficer = values.heritageFieldOfficer
+                  return (
+                    <div>
+                      {heritageFieldOfficer && heritageFieldOfficer.length > 0
+                        ? heritageFieldOfficer.map((officer, index) => (
+                            <div>
+                              <Row key={index}>
+                                <Col>
+                                  <label style={{ marginRight: "15px" }}>
+                                    Name in full:
+                                  </label>
+                                  <Field
+                                    name={`heritageFieldOfficer.${index}.officerName`}
+                                  ></Field>
+                                  <ErrorMessage
+                                    name={`heritageFieldOfficer.${index}.officerName`}
+                                    className="invalid-feedback"
+                                  />
+                                </Col>
+                                <Col>
+                                  <Bootform.Group>
+                                    <Bootform.File
+                                      className="position-relative"
+                                      name={`heritageFieldOfficer.${index}.officerSignature`}
+                                      label="Signature:"
+                                      onChange={(e) =>
+                                        setOfficerSignature([
+                                          ...officerSignature,
+                                          e.target.files[0],
+                                        ])
+                                      }
+                                      accept="image/"
+                                    />
+                                    {console.log("Sign", officerSignature)}
+                                    <ErrorMessage
+                                      name={`officerSignature`}
+                                      className="invalid-feedback"
+                                    />
+                                  </Bootform.Group>
+                                </Col>
+                                <Col>
+                                  <AiFillDelete
+                                    style={{
+                                      color: "red",
+                                      cursor: "pointer",
+                                      fontSize: "27px",
+                                      marginTop: "23px",
+                                    }}
+                                    onClick={(e) => {
+                                      arrayHelpers.remove(index)
 
-              <pre>{JSON.stringify(values, 0, 2)}</pre>
+                                      setOfficerSignature(
+                                        officerSignature.filter(
+                                          (item, id) => id !== index
+                                        )
+                                      )
+                                    }} // remove a route from the list
+                                  />
+                                </Col>
+                              </Row>
+                            </div>
+                          ))
+                        : null}
+                      <Row>
+                        <Col>
+                          <Button
+                            variant="success"
+                            size="small"
+                            block
+                            onClick={() =>
+                              arrayHelpers.push({
+                                officerName: "",
+                                officerSignature: "",
+                              })
+                            } // insert an empty string at a position
+                          >
+                            Add a Officer
+                          </Button>
+                        </Col>
+                      </Row>
+                    </div>
+                  )
+                }}
+              ></FieldArray>
+              <Row>
+                <label>Technical advisor (where attending):</label>
+              </Row>
+              <Row>
+                <Col>
+                  <Field name={`technicalAdvisor`}></Field>
+                  <ErrorMessage
+                    name={`technicalAdvisor`}
+                    className="invalid-feedback"
+                  />
+                </Col>
+                <Col>
+                  <Bootform.Group>
+                    <Bootform.File
+                      className="position-relative"
+                      label="Signature:"
+                      onChange={(e) => setAdvisor(e.target.files[0])}
+                      accept="image/"
+                    />
+                  </Bootform.Group>
+                </Col>
+              </Row>
+
+              <Row>
+                <label>Proponent Cultural Heritage Coordinator:</label>
+              </Row>
+              <Row>
+                <Col>
+                  <Field name={`coordinator`}></Field>
+                  <ErrorMessage
+                    name={`coordinator`}
+                    className="invalid-feedback"
+                  />
+                </Col>
+                <Col>
+                  <Bootform.Group>
+                    <Bootform.File
+                      className="position-relative"
+                      label="Signature:"
+                      onChange={(e) => setCoordinator(e.target.files[0])}
+                      accept="image/"
+                    />
+                  </Bootform.Group>
+                </Col>
+              </Row>
+              {console.log(JSON.stringify(values, 0, 2))}
               {/* <Form.Group as={Col} md="4" controlId="validationFormik103">
                 <Form.Label>Creator</Form.Label>
                 <Form.Control
