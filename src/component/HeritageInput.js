@@ -15,20 +15,21 @@ import RingLoader from "react-spinners/RingLoader"
 
 export default function HeritageInput(props) {
   const [videoData, setVideoData] = useState("")
-  const [audioData, setAudioData] = useState("")
+
   const [imageData, setImageData] = useState("")
   const [officerSignature, setOfficerSignature] = useState([])
   const [advisorSignature, setAdvisor] = useState("")
   const [coordinator, setCoordinator] = useState("")
   const [examined, setExamined] = useState("false")
   const [identified, setIdentified] = useState("false")
+  const [json, setJson] = useState()
 
   const { latitude, longitude, fetchHeritages, setEnter, loading, setLoading } =
     props
   const schema = yup.object().shape({
     // terms: yup.bool().required().oneOf([true], "terms must be accepted"),
     //new scgema
-    surveyDate: yup.date().required("Survey date is required"),
+    surveyDate: yup.string().required("Survey date is required"),
     siteNumber: yup.string().required("Site number is required"),
     GPSCoordinates: yup.array().of(
       yup.object().shape({
@@ -61,12 +62,22 @@ export default function HeritageInput(props) {
     clearedToProceed: yup.boolean().optional(),
     heritageFieldOfficer: yup.array().of(
       yup.object().shape({
-        officerName: yup.string().optional("Access route is required"),
-        officerSignature: yup.string().optional("Access route is required"),
+        officerName: yup.string().required("Access route is required"),
+        officerSignature: yup.string().required("Access route is required"),
       })
     ),
-    technicalAdvisor: yup.string().required(),
-    coordinator: yup.string().required(),
+    technicalAdvisor: yup.array().of(
+      yup.object().shape({
+        advisorName: yup.string().required("Access route is required"),
+        advisorSignature: yup.string().required("Access route is required"),
+      })
+    ),
+    coordinator: yup.array().of(
+      yup.object().shape({
+        coordinatorName: yup.string().required("Access route is required"),
+        coordinatorSignature: yup.string().required("Access route is required"),
+      })
+    ),
   })
   const initialValues = {
     surveyDate: "",
@@ -88,9 +99,9 @@ export default function HeritageInput(props) {
     ],
     inspectionPerson: "",
     InspectionCarriedOut: "",
-    photo: "",
+    photo: {},
     photoDescription: "",
-    video: "",
+    video: {},
     videoDescription: "",
     visibility: "",
     siteIssue: "",
@@ -100,66 +111,161 @@ export default function HeritageInput(props) {
     heritageFieldOfficer: [
       {
         officerName: "",
-        officerSignature: "",
+        officerSignature: {},
       },
     ],
-    technicalAdvisor: "",
-    coordinator: "",
+    technicalAdvisor: [
+      {
+        advisorName: "",
+        advisorSignature: {},
+      },
+    ],
+    coordinator: [
+      {
+        coordinatorName: "",
+        coordinatorSignature: {},
+      },
+    ],
   }
   //Spinner
   // Can be a string as well. Need to ensure each key-value pair ends with ;
 
-  const AddHeritage = async (values) => {
+  // const AddHeritage = async (values) => {
+  //   try {
+  //     const {
+  //       title,
+  //       description,
+  //       creator,
+  //       video_file,
+  //       audio_file,
+  //       image_file,
+  //     } = values
+  //     setLoading(true)
+  // const Videokey = await Storage.put(`video/${uuid()}.mp4`, videoData, {
+  //   contentType: "video/mp4",
+  //   level: "public",
+  // })
+
+  // const Audiokey = await Storage.put(`audio/${uuid()}.mp3`, audioData, {
+  //   contentType: "audio/mp3",
+  // })
+  // const Photokey = await Storage.put(`img/${uuid()}.jpg`, imageData, {
+  //   contentType: "image/png,image/jpeg,image/jpg",
+  // })
+  // const createHeritageInput = {
+  //   id: uuid(),
+  //   title,
+  //   description,
+  //   Icon: title,
+  //   VideoName: Videokey.key,
+  //   AudioName: Audiokey.key,
+  //   SceneToLoad: "test",
+  //   uuid: 1,
+  //   user: creator,
+  //   latitude: latitude,
+  //   longitude: longitude,
+  //   ImageName: Imagekey.key,
+  // }
+
+  //   await API.graphql(
+  //     graphqlOperation(createHeritage, { input: createHeritageInput })
+  //   )
+
+  //   fetchHeritages()
+  //     .then(() => setLoading(false))
+  //     .then(() => setEnter(false))
+  //     .then(() => console.log("fetch good boy"))
+  // } catch (error) {
+  //   console.log("error when uploading is", error)
+  // }
+  // }
+  const handleSubmitForm = async (json) => {
+    // const Photokey = await Storage.put(`img/${uuid()}.jpg`, imageData, {
+    //   contentType: "image/png,image/jpeg,image/jpg",
+    //   level: "public",
+    // })
+    // const Videokey = await Storage.put(`video/${uuid()}.mp4`, videoData, {
+    //   contentType: "video/mp4",
+    //   level: "public",
+    // })
+
+    // const OfficerArr = officerSignature.map(async (officer) => {
+    //   const SignatureImg = await Storage.put(`img/${uuid()}.jpg`, officer, {
+    //     contentType: "image/png,image/jpeg,image/jpg",
+    //     level: "public",
+    //   })
+    //   return SignatureImg
+    // })
+    // const AdvisorKey = await Storage.put(
+    //   `img/${uuid()}.jpg`,
+    //   advisorSignature,
+    //   {
+    //     contentType: "image/png,image/jpeg,image/jpg",
+    //     level: "public",
+    //   }
+    // )
+    // const coordinatorKey = await Storage.put(`img/${uuid()}.jpg`, coordinator, {
+    //   contentType: "image/png,image/jpeg,image/jpg",
+    //   level: "public",
+    // })
     try {
-      const {
-        title,
-        description,
-        creator,
-        video_file,
-        audio_file,
-        image_file,
-      } = values
-      setLoading(true)
-      const Videokey = await Storage.put(`video/${uuid()}.mp4`, videoData, {
-        contentType: "video/mp4",
-        level: "public",
-      })
-
-      const Audiokey = await Storage.put(`audio/${uuid()}.mp3`, audioData, {
-        contentType: "audio/mp3",
-      })
-      const Imagekey = await Storage.put(`img/${uuid()}.jpg`, audioData, {
-        contentType: "image/png,image/jpeg,image/jpg",
-      })
-      const createHeritageInput = {
-        id: uuid(),
-        title,
-        description,
-        Icon: title,
-        VideoName: Videokey.key,
-        AudioName: Audiokey.key,
-        SceneToLoad: "test",
-        uuid: 1,
-        user: creator,
-        latitude: latitude,
-        longitude: longitude,
-        ImageName: Imagekey.key,
+      const initialJSON1 = {
+        surveyDate: "sdf",
+        siteNumber: "dsfdsfdssdfds",
+        GPSCoordinates: [
+          {
+            datum: "datum",
+            easting: "easting",
+            northing: "northing",
+          },
+        ],
+        routeExaminedOrNot: "false",
+        examinedRouteLocation: "",
+        accessRouteCoordinate: [
+          {
+            routeCoordinate: "route1",
+          },
+          {
+            routeCoordinate: "route2",
+          },
+        ],
+        inspectionPerson: "Sulaiman",
+        InspectionCarriedOut: "Inspection",
+        photo: {},
+        photoDescription: "photo",
+        video: {},
+        videoDescription: "video",
+        visibility: "c",
+        siteIssue: "s",
+        identifiedOrNot: "false",
+        additionalComments: "",
+        clearedToProceed: "false",
+        heritageFieldOfficer: [
+          {
+            officerName: "sulaiman",
+            officerSignature: {},
+          },
+          {
+            officerName: "sss",
+            officerSignature: "",
+          },
+        ],
+        technicalAdvisor: "Issa",
+        coordinator: "Molly Square",
       }
+      const initialJSON = JSON.parse(json)
 
-      await API.graphql(
-        graphqlOperation(createHeritage, { input: createHeritageInput })
-      )
+      initialJSON.photo = "Photokey"
+      initialJSON.video = "Videokey"
+      const Arr = ["s1", "s2", "s3"]
+      initialJSON.heritageFieldOfficer.map((officer, index) => {
+        officer.officerSignature = Arr[0]
+      })
 
-      fetchHeritages()
-        .then(() => setLoading(false))
-        .then(() => setEnter(false))
-        .then(() => console.log("fetch good boy"))
+      console.log("initialJSON", initialJSON)
     } catch (error) {
-      console.log("error when uploading is", error)
+      console.log("error in submitting", error)
     }
-  }
-  const onSubmit = async (values) => {
-    alert(JSON.stringify(values, null, 2))
   }
 
   return (
@@ -176,10 +282,12 @@ export default function HeritageInput(props) {
       ) : (
         <Formik
           validationSchema={schema}
-          onSubmit={onSubmit}
+          // onSubmit={(values) => {
+          //   handleSubmitForm(values)
+          // }}
           initialValues={initialValues}
           render={({ values, handleSubmit }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form>
               <Row>
                 <Col>
                   <label>Survey date:</label>
@@ -429,12 +537,10 @@ export default function HeritageInput(props) {
                 <Bootform.Group>
                   <Bootform.File
                     className="position-relative"
-                    name="photo"
                     label="Photographs: "
                     onChange={(e) => setImageData(e.target.files[0])}
                     accept="image/"
                   />
-                  <ErrorMessage name={`photo`} className="invalid-feedback" />
                 </Bootform.Group>
               </Row>
               <Row>
@@ -454,12 +560,10 @@ export default function HeritageInput(props) {
                 <Bootform.Group>
                   <Bootform.File
                     className="position-relative"
-                    name="video"
                     label="Videos: "
                     onChange={(e) => setVideoData(e.target.files[0])}
                     accept="video"
                   />
-                  <ErrorMessage name={`video`} className="invalid-feedback" />
                 </Bootform.Group>
               </Row>
               <Row>
@@ -637,7 +741,6 @@ export default function HeritageInput(props) {
                                   <Bootform.Group>
                                     <Bootform.File
                                       className="position-relative"
-                                      name={`heritageFieldOfficer.${index}.officerSignature`}
                                       label="Signature:"
                                       onChange={(e) =>
                                         setOfficerSignature([
@@ -646,11 +749,6 @@ export default function HeritageInput(props) {
                                         ])
                                       }
                                       accept="image/"
-                                    />
-
-                                    <ErrorMessage
-                                      name={`officerSignature`}
-                                      className="invalid-feedback"
                                     />
                                   </Bootform.Group>
                                 </Col>
@@ -701,7 +799,112 @@ export default function HeritageInput(props) {
               <Row>
                 <label>Technical advisor (where attending):</label>
               </Row>
+
+              <FieldArray
+                name="technicalAdvisor"
+                render={(arrayHelpers) => {
+                  const technicalAdvisor = values.technicalAdvisor
+                  return (
+                    <div>
+                      {technicalAdvisor && technicalAdvisor.length > 0
+                        ? technicalAdvisor.map((advisor, index) => (
+                            <div>
+                              <Row key={index} style={{ width: "100%" }}>
+                                <Col>
+                                  <label>Name:</label>
+                                  <Row>
+                                    <Col>
+                                      {" "}
+                                      <Field
+                                        placeholder="Advisor Name"
+                                        name={`technicalAdvisor.${index}.advisorName`}
+                                      ></Field>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="errorMessage">
+                                      <ErrorMessage
+                                        name={`technicalAdvisor.${index}.advisorName`}
+                                        className="errorMessage"
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col>
+                                  <Bootform.Group>
+                                    <Bootform.File
+                                      className="position-relative"
+                                      label="Signature:"
+                                      onChange={(e) =>
+                                        setAdvisor(e.target.files[0])
+                                      }
+                                      accept="image/"
+                                    />
+                                  </Bootform.Group>
+                                </Col>
+                              </Row>
+                            </div>
+                          ))
+                        : null}
+                    </div>
+                  )
+                }}
+              ></FieldArray>
               <Row>
+                <label>Proponent Cultural Heritage Coordinator:</label>
+              </Row>
+              <FieldArray
+                name="coordinator"
+                render={(arrayHelpers) => {
+                  const coordinator = values.coordinator
+                  return (
+                    <div>
+                      {coordinator && coordinator.length > 0
+                        ? coordinator.map((coordinator, index) => (
+                            <div>
+                              <Row key={index} style={{ width: "100%" }}>
+                                <Col>
+                                  <label>Name:</label>
+                                  <Row>
+                                    <Col>
+                                      {" "}
+                                      <Field
+                                        placeholder="Advisor Name"
+                                        name={`coordinator.${index}.coordinatorName`}
+                                      ></Field>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col className="errorMessage">
+                                      <ErrorMessage
+                                        name={`coordinator.${index}.coordinatorName`}
+                                        className="errorMessage"
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col>
+                                  <Bootform.Group>
+                                    <Bootform.File
+                                      className="position-relative"
+                                      label="Signature:"
+                                      onChange={(e) =>
+                                        setCoordinator(e.target.files[0])
+                                      }
+                                      accept="image/"
+                                    />
+                                  </Bootform.Group>
+                                </Col>
+                              </Row>
+                            </div>
+                          ))
+                        : null}
+                    </div>
+                  )
+                }}
+              ></FieldArray>
+
+              {/* <Row>
                 <Col>
                   <Field name={`technicalAdvisor`}></Field>
                   <ErrorMessage
@@ -742,15 +945,22 @@ export default function HeritageInput(props) {
                     />
                   </Bootform.Group>
                 </Col>
-              </Row>
+              </Row> */}
               <pre>{JSON.stringify(values, 0, 2)}</pre>
+              {setJson(JSON.stringify(values, 0, 2))}
 
-              <Button variant="primary" type="submit">
+              <Button
+                variant="primary"
+                // type="submit"
+                onClick={() => {
+                  handleSubmitForm(json)
+                }}
+              >
                 Submit form
               </Button>
             </Form>
           )}
-        ></Formik>
+        />
       )}
     </div>
   )
