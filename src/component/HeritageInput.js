@@ -23,6 +23,7 @@ export default function HeritageInput(props) {
   const [examined, setExamined] = useState("false")
   const [identified, setIdentified] = useState("false")
   const [json, setJson] = useState()
+  const [officerArray, setOfficerArray] = useState([])
 
   const { latitude, longitude, fetchHeritages, setEnter, loading, setLoading } =
     props
@@ -190,12 +191,24 @@ export default function HeritageInput(props) {
 
       initialJSON.heritageFieldOfficer.map((officer, index) => {
         OfficerArr[index].then((result) => {
-          const signatureImg = result
+          const signatureImg = result.key
           officer.officerSignature = signatureImg
         })
       })
 
       //Submit
+      var str = "officers"
+      var object = {}
+      setOfficerArray(initialJSON.heritageFieldOfficer)
+
+      var arr = [
+        { officerName: "123", officerSign: "1" },
+        { officerName: "12", officerSign: "3" },
+      ]
+      officerArray.length != 0 && (object[str] = officerArray)
+
+      console.log("officerPre", object)
+      console.log("officer")
       const createHeritageInput = {
         id: uuid(),
         surveyDate: initialJSON.surveyDate,
@@ -217,11 +230,11 @@ export default function HeritageInput(props) {
         identifiedOrNot: initialJSON.identifiedOrNot,
         additionalComments: initialJSON.additionalComments,
         clearedToProceed: initialJSON.clearedToProceed,
-        heritageFieldOfficer: JSON.stringify(initialJSON.heritageFieldOfficer),
+        heritageFieldOfficer: JSON.stringify(object),
         technicalAdvisor: JSON.stringify(initialJSON.technicalAdvisor),
         coordinator: JSON.stringify(initialJSON.coordinator),
       }
-      console.log("before change", initialJSON.heritageFieldOfficer)
+      console.log("before submit", createHeritageInput.heritageFieldOfficer)
       const data = initialJSON.heritageFieldOfficer
       var obj = ""
       for (let i = 0; i < data.length; i++) {
