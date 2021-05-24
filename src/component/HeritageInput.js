@@ -132,26 +132,7 @@ export default function HeritageInput(props) {
 
   // const AddHeritage = async (values) => {
   //   try {
-  //     const {
-  //       title,
-  //       description,
-  //       creator,
-  //       video_file,
-  //       audio_file,
-  //       image_file,
-  //     } = values
-  //     setLoading(true)
-  // const Videokey = await Storage.put(`video/${uuid()}.mp4`, videoData, {
-  //   contentType: "video/mp4",
-  //   level: "public",
-  // })
 
-  // const Audiokey = await Storage.put(`audio/${uuid()}.mp3`, audioData, {
-  //   contentType: "audio/mp3",
-  // })
-  // const Photokey = await Storage.put(`img/${uuid()}.jpg`, imageData, {
-  //   contentType: "image/png,image/jpeg,image/jpg",
-  // })
   // const createHeritageInput = {
   //   id: uuid(),
   //   title,
@@ -180,25 +161,37 @@ export default function HeritageInput(props) {
   // }
   // }
   const handleSubmitForm = async (json) => {
-    const Photokey = await Storage.put(`img/${uuid()}.jpg`, imageData, {
-      contentType: "image/png,image/jpeg,image/jpg",
-      level: "public",
-    })
-    const Videokey = await Storage.put(`video/${uuid()}.mp4`, videoData, {
-      contentType: "video/mp4",
-      level: "public",
-    })
-
-    const OfficerArr = officerSignature.map(async (officer) => {
-      const SignatureImg = await Storage.put(`img/${uuid()}.jpg`, officer, {
+    const Photokey = await Storage.put(
+      `img/${imageData.name}${uuid()}`,
+      imageData,
+      {
         contentType: "image/png,image/jpeg,image/jpg",
         level: "public",
-      })
+      }
+    )
+    const Videokey = await Storage.put(
+      `video/${videoData.name}${uuid()}`,
+      videoData,
+      {
+        contentType: "video/mp4",
+        level: "public",
+      }
+    )
+
+    const OfficerArr = officerSignature.map(async (officer) => {
+      const SignatureImg = await Storage.put(
+        `img/${officer.name}${uuid()}`,
+        officer,
+        {
+          contentType: "image/png,image/jpeg,image/jpg",
+          level: "public",
+        }
+      )
       return SignatureImg
     })
     console.log("officerArray", OfficerArr)
     const AdvisorKey = await Storage.put(
-      `img/${uuid()}.jpg`,
+      `img/${advisorSignature.name}${uuid()}`,
       advisorSignature,
       {
         contentType: "image/png,image/jpeg,image/jpg",
@@ -206,55 +199,15 @@ export default function HeritageInput(props) {
       }
     )
     console.log("advisorKey", AdvisorKey)
-    const coordinatorKey = await Storage.put(`img/${uuid()}.jpg`, coordinator, {
-      contentType: "image/png,image/jpeg,image/jpg",
-      level: "public",
-    })
-    try {
-      const initialJSON1 = {
-        surveyDate: "sdf",
-        siteNumber: "dsfdsfdssdfds",
-        GPSCoordinates: [
-          {
-            datum: "datum",
-            easting: "easting",
-            northing: "northing",
-          },
-        ],
-        routeExaminedOrNot: "false",
-        examinedRouteLocation: "",
-        accessRouteCoordinate: [
-          {
-            routeCoordinate: "route1",
-          },
-          {
-            routeCoordinate: "route2",
-          },
-        ],
-        inspectionPerson: "Sulaiman",
-        InspectionCarriedOut: "Inspection",
-        photo: {},
-        photoDescription: "photo",
-        video: {},
-        videoDescription: "video",
-        visibility: "c",
-        siteIssue: "s",
-        identifiedOrNot: "false",
-        additionalComments: "",
-        clearedToProceed: "false",
-        heritageFieldOfficer: [
-          {
-            officerName: "sulaiman",
-            officerSignature: {},
-          },
-          {
-            officerName: "sss",
-            officerSignature: "",
-          },
-        ],
-        technicalAdvisor: "Issa",
-        coordinator: "Molly Square",
+    const coordinatorKey = await Storage.put(
+      `img/${coordinator.name}${uuid()}`,
+      coordinator,
+      {
+        contentType: "image/png,image/jpeg,image/jpg",
+        level: "public",
       }
+    )
+    try {
       const initialJSON = JSON.parse(json)
 
       initialJSON.photo = Photokey
@@ -263,7 +216,10 @@ export default function HeritageInput(props) {
       initialJSON.coordinator[0].coordinatorSignature = coordinatorKey
 
       initialJSON.heritageFieldOfficer.map((officer, index) => {
-        officer.officerSignature = OfficerArr[index]
+        OfficerArr[index].then((result) => {
+          const signatureImg = result
+          officer.officerSignature = signatureImg
+        })
       })
 
       console.log("initialJSON", initialJSON)
@@ -545,6 +501,7 @@ export default function HeritageInput(props) {
                     onChange={(e) => setImageData(e.target.files[0])}
                     accept="image/"
                   />
+                  {console.log("damn", imageData)}
                 </Bootform.Group>
               </Row>
               <Row>
@@ -908,51 +865,9 @@ export default function HeritageInput(props) {
                 }}
               ></FieldArray>
 
-              {/* <Row>
-                <Col>
-                  <Field name={`technicalAdvisor`}></Field>
-                  <ErrorMessage
-                    name={`technicalAdvisor`}
-                    className="invalid-feedback"
-                  />
-                </Col>
-                <Col>
-                  <Bootform.Group>
-                    <Bootform.File
-                      className="position-relative"
-                      label="Signature:"
-                      onChange={(e) => setAdvisor(e.target.files[0])}
-                      accept="image/"
-                    />
-                  </Bootform.Group>
-                </Col>
-              </Row>
-
-              <Row>
-                <label>Proponent Cultural Heritage Coordinator:</label>
-              </Row>
-              <Row>
-                <Col>
-                  <Field name={`coordinator`}></Field>
-                  <ErrorMessage
-                    name={`coordinator`}
-                    className="invalid-feedback"
-                  />
-                </Col>
-                <Col>
-                  <Bootform.Group>
-                    <Bootform.File
-                      className="position-relative"
-                      label="Signature:"
-                      onChange={(e) => setCoordinator(e.target.files[0])}
-                      accept="image/"
-                    />
-                  </Bootform.Group>
-                </Col>
-              </Row> */}
-              <pre>{JSON.stringify(values, 0, 2)}</pre>
+              {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
               {setJson(JSON.stringify(values, 0, 2))}
-
+              {console.log("Image data", ImageData)}
               <Button
                 variant="primary"
                 // type="submit"
