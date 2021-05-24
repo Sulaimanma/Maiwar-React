@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap"
 import Button from "react-bootstrap/Button"
 import { Form as Bootform } from "react-bootstrap"
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik"
-import { v4 as uuid } from "uuid"
+import { stringify, v4 as uuid } from "uuid"
 import * as yup from "yup"
 import "./heritageInput.css"
 import { AiFillDelete } from "react-icons/ai"
@@ -128,156 +128,120 @@ export default function HeritageInput(props) {
     ],
   }
   //Spinner
-  // Can be a string as well. Need to ensure each key-value pair ends with ;
 
-  // const AddHeritage = async (values) => {
-  //   try {
-
-  // const createHeritageInput = {
-  //   id: uuid(),
-  //   title,
-  //   description,
-  //   Icon: title,
-  //   VideoName: Videokey.key,
-  //   AudioName: Audiokey.key,
-  //   SceneToLoad: "test",
-  //   uuid: 1,
-  //   user: creator,
-  //   latitude: latitude,
-  //   longitude: longitude,
-  //   ImageName: Imagekey.key,
-  // }
-
-  //   await API.graphql(
-  //     graphqlOperation(createHeritage, { input: createHeritageInput })
-  //   )
-
-  //   fetchHeritages()
-  //     .then(() => setLoading(false))
-  //     .then(() => setEnter(false))
-  //     .then(() => console.log("fetch good boy"))
-  // } catch (error) {
-  //   console.log("error when uploading is", error)
-  // }
-  // }
   const handleSubmitForm = async (json) => {
-    // const Photokey = await Storage.put(
-    //   `img/${uuid()}${imageData.name}`,
-    //   imageData,
-    //   {
-    //     contentType: "image/png,image/jpeg,image/jpg",
-    //     level: "public",
-    //   }
-    // )
-    // const Videokey = await Storage.put(
-    //   `video/${uuid()}${videoData.name}`,
-    //   videoData,
-    //   {
-    //     contentType: "video/mp4",
-    //     level: "public",
-    //   }
-    // )
+    const Photokey = await Storage.put(
+      `img/${uuid()}${imageData.name}`,
+      imageData,
+      {
+        contentType: "image/png,image/jpeg,image/jpg",
+        level: "public",
+      }
+    )
+    const Videokey = await Storage.put(
+      `video/${uuid()}${videoData.name}`,
+      videoData,
+      {
+        contentType: "video/mp4",
+        level: "public",
+      }
+    )
 
-    // const OfficerArr = officerSignature.map(async (officer) => {
-    //   const SignatureImg = await Storage.put(
-    //     `img/${uuid()}${officer.name}`,
-    //     officer,
-    //     {
-    //       contentType: "image/png,image/jpeg,image/jpg",
-    //       level: "public",
-    //     }
-    //   )
-    //   return SignatureImg
-    // })
+    const OfficerArr = officerSignature.map(async (officer) => {
+      try {
+        const SignatureImg = await Storage.put(
+          `img/${uuid()}${officer.name}`,
+          officer,
+          {
+            contentType: "image/png,image/jpeg,image/jpg",
+            level: "public",
+          }
+        )
+        return SignatureImg
+      } catch (error) {
+        console.log("error in mapping", error)
+      }
+    })
 
-    // const AdvisorKey = await Storage.put(
-    //   `img/${uuid()}${advisorSignature.name}`,
-    //   advisorSignature,
-    //   {
-    //     contentType: "image/png,image/jpeg,image/jpg",
-    //     level: "public",
-    //   }
-    // )
+    const AdvisorKey = await Storage.put(
+      `img/${uuid()}${advisorSignature.name}`,
+      advisorSignature,
+      {
+        contentType: "image/png,image/jpeg,image/jpg",
+        level: "public",
+      }
+    )
 
-    // const coordinatorKey = await Storage.put(
-    //   `img/${uuid()}${coordinator.name}`,
-    //   coordinator,
-    //   {
-    //     contentType: "image/png,image/jpeg,image/jpg",
-    //     level: "public",
-    //   }
-    // )
+    const coordinatorKey = await Storage.put(
+      `img/${uuid()}${coordinator.name}`,
+      coordinator,
+      {
+        contentType: "image/png,image/jpeg,image/jpg",
+        level: "public",
+      }
+    )
     try {
-      // const initialJSON = JSON.parse(json)
+      const initialJSON = JSON.parse(json)
 
-      // initialJSON.photo = Photokey
-      // initialJSON.video = Videokey
-      // initialJSON.technicalAdvisor[0].advisorSignature = AdvisorKey
-      // initialJSON.coordinator[0].coordinatorSignature = coordinatorKey
+      initialJSON.photo = Photokey
+      initialJSON.video = Videokey
+      initialJSON.technicalAdvisor[0].advisorSignature = AdvisorKey
+      initialJSON.coordinator[0].coordinatorSignature = coordinatorKey
 
-      // initialJSON.heritageFieldOfficer.map((officer, index) => {
-      //   OfficerArr[index].then((result) => {
-      //     const signatureImg = result
-      //     officer.officerSignature = signatureImg
-      //   })
-      // })
+      initialJSON.heritageFieldOfficer.map((officer, index) => {
+        OfficerArr[index].then((result) => {
+          const signatureImg = result
+          officer.officerSignature = signatureImg
+        })
+      })
+
       //Submit
       const createHeritageInput = {
         id: uuid(),
-        surveyDate: "11",
-        siteNumber: "1",
-        GPSCoordinates: JSON.stringify({
-          num: "34",
-        }),
-        routeExaminedOrNot: false,
-        examinedRouteLocation: "123",
-        accessRouteCoordinate: JSON.stringify({
-          num: "34",
-        }),
-        inspectionPerson: "123",
-        InspectionCarriedOut: "123",
-        photo: "123",
-        photoDescription: "123",
-        video: "123",
-        videoDescription: "123",
-        visibility: "123",
-        siteIssue: "123",
-        identifiedOrNot: true,
-        additionalComments: "123",
-        clearedToProceed: false,
-        heritageFieldOfficer: JSON.stringify({
-          num: "34",
-        }),
-        technicalAdvisor: JSON.stringify({
-          num: "34",
-        }),
-
-        coordinator: JSON.stringify({
-          book: [
-            {
-              id: "444",
-              language: "C",
-              edition: "First",
-              author: "Dennis Ritchie ",
-            },
-            {
-              id: "555",
-              language: "C++",
-              edition: "second",
-              author: " Bjarne Stroustrup ",
-            },
-          ],
-        }),
+        surveyDate: initialJSON.surveyDate,
+        siteNumber: initialJSON.siteNumber,
+        GPSCoordinates: JSON.stringify(initialJSON.GPSCoordinates),
+        routeExaminedOrNot: initialJSON.routeExaminedOrNot,
+        examinedRouteLocation: initialJSON.examinedRouteLocation,
+        accessRouteCoordinate: JSON.stringify(
+          initialJSON.accessRouteCoordinate
+        ),
+        inspectionPerson: initialJSON.inspectionPerson,
+        InspectionCarriedOut: initialJSON.InspectionCarriedOut,
+        photo: initialJSON.photo,
+        photoDescription: initialJSON.photoDescription,
+        video: initialJSON.video,
+        videoDescription: initialJSON.videoDescription,
+        visibility: initialJSON.visibility,
+        siteIssue: initialJSON.siteIssue,
+        identifiedOrNot: initialJSON.identifiedOrNot,
+        additionalComments: initialJSON.additionalComments,
+        clearedToProceed: initialJSON.clearedToProceed,
+        heritageFieldOfficer: JSON.stringify(initialJSON.heritageFieldOfficer),
+        technicalAdvisor: JSON.stringify(initialJSON.technicalAdvisor),
+        coordinator: JSON.stringify(initialJSON.coordinator),
       }
+      console.log("before change", initialJSON.heritageFieldOfficer)
+      const data = initialJSON.heritageFieldOfficer
+      var obj = ""
+      for (let i = 0; i < data.length; i++) {
+        obj = obj + JSON.stringify(data[i])
+        console.log("medium", obj)
+      }
+
+      console.log(
+        "final problem",
+        JSON.stringify(initialJSON.heritageFieldOfficer)
+      )
       await API.graphql(
         graphqlOperation(createHeritages, { input: createHeritageInput })
       )
-      fetchHeritages()
-        .then(() => setLoading(false))
-        .then(() => setEnter(false))
-        .then(() => console.log("fetch good boy"))
+      // fetchHeritages()
+      //   .then(() => setLoading(false))
+      //   .then(() => setEnter(false))
+      //   .then(() => console.log("fetch good boy"))
 
-      // console.log("initialJSON", initialJSON)
+      console.log("initialJSON", initialJSON)
     } catch (error) {
       console.log("error in submitting", error)
     }
