@@ -180,7 +180,7 @@ export default function HeritageInput(props) {
 
     const OfficerArr = officerSignature.map(async (officer) => {
       const SignatureImg = await Storage.put(
-        `img/${uuid()}${officer.name}}`,
+        `img/${uuid()}${officer.name}`,
         officer,
         {
           contentType: "image/png,image/jpeg,image/jpg",
