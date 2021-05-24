@@ -162,7 +162,7 @@ export default function HeritageInput(props) {
   // }
   const handleSubmitForm = async (json) => {
     const Photokey = await Storage.put(
-      `img/${imageData.name}${uuid()}`,
+      `img/${uuid()}${imageData.name}`,
       imageData,
       {
         contentType: "image/png,image/jpeg,image/jpg",
@@ -170,7 +170,7 @@ export default function HeritageInput(props) {
       }
     )
     const Videokey = await Storage.put(
-      `video/${videoData.name}${uuid()}`,
+      `video/${uuid()}${videoData.name}`,
       videoData,
       {
         contentType: "video/mp4",
@@ -180,7 +180,7 @@ export default function HeritageInput(props) {
 
     const OfficerArr = officerSignature.map(async (officer) => {
       const SignatureImg = await Storage.put(
-        `img/${officer.name}${uuid()}`,
+        `img/${uuid()}${officer.name}}`,
         officer,
         {
           contentType: "image/png,image/jpeg,image/jpg",
@@ -189,18 +189,18 @@ export default function HeritageInput(props) {
       )
       return SignatureImg
     })
-    console.log("officerArray", OfficerArr)
+
     const AdvisorKey = await Storage.put(
-      `img/${advisorSignature.name}${uuid()}`,
+      `img/${uuid()}${advisorSignature.name}`,
       advisorSignature,
       {
         contentType: "image/png,image/jpeg,image/jpg",
         level: "public",
       }
     )
-    console.log("advisorKey", AdvisorKey)
+
     const coordinatorKey = await Storage.put(
-      `img/${coordinator.name}${uuid()}`,
+      `img/${uuid()}${coordinator.name}`,
       coordinator,
       {
         contentType: "image/png,image/jpeg,image/jpg",
@@ -501,7 +501,6 @@ export default function HeritageInput(props) {
                     onChange={(e) => setImageData(e.target.files[0])}
                     accept="image/"
                   />
-                  {console.log("damn", imageData)}
                 </Bootform.Group>
               </Row>
               <Row>
@@ -867,7 +866,7 @@ export default function HeritageInput(props) {
 
               {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
               {setJson(JSON.stringify(values, 0, 2))}
-              {console.log("Image data", ImageData)}
+
               <Button
                 variant="primary"
                 // type="submit"
