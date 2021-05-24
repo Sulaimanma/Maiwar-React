@@ -200,11 +200,6 @@ export default function HeritageInput(props) {
       var str = "officers"
       var object = {}
       setOfficerArray(initialJSON.heritageFieldOfficer)
-
-      var arr = [
-        { officerName: "123", officerSign: "1" },
-        { officerName: "12", officerSign: "3" },
-      ]
       officerArray.length != 0 && (object[str] = officerArray)
 
       console.log("officerPre", object)
