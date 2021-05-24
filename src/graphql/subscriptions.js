@@ -1,61 +1,88 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateHeritage = /* GraphQL */ `
-  subscription OnCreateHeritage {
-    onCreateHeritage {
+export const onCreateHeritages = /* GraphQL */ `
+  subscription OnCreateHeritages {
+    onCreateHeritages {
       id
-      title
-      description
-      Icon
-      VideoName
-      AudioName
-      SceneToLoad
-      uuid
-      user
-      latitude
-      longitude
-      ImageName
+      surveyDate
+      siteNumber
+      GPSCoordinates
+      routeExaminedOrNot
+      examinedRouteLocation
+      accessRouteCoordinate
+      inspectionPerson
+      InspectionCarriedOut
+      photo
+      photoDescription
+      video
+      videoDescription
+      visibility
+      siteIssue
+      identifiedOrNot
+      additionalComments
+      clearedToProceed
+      heritageFieldOfficer
+      technicalAdvisor
+      coordinator
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateHeritage = /* GraphQL */ `
-  subscription OnUpdateHeritage {
-    onUpdateHeritage {
+export const onUpdateHeritages = /* GraphQL */ `
+  subscription OnUpdateHeritages {
+    onUpdateHeritages {
       id
-      title
-      description
-      Icon
-      VideoName
-      AudioName
-      SceneToLoad
-      uuid
-      user
-      latitude
-      longitude
-      ImageName
+      surveyDate
+      siteNumber
+      GPSCoordinates
+      routeExaminedOrNot
+      examinedRouteLocation
+      accessRouteCoordinate
+      inspectionPerson
+      InspectionCarriedOut
+      photo
+      photoDescription
+      video
+      videoDescription
+      visibility
+      siteIssue
+      identifiedOrNot
+      additionalComments
+      clearedToProceed
+      heritageFieldOfficer
+      technicalAdvisor
+      coordinator
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteHeritage = /* GraphQL */ `
-  subscription OnDeleteHeritage {
-    onDeleteHeritage {
+export const onDeleteHeritages = /* GraphQL */ `
+  subscription OnDeleteHeritages {
+    onDeleteHeritages {
       id
-      title
-      description
-      Icon
-      VideoName
-      AudioName
-      SceneToLoad
-      uuid
-      user
-      latitude
-      longitude
-      ImageName
+      surveyDate
+      siteNumber
+      GPSCoordinates
+      routeExaminedOrNot
+      examinedRouteLocation
+      accessRouteCoordinate
+      inspectionPerson
+      InspectionCarriedOut
+      photo
+      photoDescription
+      video
+      videoDescription
+      visibility
+      siteIssue
+      identifiedOrNot
+      additionalComments
+      clearedToProceed
+      heritageFieldOfficer
+      technicalAdvisor
+      coordinator
       createdAt
       updatedAt
     }

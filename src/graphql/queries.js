@@ -1,46 +1,64 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getHeritage = /* GraphQL */ `
-  query GetHeritage($id: ID!) {
-    getHeritage(id: $id) {
+export const getHeritages = /* GraphQL */ `
+  query GetHeritages($id: ID!) {
+    getHeritages(id: $id) {
       id
-      title
-      description
-      Icon
-      VideoName
-      AudioName
-      SceneToLoad
-      uuid
-      user
-      latitude
-      longitude
-      ImageName
+      surveyDate
+      siteNumber
+      GPSCoordinates
+      routeExaminedOrNot
+      examinedRouteLocation
+      accessRouteCoordinate
+      inspectionPerson
+      InspectionCarriedOut
+      photo
+      photoDescription
+      video
+      videoDescription
+      visibility
+      siteIssue
+      identifiedOrNot
+      additionalComments
+      clearedToProceed
+      heritageFieldOfficer
+      technicalAdvisor
+      coordinator
       createdAt
       updatedAt
     }
   }
 `;
-export const listHeritages = /* GraphQL */ `
-  query ListHeritages(
-    $filter: ModelHeritageFilterInput
+export const listHeritagess = /* GraphQL */ `
+  query ListHeritagess(
+    $filter: ModelHeritagesFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listHeritages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listHeritagess(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        title
-        description
-        Icon
-        VideoName
-        AudioName
-        SceneToLoad
-        uuid
-        user
-        latitude
-        longitude
-        ImageName
+        surveyDate
+        siteNumber
+        GPSCoordinates
+        routeExaminedOrNot
+        examinedRouteLocation
+        accessRouteCoordinate
+        inspectionPerson
+        InspectionCarriedOut
+        photo
+        photoDescription
+        video
+        videoDescription
+        visibility
+        siteIssue
+        identifiedOrNot
+        additionalComments
+        clearedToProceed
+        heritageFieldOfficer
+        technicalAdvisor
+        coordinator
         createdAt
         updatedAt
       }

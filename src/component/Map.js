@@ -23,7 +23,7 @@ import PopInfo from "./PopInfo"
 import Sidebar from "./Sidebar/Sidebar"
 import DragPin from "./DragPin"
 import API, { graphqlOperation } from "@aws-amplify/api"
-import { createHeritage } from "../graphql/mutations"
+import { createHeritages } from "../graphql/mutations"
 import { v4 as uuid } from "uuid"
 import { HeritageContext } from "./Helpers/Context"
 import HeritageInput from "./HeritageInput"
@@ -231,7 +231,7 @@ export default function Map() {
   //Create the heritage into the database
   const dataCreate = async (heritage) => {
     try {
-      await API.graphql(graphqlOperation(createHeritage, { input: heritage }))
+      await API.graphql(graphqlOperation(createHeritages, { input: heritage }))
     } catch (error) {
       console.log("error happened during load local data to dynamoDB", error)
     }
@@ -322,7 +322,7 @@ export default function Map() {
           onViewportChange={handleViewportChange}
           mapStyle="mapbox://styles/guneriboi/ck2s4jkxp0vin1cnzzrgslsnm"
           //Define the interactive layer
-          interactiveLayerIds={[unclusteredPointLayer.id]}
+          // interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
           width="100%"
           height="100%"
@@ -343,7 +343,7 @@ export default function Map() {
           </div>
 
           {/* Load the Layer source data*/}
-          {geoConvertedjson != null && (
+          {/* {geoConvertedjson != null && (
             <Source
               // id="heritages"
               type="geojson"
@@ -356,7 +356,7 @@ export default function Map() {
               <Layer {...clusterCountLayer} />
               <Layer {...unclusteredPointLayer} />
             </Source>
-          )}
+          )} */}
 
           {/* {geoConvertedjson != null && (
             <Pins data={geoConvertedjson} onClick={onClick} />
@@ -400,7 +400,7 @@ export default function Map() {
               />
             </Popup>
           )}
-          {popup && clickInfo != null && (
+          {/* {popup && clickInfo != null && (
             <Popup
               latitude={clickInfo.geometry.coordinates[1]}
               longitude={clickInfo.geometry.coordinates[0]}
@@ -422,7 +422,7 @@ export default function Map() {
                 title={clickInfo.properties.title}
               />
             </Popup>
-          )}
+          )} */}
         </ReactMapGl>
       </div>
     </div>

@@ -1,70 +1,97 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createHeritage = /* GraphQL */ `
-  mutation CreateHeritage(
-    $input: CreateHeritageInput!
-    $condition: ModelHeritageConditionInput
+export const createHeritages = /* GraphQL */ `
+  mutation CreateHeritages(
+    $input: CreateHeritagesInput!
+    $condition: ModelHeritagesConditionInput
   ) {
-    createHeritage(input: $input, condition: $condition) {
+    createHeritages(input: $input, condition: $condition) {
       id
-      title
-      description
-      Icon
-      VideoName
-      AudioName
-      SceneToLoad
-      uuid
-      user
-      latitude
-      longitude
-      ImageName
+      surveyDate
+      siteNumber
+      GPSCoordinates
+      routeExaminedOrNot
+      examinedRouteLocation
+      accessRouteCoordinate
+      inspectionPerson
+      InspectionCarriedOut
+      photo
+      photoDescription
+      video
+      videoDescription
+      visibility
+      siteIssue
+      identifiedOrNot
+      additionalComments
+      clearedToProceed
+      heritageFieldOfficer
+      technicalAdvisor
+      coordinator
       createdAt
       updatedAt
     }
   }
 `;
-export const updateHeritage = /* GraphQL */ `
-  mutation UpdateHeritage(
-    $input: UpdateHeritageInput!
-    $condition: ModelHeritageConditionInput
+export const updateHeritages = /* GraphQL */ `
+  mutation UpdateHeritages(
+    $input: UpdateHeritagesInput!
+    $condition: ModelHeritagesConditionInput
   ) {
-    updateHeritage(input: $input, condition: $condition) {
+    updateHeritages(input: $input, condition: $condition) {
       id
-      title
-      description
-      Icon
-      VideoName
-      AudioName
-      SceneToLoad
-      uuid
-      user
-      latitude
-      longitude
-      ImageName
+      surveyDate
+      siteNumber
+      GPSCoordinates
+      routeExaminedOrNot
+      examinedRouteLocation
+      accessRouteCoordinate
+      inspectionPerson
+      InspectionCarriedOut
+      photo
+      photoDescription
+      video
+      videoDescription
+      visibility
+      siteIssue
+      identifiedOrNot
+      additionalComments
+      clearedToProceed
+      heritageFieldOfficer
+      technicalAdvisor
+      coordinator
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteHeritage = /* GraphQL */ `
-  mutation DeleteHeritage(
-    $input: DeleteHeritageInput!
-    $condition: ModelHeritageConditionInput
+export const deleteHeritages = /* GraphQL */ `
+  mutation DeleteHeritages(
+    $input: DeleteHeritagesInput!
+    $condition: ModelHeritagesConditionInput
   ) {
-    deleteHeritage(input: $input, condition: $condition) {
+    deleteHeritages(input: $input, condition: $condition) {
       id
-      title
-      description
-      Icon
-      VideoName
-      AudioName
-      SceneToLoad
-      uuid
-      user
-      latitude
-      longitude
-      ImageName
+      surveyDate
+      siteNumber
+      GPSCoordinates
+      routeExaminedOrNot
+      examinedRouteLocation
+      accessRouteCoordinate
+      inspectionPerson
+      InspectionCarriedOut
+      photo
+      photoDescription
+      video
+      videoDescription
+      visibility
+      siteIssue
+      identifiedOrNot
+      additionalComments
+      clearedToProceed
+      heritageFieldOfficer
+      technicalAdvisor
+      coordinator
       createdAt
       updatedAt
     }

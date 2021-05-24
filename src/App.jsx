@@ -11,7 +11,7 @@ import { useEffect, useState } from "react"
 import Map from "./component/Map"
 import "./App.css"
 import Sidebar from "./component/Sidebar/Sidebar"
-import { listHeritages } from "./graphql/queries"
+import { listHeritagess } from "./graphql/queries"
 import { HeritageContext } from "./component/Helpers/Context"
 import { Route } from "react-router"
 import HeritageInput from "./component/HeritageInput"
@@ -30,15 +30,16 @@ function App() {
   const fetchHeritages = async () => {
     try {
       const heritageData = await API.graphql(
-        graphqlOperation(listHeritages, { limit: 500 })
+        graphqlOperation(listHeritagess, { limit: 500 })
       )
-      const heritageList = heritageData.data.listHeritages.items.filter(
+      const heritageList = heritageData.data.listHeritagess.items.filter(
         function (place) {
-          return place.uuid === 2
+          return place.additionalComments === "123"
         }
       )
 
       setHeritages(heritageList)
+      console.log("new start", heritageData)
     } catch (error) {
       console.log("error on fetching heritages", error)
     }
@@ -51,7 +52,9 @@ function App() {
       setUser(authData)
     })
   }, [])
-  console.log("heritages on the homepage", heritages)
+  // var JSONGANG
+  // heritages.length !== 0 && (JSONGANG = JSON.parse(heritages.coordinator))
+  console.log("heritages on the homepage!!!!!!!!!!!!!!!!!!!!!!!!!", heritages)
 
   return authState === AuthState.SignedIn && user ? (
     <div className="App" id="App">

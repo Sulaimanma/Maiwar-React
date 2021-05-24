@@ -4,7 +4,7 @@ import Dropzone from "react-dropzone"
 import csv from "csv"
 import { v4 as uuid } from "uuid"
 import API, { graphqlOperation } from "@aws-amplify/api"
-import { createHeritage } from "../graphql/mutations"
+import { createHeritages } from "../graphql/mutations"
 import { AiFillDelete } from "react-icons/ai"
 import Storage from "@aws-amplify/storage"
 export default function ModalDrop(props) {
@@ -94,7 +94,7 @@ export default function ModalDrop(props) {
 
         createHeritageInput &&
           (await API.graphql(
-            graphqlOperation(createHeritage, { input: createHeritageInput })
+            graphqlOperation(createHeritages, { input: createHeritageInput })
           ))
       }
     } catch (error) {

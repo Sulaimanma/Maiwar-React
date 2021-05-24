@@ -1,14 +1,23 @@
-type Heritage @model {
+type Heritages @model {
   id: ID!
-  title: String!
-  description: String!
-  Icon: String!
-  VideoName: String!
-  AudioName: String!
-  SceneToLoad: String!
-  uuid: Int!
-  user: String!
-  latitude: String!
-  longitude: String!
-  ImageName: String!
+  surveyDate: String!
+  siteNumber: String!
+  GPSCoordinates: AWSJSON!
+  routeExaminedOrNot: Boolean!
+  examinedRouteLocation: String
+  accessRouteCoordinate: AWSJSON
+  inspectionPerson: String!
+  InspectionCarriedOut: String!
+  photo: String
+  photoDescription: String
+  video: String
+  videoDescription: String
+  visibility: String!
+  siteIssue: String
+  identifiedOrNot: Boolean!
+  additionalComments: String
+  clearedToProceed: Boolean
+  heritageFieldOfficer: AWSJSON!
+  technicalAdvisor: AWSJSON!
+  coordinator: AWSJSON!
 }
