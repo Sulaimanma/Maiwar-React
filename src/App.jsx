@@ -58,6 +58,7 @@ function App() {
       setAuthState(nextAuthState)
       setUser(authData)
     })
+    console.log("user data", user)
   }, [])
 
   console.log("heritages on the homepage!!!!!!!!!!!!!!!!!!!!!!!!!", heritages)

@@ -246,12 +246,12 @@ export default function HeritageInput(props) {
       await API.graphql(
         graphqlOperation(createHeritages, { input: createHeritageInput })
       )
-        // fetchHeritages()
-        //   .then(() => setLoading(false))
-        //   .then(() => setEnter(false))
-        //   .then(() => alert("upLoading hsa been done!"))
+      // fetchHeritages()
+      //   .then(() => setLoading(false))
+      //   .then(() => setEnter(false))
+      //   .then(() => alert("upLoading hsa been done!"))
 
-        .console.log("initialJSON", initialJSON)
+      console.log("initialJSON", initialJSON)
     } catch (error) {
       console.log("error in submitting", error)
     }
