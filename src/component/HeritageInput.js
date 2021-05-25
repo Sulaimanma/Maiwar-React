@@ -12,6 +12,7 @@ import { createHeritages } from "../graphql/mutations"
 import Storage from "@aws-amplify/storage"
 
 import RingLoader from "react-spinners/RingLoader"
+import { Modal } from "bootstrap"
 
 export default function HeritageInput(props) {
   const [videoData, setVideoData] = useState("")
@@ -244,10 +245,10 @@ export default function HeritageInput(props) {
       await API.graphql(
         graphqlOperation(createHeritages, { input: createHeritageInput })
       )
-      // fetchHeritages()
-      //   .then(() => setLoading(false))
-      //   .then(() => setEnter(false))
-      //   .then(() => console.log("fetch good boy"))
+      fetchHeritages()
+        .then(() => setLoading(false))
+        .then(() => setEnter(false))
+        .then(() => Modal("upLoading hsa been done!"))
 
       console.log("initialJSON", initialJSON)
     } catch (error) {

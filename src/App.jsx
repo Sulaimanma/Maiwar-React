@@ -34,12 +34,18 @@ function App() {
       )
       const heritageList = heritageData.data.listHeritagess.items.filter(
         function (place) {
-          return place.additionalComments === "123"
+          return place.additionalComments !== ""
         }
       )
 
       setHeritages(heritageList)
-      console.log("new start", heritageData)
+      console.log("heritages list", heritageData.data.listHeritagess.items)
+      console.log(
+        "new start",
+        JSON.parse(
+          heritageData.data.listHeritagess.items[21].heritageFieldOfficer
+        )
+      )
     } catch (error) {
       console.log("error on fetching heritages", error)
     }
@@ -55,6 +61,7 @@ function App() {
   // var JSONGANG
   // heritages.length !== 0 && (JSONGANG = JSON.parse(heritages.coordinator))
   console.log("heritages on the homepage!!!!!!!!!!!!!!!!!!!!!!!!!", heritages)
+  console.log("change heritages", heritages[32])
 
   return authState === AuthState.SignedIn && user ? (
     <div className="App" id="App">
