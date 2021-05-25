@@ -279,7 +279,9 @@ export default function HeritageInput(props) {
                 paddingRight: "35px",
               }}
             >
-              <h4>Cultural Heritage Inspection Form</h4>
+              <h4 style={{ fontWeight: "600" }}>
+                Cultural Heritage Inspection Form
+              </h4>
             </div>
 
             <Formik
@@ -290,9 +292,9 @@ export default function HeritageInput(props) {
               initialValues={initialValues}
               render={({ values, handleSubmit }) => (
                 <Form>
-                  <Row>
+                  <Row className="formRow">
                     <Col>
-                      <label>Survey date:</label>
+                      <label style={{ fontWeight: "600" }}>Survey date:</label>
                       <Field
                         placeholder="Survey date:"
                         name={`surveyDate`}
@@ -308,7 +310,7 @@ export default function HeritageInput(props) {
                       </Row>
                     </Col>
                     <Col>
-                      <label>Site number:</label>
+                      <label style={{ fontWeight: "600" }}>Site number:</label>
                       <Field
                         placeholder="Site number:"
                         name={`siteNumber`}
@@ -323,8 +325,10 @@ export default function HeritageInput(props) {
                       </Row>
                     </Col>
                   </Row>
-                  <Row>
-                    <label>GPS coordinates of Survey Area:</label>
+                  <Row className="formRow">
+                    <label style={{ fontWeight: "600" }}>
+                      GPS coordinates of Survey Area:
+                    </label>
                   </Row>
 
                   <FieldArray
@@ -336,9 +340,15 @@ export default function HeritageInput(props) {
                           {GPSCoordinates && GPSCoordinates.length > 0
                             ? GPSCoordinates.map((coordinate, index) => (
                                 <div>
-                                  <Row key={index} style={{ width: "100%" }}>
+                                  <Row
+                                    key={index}
+                                    style={{ width: "100%" }}
+                                    className="formRow"
+                                  >
                                     <Col>
-                                      <label>Datum:</label>
+                                      <label style={{ fontWeight: "500" }}>
+                                        Datum:
+                                      </label>
                                       <Row>
                                         <Col>
                                           {" "}
@@ -358,7 +368,9 @@ export default function HeritageInput(props) {
                                       </Row>
                                     </Col>
                                     <Col>
-                                      <label>Easting:</label>
+                                      <label style={{ fontWeight: "500" }}>
+                                        Easting:
+                                      </label>
                                       <Field
                                         placeholder="easting"
                                         name={`GPSCoordinates.${index}.easting`}
@@ -373,7 +385,9 @@ export default function HeritageInput(props) {
                                       </Row>
                                     </Col>
                                     <Col>
-                                      <label>Northing:</label>
+                                      <label style={{ fontWeight: "500" }}>
+                                        Northing:
+                                      </label>
                                       <Field
                                         placeholder="northing"
                                         name={`GPSCoordinates.${index}.northing`}
@@ -396,8 +410,10 @@ export default function HeritageInput(props) {
                     }}
                   ></FieldArray>
 
-                  <Row>
-                    <label>Existing access route examined or not?</label>
+                  <Row className="formRow">
+                    <label style={{ fontWeight: "600" }}>
+                      Existing access route examined or not?
+                    </label>
                   </Row>
                   <Row
                     onChange={(e) => {
@@ -437,7 +453,9 @@ export default function HeritageInput(props) {
                   {examined === "true" ? (
                     <Row>
                       <Col md={{ span: 8 }}>
-                        <label>Existing access route examined location:</label>
+                        <label style={{ fontWeight: "600" }}>
+                          Existing access route examined location:
+                        </label>
                         <Field
                           placeholder="Location"
                           name={`examinedRouteLocation`}
@@ -450,8 +468,8 @@ export default function HeritageInput(props) {
                     </Row>
                   ) : (
                     <div>
-                      <Row>
-                        <label>
+                      <Row className="formRow">
+                        <label style={{ fontWeight: "600" }}>
                           Access route coordinates if no existing track:
                         </label>
                       </Row>
@@ -523,9 +541,11 @@ export default function HeritageInput(props) {
                       ></FieldArray>
                     </div>
                   )}
-                  <Row>
+                  <Row className="formRow">
                     <Col>
-                      <label>Who conducted the inspection?</label>
+                      <label style={{ fontWeight: "600" }}>
+                        Who conducted the inspection?
+                      </label>
                       <Field
                         placeholder="Who conducted the inspection?"
                         name={`inspectionPerson`}
@@ -536,9 +556,11 @@ export default function HeritageInput(props) {
                       />
                     </Col>
                   </Row>
-                  <Row>
+                  <Row className="formRow">
                     <Col>
-                      <label>How was the Inspection carried out?</label>
+                      <label style={{ fontWeight: "600" }}>
+                        How was the Inspection carried out?
+                      </label>
                       <Field
                         placeholder="How was the Inspection carried out?"
                         name={`InspectionCarriedOut`}
@@ -550,7 +572,7 @@ export default function HeritageInput(props) {
                       />
                     </Col>
                   </Row>
-                  <Row>
+                  <Row style={{ fontWeight: "600" }} className="formRow">
                     <Bootform.Group>
                       <Bootform.File
                         className="position-relative"
@@ -574,7 +596,7 @@ export default function HeritageInput(props) {
                       />
                     </Col>
                   </Row>
-                  <Row>
+                  <Row style={{ fontWeight: "600" }} className="formRow">
                     <Bootform.Group>
                       <Bootform.File
                         className="position-relative"
@@ -600,37 +622,35 @@ export default function HeritageInput(props) {
                     </Col>
                   </Row>
 
-                  <Row>
-                    <label>
-                      Characteristics of area – visibility of the ground:
-                      (grassy, low surface visibility, high surface visibility,
-                      rocky etc)
+                  <Row className="formRow">
+                    <label style={{ fontWeight: "600" }}>
+                      Characteristics of area
                     </label>
                   </Row>
                   <Row>
-                    <Col md={10}>
+                    <Col md={10} className="errorMessage">
                       <Field
                         as="textarea"
-                        placeholder="Characteristics of area: "
+                        placeholder="eg. visibility of the ground: grassy, low surface visibility, high surface visibility, rocky etc"
                         name={`visibility`}
                         style={{ width: "500px" }}
                       ></Field>
                       <ErrorMessage
                         name={`visibility`}
-                        className="invalid-feedback"
+                        className="errorMessage"
                       />
                     </Col>
                   </Row>
-                  <Row>
-                    <label>
-                      If discussion of site specific issues, then summarise:
+                  <Row className="formRow">
+                    <label style={{ fontWeight: "600" }}>
+                      Site specific issues:
                     </label>
                   </Row>
                   <Row>
                     <Col md={{ span: 8 }}>
                       <Field
                         as="textarea"
-                        placeholder="Site issue summarize: "
+                        placeholder="Summarize the site specific issue if it has"
                         name={`siteIssue`}
                         style={{ width: "500px" }}
                       ></Field>
@@ -640,8 +660,8 @@ export default function HeritageInput(props) {
                       />
                     </Col>
                   </Row>
-                  <Row>
-                    <label>
+                  <Row className="formRow">
+                    <label style={{ fontWeight: "600" }}>
                       Was any Aboriginal Cultural Heritage identified?
                     </label>
                   </Row>
@@ -701,10 +721,10 @@ export default function HeritageInput(props) {
                     </div>
                   ) : (
                     <div>
-                      <Row>
+                      <Row className="formRow">
                         <Col>
-                          <label>
-                            If NO, are Project Activities cleared to proceed
+                          <label style={{ fontWeight: "600" }}>
+                            If no, are project activities cleared to proceed
                             immediately?
                           </label>
                         </Col>
@@ -742,8 +762,8 @@ export default function HeritageInput(props) {
                       </Row>
                     </div>
                   )}
-                  <Row>
-                    <label>
+                  <Row className="formRow">
+                    <label style={{ fontWeight: "600" }}>
                       The Cultural Heritage Field Officers warrant they have
                       traditional knowledge and authority for the Activity Area:
                     </label>
@@ -766,10 +786,12 @@ export default function HeritageInput(props) {
                                       <Field
                                         name={`heritageFieldOfficer.${index}.officerName`}
                                       ></Field>
-                                      <ErrorMessage
-                                        name={`heritageFieldOfficer.${index}.officerName`}
-                                        className="invalid-feedback"
-                                      />
+                                      <div className="errorMessage">
+                                        <ErrorMessage
+                                          name={`heritageFieldOfficer.${index}.officerName`}
+                                          className="invalid-feedback"
+                                        />
+                                      </div>
                                     </Col>
                                     <Col>
                                       <Bootform.Group>
@@ -830,8 +852,10 @@ export default function HeritageInput(props) {
                       )
                     }}
                   ></FieldArray>
-                  <Row>
-                    <label>Technical advisor (where attending):</label>
+                  <Row className="formRow">
+                    <label style={{ fontWeight: "600" }}>
+                      Technical advisor (where attending):
+                    </label>
                   </Row>
 
                   <FieldArray
@@ -884,8 +908,10 @@ export default function HeritageInput(props) {
                       )
                     }}
                   ></FieldArray>
-                  <Row>
-                    <label>Proponent Cultural Heritage Coordinator:</label>
+                  <Row className="formRow">
+                    <label style={{ fontWeight: "600" }}>
+                      Proponent Cultural Heritage Coordinator:
+                    </label>
                   </Row>
                   <FieldArray
                     name="coordinator"
