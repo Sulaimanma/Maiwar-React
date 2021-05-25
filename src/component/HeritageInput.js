@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { Col, Container, Row } from "react-bootstrap"
 import Button from "react-bootstrap/Button"
 import { Form as Bootform } from "react-bootstrap"
@@ -28,6 +28,25 @@ export default function HeritageInput(props) {
 
   const { latitude, longitude, fetchHeritages, setEnter, loading, setLoading } =
     props
+  // useEffect(() => {}, [])
+  // const officers = useMemo(() => {
+  //   const OfficerArr = officerSignature.map(async (officer) => {
+  //     try {
+  //       const SignatureImg = await Storage.put(
+  //         `img/${uuid()}${officer.name}`,
+  //         officer,
+  //         {
+  //           contentType: "image/png,image/jpeg,image/jpg",
+  //           level: "public",
+  //         }
+  //       )
+  //       return SignatureImg
+  //     } catch (error) {
+  //       console.log("error in mapping", error)
+  //     }
+  //   })
+  //   return OfficerArr
+  // }, [officerSignature])
   const schema = yup.object().shape({
     // terms: yup.bool().required().oneOf([true], "terms must be accepted"),
     //new scgema
@@ -132,131 +151,138 @@ export default function HeritageInput(props) {
   //Spinner
 
   const handleSubmitForm = async (json) => {
-    const Photokey = await Storage.put(
-      `img/${uuid()}${imageData.name}`,
-      imageData,
-      {
-        contentType: "image/png,image/jpeg,image/jpg",
-        level: "public",
-      }
+    // const Photokey = await Storage.put(
+    //   `img/${uuid()}${imageData.name}`,
+    //   imageData,
+    //   {
+    //     contentType: "image/png,image/jpeg,image/jpg",
+    //     level: "public",
+    //   }
+    // )
+    // const Videokey = await Storage.put(
+    //   `video/${uuid()}${videoData.name}`,
+    //   videoData,
+    //   {
+    //     contentType: "video/mp4",
+    //     level: "public",
+    //   }
+    // )
+
+    // const OfficerArr = officerSignature.map(async (officer) => {
+    //   try {
+    //     const SignatureImg = await Storage.put(
+    //       `img/${uuid()}${officer.name}`,
+    //       officer,
+    //       {
+    //         contentType: "image/png,image/jpeg,image/jpg",
+    //         level: "public",
+    //       }
+    //     )
+    //     return SignatureImg
+    //   } catch (error) {
+    //     console.log("error in mapping", error)
+    //   }
+    // })
+
+    // const AdvisorKey = await Storage.put(
+    //   `img/${uuid()}${advisorSignature.name}`,
+    //   advisorSignature,
+    //   {
+    //     contentType: "image/png,image/jpeg,image/jpg",
+    //     level: "public",
+    //   }
+    // )
+
+    // const coordinatorKey = await Storage.put(
+    //   `img/${uuid()}${coordinator.name}`,
+    //   coordinator,
+    //   {
+    //     contentType: "image/png,image/jpeg,image/jpg",
+    //     level: "public",
+    //   }
+    // )
+    const initialJSON = json
+
+    // initialJSON.photo = Photokey
+    // initialJSON.video = Videokey
+    // initialJSON.technicalAdvisor[0].advisorSignature = AdvisorKey
+    // initialJSON.coordinator[0].coordinatorSignature = coordinatorKey
+
+    // initialJSON.heritageFieldOfficer.map((officer, index) => {
+    //   OfficerArr[index].then((result) => {
+    //     const signatureImg = result.key
+    //     officer.officerSignature = signatureImg
+    //   })
+    // })
+
+    // //Submit
+    // var str = "officers"
+    // var object = {}
+
+    // setOfficerArray(initialJSON.heritageFieldOfficer)
+    // officerArray.length != 0 && (object[str] = officerArray)
+
+    // console.log("officerPre", object)
+    // console.log("officer")
+
+    // const createHeritageInput = {
+    //   id: uuid(),
+    //   surveyDate: initialJSON.surveyDate,
+    //   siteNumber: initialJSON.siteNumber,
+    //   GPSCoordinates: JSON.stringify(initialJSON.GPSCoordinates),
+    //   routeExaminedOrNot: initialJSON.routeExaminedOrNot,
+    //   examinedRouteLocation: initialJSON.examinedRouteLocation,
+    //   accessRouteCoordinate: JSON.stringify(initialJSON.accessRouteCoordinate),
+    //   inspectionPerson: initialJSON.inspectionPerson,
+    //   InspectionCarriedOut: initialJSON.InspectionCarriedOut,
+    //   photo: initialJSON.photo,
+    //   photoDescription: initialJSON.photoDescription,
+    //   video: initialJSON.video,
+    //   videoDescription: initialJSON.videoDescription,
+    //   visibility: initialJSON.visibility,
+    //   siteIssue: initialJSON.siteIssue,
+    //   identifiedOrNot: initialJSON.identifiedOrNot,
+    //   additionalComments: initialJSON.additionalComments,
+    //   clearedToProceed: initialJSON.clearedToProceed,
+    //   heritageFieldOfficer: JSON.stringify(object),
+    //   technicalAdvisor: JSON.stringify(initialJSON.technicalAdvisor),
+    //   coordinator: JSON.stringify(initialJSON.coordinator),
+    // }
+    console.log(
+      "到底变了没",
+      officerArray,
+      initialJSON.heritageFieldOfficer,
+      officerSignature
     )
-    const Videokey = await Storage.put(
-      `video/${uuid()}${videoData.name}`,
-      videoData,
-      {
-        contentType: "video/mp4",
-        level: "public",
-      }
-    )
+    // console.log("before submit", createHeritageInput.heritageFieldOfficer)
+    // const data = initialJSON.heritageFieldOfficer
+    // var obj = ""
+    // for (let i = 0; i < data.length; i++) {
+    //   obj = obj + JSON.stringify(data[i])
+    //   console.log("medium", obj)
+    // }
+    // console.log(
+    //   "final problem",
+    //   JSON.stringify(initialJSON.heritageFieldOfficer)
+    // )
+    // try {
+    //   await API.graphql(
+    //     graphqlOperation(createHeritages, { input: createHeritageInput })
+    //   )
+    //   // fetchHeritages()
+    //   //   .then(() => setLoading(false))
+    //   //   .then(() => setEnter(false))
+    //   //   .then(() => alert("upLoading hsa been done!"))
 
-    const OfficerArr = officerSignature.map(async (officer) => {
-      try {
-        const SignatureImg = await Storage.put(
-          `img/${uuid()}${officer.name}`,
-          officer,
-          {
-            contentType: "image/png,image/jpeg,image/jpg",
-            level: "public",
-          }
-        )
-        return SignatureImg
-      } catch (error) {
-        console.log("error in mapping", error)
-      }
-    })
-
-    const AdvisorKey = await Storage.put(
-      `img/${uuid()}${advisorSignature.name}`,
-      advisorSignature,
-      {
-        contentType: "image/png,image/jpeg,image/jpg",
-        level: "public",
-      }
-    )
-
-    const coordinatorKey = await Storage.put(
-      `img/${uuid()}${coordinator.name}`,
-      coordinator,
-      {
-        contentType: "image/png,image/jpeg,image/jpg",
-        level: "public",
-      }
-    )
-    try {
-      const initialJSON = JSON.parse(json)
-
-      initialJSON.photo = Photokey
-      initialJSON.video = Videokey
-      initialJSON.technicalAdvisor[0].advisorSignature = AdvisorKey
-      initialJSON.coordinator[0].coordinatorSignature = coordinatorKey
-
-      initialJSON.heritageFieldOfficer.map((officer, index) => {
-        OfficerArr[index].then((result) => {
-          const signatureImg = result.key
-          officer.officerSignature = signatureImg
-        })
-      })
-
-      //Submit
-      var str = "officers"
-      var object = {}
-      setOfficerArray(initialJSON.heritageFieldOfficer)
-
-      officerArray.length != 0 && (object[str] = officerArray)
-
-      console.log("officerPre", object)
-      console.log("officer")
-
-      const createHeritageInput = {
-        id: uuid(),
-        surveyDate: initialJSON.surveyDate,
-        siteNumber: initialJSON.siteNumber,
-        GPSCoordinates: JSON.stringify(initialJSON.GPSCoordinates),
-        routeExaminedOrNot: initialJSON.routeExaminedOrNot,
-        examinedRouteLocation: initialJSON.examinedRouteLocation,
-        accessRouteCoordinate: JSON.stringify(
-          initialJSON.accessRouteCoordinate
-        ),
-        inspectionPerson: initialJSON.inspectionPerson,
-        InspectionCarriedOut: initialJSON.InspectionCarriedOut,
-        photo: initialJSON.photo,
-        photoDescription: initialJSON.photoDescription,
-        video: initialJSON.video,
-        videoDescription: initialJSON.videoDescription,
-        visibility: initialJSON.visibility,
-        siteIssue: initialJSON.siteIssue,
-        identifiedOrNot: initialJSON.identifiedOrNot,
-        additionalComments: initialJSON.additionalComments,
-        clearedToProceed: initialJSON.clearedToProceed,
-        heritageFieldOfficer: JSON.stringify(object),
-        technicalAdvisor: JSON.stringify(initialJSON.technicalAdvisor),
-        coordinator: JSON.stringify(initialJSON.coordinator),
-      }
-      console.log("before submit", createHeritageInput.heritageFieldOfficer)
-      const data = initialJSON.heritageFieldOfficer
-      var obj = ""
-      for (let i = 0; i < data.length; i++) {
-        obj = obj + JSON.stringify(data[i])
-        console.log("medium", obj)
-      }
-      console.log(
-        "final problem",
-        JSON.stringify(initialJSON.heritageFieldOfficer)
-      )
-      await API.graphql(
-        graphqlOperation(createHeritages, { input: createHeritageInput })
-      )
-      // fetchHeritages()
-      //   .then(() => setLoading(false))
-      //   .then(() => setEnter(false))
-      //   .then(() => alert("upLoading hsa been done!"))
-
-      console.log("initialJSON", initialJSON)
-    } catch (error) {
-      console.log("error in submitting", error)
-    }
+    //   console.log("initialJSON", initialJSON)
+    // } catch (error) {
+    //   console.log("error in submitting", error)
+    // }
   }
-
+  const handleChangeSignature = (index, Officer, e) => {
+    const file = e.target.files[0]
+    setOfficerSignature([...officerSignature, file])
+  }
   return (
     <Container>
       <div
@@ -810,10 +836,11 @@ export default function HeritageInput(props) {
                                           className="position-relative"
                                           label="Signature:"
                                           onChange={(e) =>
-                                            setOfficerSignature([
-                                              ...officerSignature,
-                                              e.target.files[0],
-                                            ])
+                                            handleChangeSignature(
+                                              index,
+                                              officer,
+                                              e
+                                            )
                                           }
                                           accept="image/"
                                         />
@@ -975,7 +1002,7 @@ export default function HeritageInput(props) {
                   ></FieldArray>
 
                   {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
-                  {setJson(JSON.stringify(values, 0, 2))}
+                  {setJson(values)}
                   <Row style={{ marginTop: "6px" }}>
                     <Col>
                       <Button
