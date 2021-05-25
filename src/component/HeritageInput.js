@@ -246,10 +246,10 @@ export default function HeritageInput(props) {
       await API.graphql(
         graphqlOperation(createHeritages, { input: createHeritageInput })
       )
-      fetchHeritages()
-        .then(() => setLoading(false))
-        .then(() => setEnter(false))
-        .then(() => alert("upLoading hsa been done!"))
+      // fetchHeritages()
+      //   .then(() => setLoading(false))
+      //   .then(() => setEnter(false))
+      //   .then(() => alert("upLoading hsa been done!"))
 
       console.log("initialJSON", initialJSON)
     } catch (error) {
@@ -553,11 +553,14 @@ export default function HeritageInput(props) {
                       <Field
                         placeholder="Who conducted the inspection?"
                         name={`inspectionPerson`}
+                        style={{ marginLeft: "10px" }}
                       ></Field>
-                      <ErrorMessage
-                        name={`inspectionPerson`}
-                        className="invalid-feedback"
-                      />
+                      <div className="errorMessage">
+                        <ErrorMessage
+                          name={`inspectionPerson`}
+                          className="invalid-feedback"
+                        />
+                      </div>
                     </Col>
                   </Row>
                   <Row className="formRow">
@@ -568,12 +571,14 @@ export default function HeritageInput(props) {
                       <Field
                         placeholder="How was the Inspection carried out?"
                         name={`InspectionCarriedOut`}
-                        style={{ width: "400px" }}
+                        style={{ width: "400px", marginLeft: "10px" }}
                       ></Field>
-                      <ErrorMessage
-                        name={`InspectionCarriedOut`}
-                        className="invalid-feedback"
-                      />
+                      <div className="errorMessage">
+                        <ErrorMessage
+                          name={`InspectionCarriedOut`}
+                          className="invalid-feedback"
+                        />
+                      </div>
                     </Col>
                   </Row>
                   <Row style={{ fontWeight: "600" }} className="formRow">
@@ -592,7 +597,7 @@ export default function HeritageInput(props) {
                       <Field
                         placeholder="Description of the photo"
                         name={`photoDescription`}
-                        style={{ width: "400px" }}
+                        style={{ width: "400px", marginLeft: "10px" }}
                       ></Field>
                       <ErrorMessage
                         name={`photoDescription`}
@@ -616,7 +621,7 @@ export default function HeritageInput(props) {
                       <Field
                         placeholder="Description of the video: "
                         name={`videoDescription`}
-                        style={{ width: "400px" }}
+                        style={{ width: "400px", marginLeft: "10px" }}
                       ></Field>
 
                       <ErrorMessage
@@ -632,17 +637,19 @@ export default function HeritageInput(props) {
                     </label>
                   </Row>
                   <Row>
-                    <Col md={10} className="errorMessage">
+                    <Col md={10}>
                       <Field
                         as="textarea"
                         placeholder="eg. visibility of the ground: grassy, low surface visibility, high surface visibility, rocky etc"
                         name={`visibility`}
                         style={{ width: "500px" }}
                       ></Field>
-                      <ErrorMessage
-                        name={`visibility`}
-                        className="errorMessage"
-                      />
+                      <div className="errorMessage">
+                        <ErrorMessage
+                          name={`visibility`}
+                          className="errorMessage"
+                        />
+                      </div>
                     </Col>
                   </Row>
                   <Row className="formRow">

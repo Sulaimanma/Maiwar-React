@@ -34,7 +34,7 @@ function App() {
       )
       const heritageList = heritageData.data.listHeritagess.items.filter(
         function (place) {
-          return place.additionalComments !== ""
+          return place.GPSCoordinates !== ""
         }
       )
 
