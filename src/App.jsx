@@ -40,10 +40,11 @@ function App() {
 
       setHeritages(heritageList)
       console.log("heritages list", heritageData.data.listHeritagess.items)
+
       console.log(
         "new start",
         JSON.parse(
-          heritageData.data.listHeritagess.items[21].heritageFieldOfficer
+          heritageData.data.listHeritagess.items[5].heritageFieldOfficer
         )
       )
     } catch (error) {
@@ -58,10 +59,8 @@ function App() {
       setUser(authData)
     })
   }, [])
-  // var JSONGANG
-  // heritages.length !== 0 && (JSONGANG = JSON.parse(heritages.coordinator))
+
   console.log("heritages on the homepage!!!!!!!!!!!!!!!!!!!!!!!!!", heritages)
-  console.log("change heritages", heritages[32])
 
   return authState === AuthState.SignedIn && user ? (
     <div className="App" id="App">

@@ -187,7 +187,7 @@ body {
 /* Searchbar  */
 .mapboxgl-ctrl-top-right {
   position: absolute;
-  top: 48px;
+  top: 88px;
 }
 @media only screen and (max-width: 600px) {
   #logo {

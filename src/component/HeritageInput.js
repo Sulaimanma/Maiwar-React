@@ -201,10 +201,12 @@ export default function HeritageInput(props) {
       var str = "officers"
       var object = {}
       setOfficerArray(initialJSON.heritageFieldOfficer)
+
       officerArray.length != 0 && (object[str] = officerArray)
 
       console.log("officerPre", object)
       console.log("officer")
+
       const createHeritageInput = {
         id: uuid(),
         surveyDate: initialJSON.surveyDate,
@@ -237,7 +239,6 @@ export default function HeritageInput(props) {
         obj = obj + JSON.stringify(data[i])
         console.log("medium", obj)
       }
-
       console.log(
         "final problem",
         JSON.stringify(initialJSON.heritageFieldOfficer)
@@ -248,7 +249,7 @@ export default function HeritageInput(props) {
       fetchHeritages()
         .then(() => setLoading(false))
         .then(() => setEnter(false))
-        .then(() => Modal("upLoading hsa been done!"))
+        .then(() => alert("upLoading hsa been done!"))
 
       console.log("initialJSON", initialJSON)
     } catch (error) {
@@ -900,9 +901,8 @@ export default function HeritageInput(props) {
                                       <label>Name:</label>
                                       <Row>
                                         <Col>
-                                          {" "}
                                           <Field
-                                            placeholder="Advisor Name"
+                                            placeholder="Coordinator Name"
                                             name={`coordinator.${index}.coordinatorName`}
                                           ></Field>
                                         </Col>
@@ -939,7 +939,7 @@ export default function HeritageInput(props) {
 
                   {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
                   {setJson(JSON.stringify(values, 0, 2))}
-                  <Row className="justify-content-md-center">
+                  <Row style={{ marginTop: "6px" }}>
                     <Col>
                       <Button
                         variant="primary"
