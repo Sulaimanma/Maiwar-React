@@ -451,21 +451,25 @@ export default function HeritageInput(props) {
                   </Row>
 
                   {examined === "true" ? (
-                    <Row>
-                      <Col md={{ span: 8 }}>
+                    <>
+                      <Row>
                         <label style={{ fontWeight: "600" }}>
                           Existing access route examined location:
                         </label>
-                        <Field
-                          placeholder="Location"
-                          name={`examinedRouteLocation`}
-                        ></Field>
-                        <ErrorMessage
-                          name={`examinedRouteLocation`}
-                          className="invalid-feedback"
-                        />
-                      </Col>
-                    </Row>
+                      </Row>
+                      <Row className="formRow">
+                        <Col md={{ span: 8 }}>
+                          <Field
+                            placeholder="Location"
+                            name={`examinedRouteLocation`}
+                          ></Field>
+                          <ErrorMessage
+                            name={`examinedRouteLocation`}
+                            className="invalid-feedback"
+                          />
+                        </Col>
+                      </Row>
+                    </>
                   ) : (
                     <div>
                       <Row className="formRow">
