@@ -25,25 +25,7 @@ export default function HeritageInput(props) {
 
   const { latitude, longitude, fetchHeritages, setEnter, loading, setLoading } =
     props
-  // useEffect(() => {}, [])
-  // const officers = useMemo(() => {
-  //   const OfficerArr = officerSignature.map(async (officer) => {
-  //     try {
-  //       const SignatureImg = await Storage.put(
-  //         `img/${uuid()}${officer.name}`,
-  //         officer,
-  //         {
-  //           contentType: "image/png,image/jpeg,image/jpg",
-  //           level: "public",
-  //         }
-  //       )
-  //       return SignatureImg
-  //     } catch (error) {
-  //       console.log("error in mapping", error)
-  //     }
-  //   })
-  //   return OfficerArr
-  // }, [officerSignature])
+
   const schema = yup.object().shape({
     // terms: yup.bool().required().oneOf([true], "terms must be accepted"),
     //new scgema
@@ -148,6 +130,7 @@ export default function HeritageInput(props) {
   //Spinner
 
   const handleSubmitForm = async (json) => {
+    // Upload the media and get the key
     const Photokey = await Storage.put(
       `img/${uuid()}${imageData.name}`,
       imageData,
@@ -164,7 +147,7 @@ export default function HeritageInput(props) {
         level: "public",
       }
     )
-
+    // Upload the signature data and get an Array of keys
     const OfficerArr = officerSignature.map(async (officer) => {
       try {
         const SignatureImg = await Storage.put(
@@ -198,13 +181,14 @@ export default function HeritageInput(props) {
         level: "public",
       }
     )
+    //creating a new json which has the json values, to make an initial version of submit input
     const initialJSON = json
 
     initialJSON.photo = Photokey
     initialJSON.video = Videokey
     initialJSON.technicalAdvisor[0].advisorSignature = AdvisorKey
     initialJSON.coordinator[0].coordinatorSignature = coordinatorKey
-
+    //wait for iterating signing the signaure image key in the initialJson
     await initialJSON.heritageFieldOfficer.map((officer, index) => {
       OfficerArr[index].then((result) => {
         const signatureImg = result.key
@@ -240,14 +224,14 @@ export default function HeritageInput(props) {
         technicalAdvisor: JSON.stringify(initialJSON.technicalAdvisor),
         coordinator: JSON.stringify(initialJSON.coordinator),
       }
-
+      // submit the form
       await API.graphql(
         graphqlOperation(createHeritages, { input: createHeritageInput })
       )
-      // fetchHeritages()
-      //   .then(() => setLoading(false))
-      //   .then(() => setEnter(false))
-      //   .then(() => alert("upLoading hsa been done!"))
+      fetchHeritages()
+        .then(() => setLoading(false))
+        .then(() => setEnter(false))
+        .then(() => alert("upLoading hsa been done!"))
 
       console.log(
         "initialJSON.heritageFieldOfficer",
