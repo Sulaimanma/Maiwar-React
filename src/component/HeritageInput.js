@@ -280,8 +280,13 @@ export default function HeritageInput(props) {
     // }
   }
   const handleChangeSignature = (index, Officer, e) => {
+    var object = officerSignature
     const file = e.target.files[0]
-    setOfficerSignature([...officerSignature, file])
+    object[index] = file
+
+    console.log("objecttttttttttt", object)
+
+    object.length !== 0 && setOfficerSignature(object)
   }
   return (
     <Container>
