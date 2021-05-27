@@ -25,7 +25,9 @@ export default function HeritageInput(props) {
 
   const { latitude, longitude, fetchHeritages, setEnter, loading, setLoading } =
     props
-
+  useEffect(() => {
+    fetchHeritages()
+  }, [loading])
   const schema = yup.object().shape({
     // terms: yup.bool().required().oneOf([true], "terms must be accepted"),
     //new scgema
@@ -225,13 +227,13 @@ export default function HeritageInput(props) {
         coordinator: JSON.stringify(initialJSON.coordinator),
       }
       // submit the form
+      setLoading(true)
       await API.graphql(
         graphqlOperation(createHeritages, { input: createHeritageInput })
       )
-      fetchHeritages()
-        .then(() => setLoading(false))
-        .then(() => setEnter(false))
-        .then(() => alert("upLoading hsa been done!"))
+      setLoading(false)
+      setEnter(false)
+      alert("upLoading hsa been done!")
 
       console.log(
         "initialJSON.heritageFieldOfficer",

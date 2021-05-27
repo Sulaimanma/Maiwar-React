@@ -40,13 +40,6 @@ function App() {
 
       setHeritages(heritageList)
       console.log("heritages list", heritageData.data.listHeritagess.items)
-
-      console.log(
-        "new start",
-        JSON.parse(
-          heritageData.data.listHeritagess.items[5].heritageFieldOfficer
-        )
-      )
     } catch (error) {
       console.log("error on fetching heritages", error)
     }

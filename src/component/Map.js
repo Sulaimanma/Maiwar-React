@@ -202,40 +202,42 @@ export default function Map() {
 
   // Add the lcal DynamoDB data to the database
   //covert the json to Dynamo Json
-  const Converte = async (data) => {
-    try {
-      const DynamoData = await data.map((heritage, id) => ({
-        AudioName: heritage.properties.AudioName,
-        description: heritage.properties.description,
-        Icon: heritage.properties.Icon,
-        id: uuid(),
-        latitude: `${heritage.geometry.coordinates[1]}`,
-        longitude: `${heritage.geometry.coordinates[0]}`,
-        SceneToLoad: heritage.properties.SceneToLoad,
-        title: heritage.properties.title,
-        user: "Admin",
-        uuid: 2,
-        VideoName: heritage.properties.VideoName,
-        ImageName: "",
-      }))
+  // const Converte = async (data) => {
+  //   try {
+  //     const DynamoData = await data.map((heritage, id) => ({
+  //       AudioName: heritage.properties.AudioName,
+  //       description: heritage.properties.description,
+  //       Icon: heritage.properties.Icon,
+  //       id: uuid(),
+  //       latitude: `${heritage.geometry.coordinates[1]}`,
+  //       longitude: `${heritage.geometry.coordinates[0]}`,
+  //       SceneToLoad: heritage.properties.SceneToLoad,
+  //       title: heritage.properties.title,
+  //       user: "Admin",
+  //       uuid: 2,
+  //       VideoName: heritage.properties.VideoName,
+  //       ImageName: "",
+  //     }))
 
-      loadLocalData(DynamoData)
-    } catch (error) {
-      console.log("error on fetching heritages", error)
-    }
-  }
+  //     loadLocalData(DynamoData)
+  //   } catch (error) {
+  //     console.log("error on fetching heritages", error)
+  //   }
+  // }
+
   //Mapping the data into each heritage
-  const loadLocalData = (data) => {
-    data.map((heritage, id) => dataCreate(heritage))
-  }
+  // const loadLocalData = (data) => {
+  //   data.map((heritage, id) => dataCreate(heritage))
+  // }
+
   //Create the heritage into the database
-  const dataCreate = async (heritage) => {
-    try {
-      await API.graphql(graphqlOperation(createHeritages, { input: heritage }))
-    } catch (error) {
-      console.log("error happened during load local data to dynamoDB", error)
-    }
-  }
+  // const dataCreate = async (heritage) => {
+  //   try {
+  //     await API.graphql(graphqlOperation(createHeritages, { input: heritage }))
+  //   } catch (error) {
+  //     console.log("error happened during load local data to dynamoDB", error)
+  //   }
+  // }
 
   // add the local json to the database
   // useEffect(() => {
@@ -244,23 +246,42 @@ export default function Map() {
   // }, [])
 
   // Covert to Geojson
+  console.log("before converted to geojson", heritages[0])
   const covertGeojson = (data) => {
     if (data && data.length != 0) {
       const heritagesArray = data.map((heritage, id) => ({
         type: "Feature",
         properties: {
-          AudioName: heritage.AudioName,
-          Icon: heritage.Icon,
-          SceneToLoad: heritage.SceneToLoad,
-          VideoName: heritage.VideoName,
-          description: heritage.description,
-          title: heritage.title,
-          ImageName: heritage.ImageName,
+          InspectionCarriedOut: heritage.InspectionCarriedOut,
+          // accessRouteCoordinate: '[{"routeCoordinate":"route1"}]',
+          // additionalComments: "",
+          // clearedToProceed: false,
+          // coordinator:
+          //   '[{"coordinatorName":"Faiz","coordinatorSignature":{"key":"img/45fcb222-3c9d-424b-90ab-fac8a2f4289fscreen2.PNG"}}]',
+          // createdAt: "2021-05-26T08:45:43.850Z",
+          // examinedRouteLocation: "",
+          // heritageFieldOfficer:
+          //   '[{"officerName":"sulaiman","officerSignature":"img/6c7e2235-0647-4371-9428-3463283201e1mycommunitydirectoryPNG.PNG"},{"officerName":"Ryan","officerSignature":"img/c3571136-6ba8-4f81-80d3-a80983486859screen2.PNG"}]',
+          // id: "cf5f326a-d297-4064-801d-f642151ac0c4",
+          // identifiedOrNot: false,
+          // inspectionPerson: "Sulaiman",
+          photo: heritage.photo,
+          photoDescription: heritage.photoDescription,
+          // routeExaminedOrNot: false,
+          siteIssue: heritage.siteIssue,
+          // siteNumber: "dsfdsfdssdfds",
+          surveyDate: heritage.surveyDate,
+          // technicalAdvisor:
+          //   '[{"advisorSignature":{"key":"img/c7680429-9ed8-4fb1-8c3e-5515f2daed2ascreen3.PNG"},"advisorName":"Angela"}]',
+          // updatedAt: "2021-05-26T08:45:43.850Z",
+          video: heritage.video,
+          videoDescription: heritage.videoDescription,
+          visibility: heritage.visibility,
         },
         geometry: {
           coordinates: [
-            parseFloat(heritage.longitude),
-            parseFloat(heritage.latitude),
+            parseFloat(JSON.parse(heritage.GPSCoordinates)[0].easting),
+            parseFloat(JSON.parse(heritage.GPSCoordinates)[0].northing),
           ],
           type: "Point",
         },
@@ -283,7 +304,7 @@ export default function Map() {
   }, [heritages])
   var geoConvertedjson = null
   geojson && (geoConvertedjson = geojson)
-
+  console.log(geojson)
   const handleViewportChange = useCallback((viewpoint) => {
     setViewpoint(viewpoint)
   }, [])
@@ -322,7 +343,7 @@ export default function Map() {
           onViewportChange={handleViewportChange}
           mapStyle="mapbox://styles/guneriboi/ck2s4jkxp0vin1cnzzrgslsnm"
           //Define the interactive layer
-          // interactiveLayerIds={[unclusteredPointLayer.id]}
+          interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
           width="100%"
           height="100%"
@@ -343,7 +364,8 @@ export default function Map() {
           </div>
 
           {/* Load the Layer source data*/}
-          {/* {geoConvertedjson != null && (
+          {console.log("geoConvertedjson", geoConvertedjson)}
+          {geoConvertedjson != null && (
             <Source
               // id="heritages"
               type="geojson"
@@ -356,7 +378,7 @@ export default function Map() {
               <Layer {...clusterCountLayer} />
               <Layer {...unclusteredPointLayer} />
             </Source>
-          )} */}
+          )}
 
           {/* {geoConvertedjson != null && (
             <Pins data={geoConvertedjson} onClick={onClick} />
@@ -400,7 +422,7 @@ export default function Map() {
               />
             </Popup>
           )}
-          {/* {popup && clickInfo != null && (
+          {popup && clickInfo != null && (
             <Popup
               latitude={clickInfo.geometry.coordinates[1]}
               longitude={clickInfo.geometry.coordinates[0]}
@@ -411,18 +433,18 @@ export default function Map() {
             >
               {console.log(
                 "VideoURLLLLLLLLLLLLLLLLLL",
-                video(clickInfo.properties.VideoName).then((result) => {
+                video(clickInfo.properties.video).then((result) => {
                   setVideoUrl(result)
                 })
               )}
 
               <PopInfo
                 src={videoUrl}
-                description={clickInfo.properties.description}
-                title={clickInfo.properties.title}
+                description={clickInfo.properties.videoDescription}
+                title={clickInfo.properties.InspectionCarriedOut}
               />
             </Popup>
-          )} */}
+          )}
         </ReactMapGl>
       </div>
     </div>
