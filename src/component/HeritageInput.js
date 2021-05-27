@@ -11,6 +11,7 @@ import API, { graphqlOperation } from "@aws-amplify/api"
 import { createHeritages } from "../graphql/mutations"
 import Storage from "@aws-amplify/storage"
 import RingLoader from "react-spinners/RingLoader"
+import { Modal } from "bootstrap"
 
 export default function HeritageInput(props) {
   const [videoData, setVideoData] = useState("")
@@ -23,11 +24,16 @@ export default function HeritageInput(props) {
   const [identified, setIdentified] = useState("false")
   const [json, setJson] = useState()
 
-  const { latitude, longitude, fetchHeritages, setEnter, loading, setLoading } =
-    props
-  useEffect(() => {
-    fetchHeritages()
-  }, [loading])
+  const {
+    latitude,
+    longitude,
+    fetchHeritages,
+    setEnter,
+    loading,
+    setLoading,
+    enter,
+  } = props
+
   const schema = yup.object().shape({
     // terms: yup.bool().required().oneOf([true], "terms must be accepted"),
     //new scgema
@@ -87,8 +93,8 @@ export default function HeritageInput(props) {
     GPSCoordinates: [
       {
         datum: "",
-        easting: "",
-        northing: "",
+        easting: longitude,
+        northing: latitude,
       },
     ],
     routeExaminedOrNot: false,
@@ -132,6 +138,7 @@ export default function HeritageInput(props) {
   //Spinner
 
   const handleSubmitForm = async (json) => {
+    setEnter(false)
     // Upload the media and get the key
     const Photokey = await Storage.put(
       `img/${uuid()}${imageData.name}`,
@@ -186,8 +193,8 @@ export default function HeritageInput(props) {
     //creating a new json which has the json values, to make an initial version of submit input
     const initialJSON = json
 
-    initialJSON.photo = Photokey
-    initialJSON.video = Videokey
+    initialJSON.photo = Photokey.key
+    initialJSON.video = Videokey.key
     initialJSON.technicalAdvisor[0].advisorSignature = AdvisorKey
     initialJSON.coordinator[0].coordinatorSignature = coordinatorKey
     //wait for iterating signing the signaure image key in the initialJson
@@ -231,15 +238,9 @@ export default function HeritageInput(props) {
       await API.graphql(
         graphqlOperation(createHeritages, { input: createHeritageInput })
       )
-      setLoading(false)
-      setEnter(false)
-      alert("upLoading hsa been done!")
+      fetchHeritages().then(alert("upLoading hsa been done!"))
 
-      console.log(
-        "initialJSON.heritageFieldOfficer",
-        initialJSON.heritageFieldOfficer
-      )
-      console.log("before sumbmitt", createHeritageInput.heritageFieldOfficer)
+      console.log("before sumbmitt", createHeritageInput)
     } catch (error) {
       console.log("error in submitting", error)
     }
@@ -251,6 +252,7 @@ export default function HeritageInput(props) {
 
     object.length !== 0 && setOfficerSignature(object)
   }
+
   return (
     <Container>
       <div
@@ -262,734 +264,729 @@ export default function HeritageInput(props) {
           marginLeft: "14px",
         }}
       >
-        {loading ? (
-          <RingLoader />
-        ) : (
-          <div>
-            <div
-              style={{
-                textAlign: "center",
-                marginBottom: "18px",
-                paddingRight: "35px",
-              }}
-            >
-              <h4 style={{ fontWeight: "600" }}>
-                Cultural Heritage Inspection Form
-              </h4>
-            </div>
+        <div>
+          <div
+            style={{
+              textAlign: "center",
+              marginBottom: "18px",
+              paddingRight: "35px",
+            }}
+          >
+            <h4 style={{ fontWeight: "600" }}>
+              Cultural Heritage Inspection Form
+            </h4>
+          </div>
 
-            <Formik
-              validationSchema={schema}
-              // onSubmit={(values) => {
-              //   handleSubmitForm(values)
-              // }}
-              initialValues={initialValues}
-              render={({ values, handleSubmit }) => (
-                <Form>
-                  <Row className="formRow">
-                    <Col>
-                      <label style={{ fontWeight: "600" }}>Survey date:</label>
-                      <Field
-                        placeholder="Survey date:"
-                        name={`surveyDate`}
-                      ></Field>
+          <Formik
+            validationSchema={schema}
+            // onSubmit={(values) => {
+            //   handleSubmitForm(values)
+            // }}
+            initialValues={initialValues}
+            render={({ values, handleSubmit }) => (
+              <Form>
+                <Row className="formRow">
+                  <Col>
+                    <label style={{ fontWeight: "600" }}>Survey date:</label>
+                    <Field
+                      placeholder="Survey date:"
+                      name={`surveyDate`}
+                    ></Field>
 
-                      <Row>
-                        <Col className="errorMessage">
-                          <ErrorMessage
-                            name={`surveyDate`}
-                            className="invalid-feedback"
-                          />
-                        </Col>
-                      </Row>
-                    </Col>
-                    <Col>
-                      <label style={{ fontWeight: "600" }}>Site number:</label>
-                      <Field
-                        placeholder="Site number:"
-                        name={`siteNumber`}
-                      ></Field>
-                      <Row>
-                        <Col className="errorMessage">
-                          <ErrorMessage
-                            name={`siteNumber`}
-                            className="invalid-feedback"
-                          />
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                  <Row className="formRow">
-                    <label style={{ fontWeight: "600" }}>
-                      GPS coordinates of Survey Area:
-                    </label>
-                  </Row>
-
-                  <FieldArray
-                    name=" GPSCoordinates"
-                    render={(arrayHelpers) => {
-                      const GPSCoordinates = values.GPSCoordinates
-                      return (
-                        <div>
-                          {GPSCoordinates && GPSCoordinates.length > 0
-                            ? GPSCoordinates.map((coordinate, index) => (
-                                <div>
-                                  <Row
-                                    key={index}
-                                    style={{ width: "100%" }}
-                                    className="formRow"
-                                  >
-                                    <Col>
-                                      <label style={{ fontWeight: "500" }}>
-                                        Datum:
-                                      </label>
-                                      <Row>
-                                        <Col>
-                                          {" "}
-                                          <Field
-                                            placeholder="datum"
-                                            name={`GPSCoordinates.${index}.datum`}
-                                          ></Field>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col className="errorMessage">
-                                          <ErrorMessage
-                                            name={`GPSCoordinates.${index}.datum`}
-                                            className="errorMessage"
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                    <Col>
-                                      <label style={{ fontWeight: "500" }}>
-                                        Easting:
-                                      </label>
-                                      <Field
-                                        placeholder="easting"
-                                        name={`GPSCoordinates.${index}.easting`}
-                                      ></Field>
-                                      <Row>
-                                        <Col className="errorMessage">
-                                          <ErrorMessage
-                                            name={`GPSCoordinates.${index}.easting`}
-                                            className="invalid-feedback"
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                    <Col>
-                                      <label style={{ fontWeight: "500" }}>
-                                        Northing:
-                                      </label>
-                                      <Field
-                                        placeholder="northing"
-                                        name={`GPSCoordinates.${index}.northing`}
-                                      ></Field>
-                                      <Row>
-                                        <Col className="errorMessage">
-                                          <ErrorMessage
-                                            name={`GPSCoordinates.${index}.northing`}
-                                            className="invalid-feedback"
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                </div>
-                              ))
-                            : null}
-                        </div>
-                      )
-                    }}
-                  ></FieldArray>
-
-                  <Row className="formRow">
-                    <label style={{ fontWeight: "600" }}>
-                      Existing access route examined or not?
-                    </label>
-                  </Row>
-                  <Row
-                    onChange={(e) => {
-                      setExamined(e.target.value)
-                    }}
-                  >
-                    <Col md={1}>
-                      <label style={{ display: "block" }}>
-                        <Field
-                          type="radio"
-                          name="routeExaminedOrNot"
-                          value={`${true}`}
-                        />
-                        Yes
-                      </label>
-                      <ErrorMessage
-                        name={`routeExaminedOrNot`}
-                        className="invalid-feedback"
-                      />
-                    </Col>
-                    <Col>
-                      <label style={{ display: "block" }}>
-                        <Field
-                          type="radio"
-                          name="routeExaminedOrNot"
-                          value={`${false}`}
-                        />
-                        No
-                      </label>
-                      <ErrorMessage
-                        name={`routeExaminedOrNot`}
-                        className="invalid-feedback"
-                      />
-                    </Col>
-                  </Row>
-
-                  {examined === "true" ? (
-                    <>
-                      <Row>
-                        <label style={{ fontWeight: "600" }}>
-                          Existing access route examined location:
-                        </label>
-                      </Row>
-                      <Row className="formRow">
-                        <Col md={{ span: 8 }}>
-                          <Field
-                            placeholder="Location"
-                            name={`examinedRouteLocation`}
-                          ></Field>
-                          <ErrorMessage
-                            name={`examinedRouteLocation`}
-                            className="invalid-feedback"
-                          />
-                        </Col>
-                      </Row>
-                    </>
-                  ) : (
-                    <div>
-                      <Row className="formRow">
-                        <label style={{ fontWeight: "600" }}>
-                          Access route coordinates if no existing track:
-                        </label>
-                      </Row>
-
-                      <FieldArray
-                        name="accessRouteCoordinate"
-                        render={(arrayHelpers) => {
-                          const accessRouteCoordinate =
-                            values.accessRouteCoordinate
-                          return (
-                            <div>
-                              {accessRouteCoordinate &&
-                              accessRouteCoordinate.length > 0
-                                ? accessRouteCoordinate.map(
-                                    (coordinate, index) => (
-                                      <div>
-                                        <Row key={index}>
-                                          <Col>
-                                            <label
-                                              style={{ marginRight: "15px" }}
-                                            >{`Access route ${
-                                              index + 1
-                                            }:`}</label>
-                                            <Field
-                                              placeholder="routeCoordinate"
-                                              name={`accessRouteCoordinate.${index}.routeCoordinate`}
-                                            ></Field>
-                                            <ErrorMessage
-                                              name={`accessRouteCoordinate.${index}.routeCoordinate`}
-                                              className="invalid-feedback"
-                                            />
-                                          </Col>
-                                          <Col>
-                                            <AiFillDelete
-                                              style={{
-                                                color: "red",
-                                                cursor: "pointer",
-                                                fontSize: "27px",
-                                              }}
-                                              onClick={() =>
-                                                arrayHelpers.remove(index)
-                                              } // remove a route from the list
-                                            />
-                                          </Col>
-                                        </Row>
-                                      </div>
-                                    )
-                                  )
-                                : null}
-                              <Row>
-                                <Col>
-                                  <Button
-                                    variant="success"
-                                    size="sm"
-                                    block
-                                    onClick={() =>
-                                      arrayHelpers.push({
-                                        routeCoordinate: "",
-                                      })
-                                    } // insert an empty string at a position
-                                  >
-                                    Add a route
-                                  </Button>
-                                </Col>
-                              </Row>
-                            </div>
-                          )
-                        }}
-                      ></FieldArray>
-                    </div>
-                  )}
-                  <Row className="formRow">
-                    <Col>
-                      <label style={{ fontWeight: "600" }}>
-                        Who conducted the inspection?
-                      </label>
-                      <Field
-                        placeholder="Who conducted the inspection?"
-                        name={`inspectionPerson`}
-                        style={{ marginLeft: "10px" }}
-                      ></Field>
-                      <div className="errorMessage">
+                    <Row>
+                      <Col className="errorMessage">
                         <ErrorMessage
-                          name={`inspectionPerson`}
+                          name={`surveyDate`}
                           className="invalid-feedback"
                         />
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row className="formRow">
-                    <Col>
-                      <label style={{ fontWeight: "600" }}>
-                        How was the Inspection carried out?
-                      </label>
-                      <Field
-                        placeholder="How was the Inspection carried out?"
-                        name={`InspectionCarriedOut`}
-                        style={{ width: "400px", marginLeft: "10px" }}
-                      ></Field>
-                      <div className="errorMessage">
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col>
+                    <label style={{ fontWeight: "600" }}>Site number:</label>
+                    <Field
+                      placeholder="Site number:"
+                      name={`siteNumber`}
+                    ></Field>
+                    <Row>
+                      <Col className="errorMessage">
                         <ErrorMessage
-                          name={`InspectionCarriedOut`}
+                          name={`siteNumber`}
                           className="invalid-feedback"
                         />
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row style={{ fontWeight: "600" }} className="formRow">
-                    <Bootform.Group>
-                      <Bootform.File
-                        className="position-relative"
-                        label="Photographs: "
-                        onChange={(e) => setImageData(e.target.files[0])}
-                        accept="image/"
-                      />
-                    </Bootform.Group>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <label>Description of the photo: </label>
-                      <Field
-                        placeholder="Description of the photo"
-                        name={`photoDescription`}
-                        style={{ width: "400px", marginLeft: "10px" }}
-                      ></Field>
-                      <ErrorMessage
-                        name={`photoDescription`}
-                        className="invalid-feedback"
-                      />
-                    </Col>
-                  </Row>
-                  <Row style={{ fontWeight: "600" }} className="formRow">
-                    <Bootform.Group>
-                      <Bootform.File
-                        className="position-relative"
-                        label="Videos: "
-                        onChange={(e) => setVideoData(e.target.files[0])}
-                        accept="video"
-                      />
-                    </Bootform.Group>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <label>Description of the video: </label>
-                      <Field
-                        placeholder="Description of the video: "
-                        name={`videoDescription`}
-                        style={{ width: "400px", marginLeft: "10px" }}
-                      ></Field>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row className="formRow">
+                  <label style={{ fontWeight: "600" }}>
+                    GPS coordinates of Survey Area:
+                  </label>
+                </Row>
 
-                      <ErrorMessage
-                        name={`videoDescription`}
-                        className="invalid-feedback"
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row className="formRow">
-                    <label style={{ fontWeight: "600" }}>
-                      Characteristics of area
-                    </label>
-                  </Row>
-                  <Row>
-                    <Col md={10}>
-                      <Field
-                        as="textarea"
-                        placeholder="eg. visibility of the ground: grassy, low surface visibility, high surface visibility, rocky etc"
-                        name={`visibility`}
-                        style={{ width: "500px" }}
-                      ></Field>
-                      <div className="errorMessage">
-                        <ErrorMessage
-                          name={`visibility`}
-                          className="errorMessage"
-                        />
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row className="formRow">
-                    <label style={{ fontWeight: "600" }}>
-                      Site specific issues:
-                    </label>
-                  </Row>
-                  <Row>
-                    <Col md={{ span: 8 }}>
-                      <Field
-                        as="textarea"
-                        placeholder="Summarize the site specific issue if it has"
-                        name={`siteIssue`}
-                        style={{ width: "500px" }}
-                      ></Field>
-                      <ErrorMessage
-                        name={`siteIssue`}
-                        className="invalid-feedback"
-                      />
-                    </Col>
-                  </Row>
-                  <Row className="formRow">
-                    <label style={{ fontWeight: "600" }}>
-                      Was any Aboriginal Cultural Heritage identified?
-                    </label>
-                  </Row>
-                  <Row
-                    onChange={(e) => {
-                      setIdentified(e.target.value)
-                    }}
-                  >
-                    <Col md={1}>
-                      <label>
-                        <Field
-                          type="radio"
-                          name="identifiedOrNot"
-                          value={`${true}`}
-                        />
-                        Yes
-                      </label>
-                      <ErrorMessage
-                        name={`identifiedOrNot`}
-                        className="invalid-feedback"
-                      />
-                    </Col>
-                    <Col>
-                      {" "}
-                      <label>
-                        <Field
-                          type="radio"
-                          name="identifiedOrNot"
-                          value={`${false}`}
-                        />
-                        No
-                      </label>
-                      <ErrorMessage
-                        name={`identifiedOrNot`}
-                        className="invalid-feedback"
-                      />
-                    </Col>
-                  </Row>
-                  {identified === "true" ? (
-                    <div>
-                      <Row>
-                        <label>Please add additional comments:</label>
-                      </Row>
-                      <Row>
-                        <Col md={{ span: 8 }}>
-                          <Field
-                            as="textarea"
-                            placeholder="Recommendations "
-                            name={`additionalComments`}
-                          ></Field>
-                          <ErrorMessage
-                            name={`additionalComments`}
-                            className="invalid-feedback"
-                          />
-                        </Col>
-                      </Row>
-                    </div>
-                  ) : (
-                    <div>
-                      <Row className="formRow">
-                        <Col>
-                          <label style={{ fontWeight: "600" }}>
-                            If no, are project activities cleared to proceed
-                            immediately?
-                          </label>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col md={1}>
-                          {" "}
-                          <label>
-                            <Field
-                              type="radio"
-                              name="clearedToProceed"
-                              value={`${true}`}
-                            />
-                            Yes
-                          </label>
-                          <ErrorMessage
-                            name={`clearedToProceed`}
-                            className="invalid-feedback"
-                          />
-                        </Col>
-                        <Col>
-                          <label>
-                            <Field
-                              type="radio"
-                              name="clearedToProceed"
-                              value={`${false}`}
-                            />
-                            No
-                          </label>
-                          <ErrorMessage
-                            name={`clearedToProceed`}
-                            className="invalid-feedback"
-                          />
-                        </Col>
-                      </Row>
-                    </div>
-                  )}
-                  <Row className="formRow">
-                    <label style={{ fontWeight: "600" }}>
-                      The Cultural Heritage Field Officers warrant they have
-                      traditional knowledge and authority for the Activity Area:
-                    </label>
-                  </Row>
-                  <FieldArray
-                    name="heritageFieldOfficer"
-                    render={(arrayHelpers) => {
-                      const heritageFieldOfficer = values.heritageFieldOfficer
-                      return (
-                        <div>
-                          {heritageFieldOfficer &&
-                          heritageFieldOfficer.length > 0
-                            ? heritageFieldOfficer.map((officer, index) => (
-                                <div>
-                                  <Row key={index}>
-                                    <Col>
-                                      <label style={{ marginRight: "15px" }}>
-                                        Name in full:
-                                      </label>
-                                      <Field
-                                        name={`heritageFieldOfficer.${index}.officerName`}
-                                      ></Field>
-                                      <div className="errorMessage">
+                <FieldArray
+                  name=" GPSCoordinates"
+                  render={(arrayHelpers) => {
+                    const GPSCoordinates = values.GPSCoordinates
+                    return (
+                      <div>
+                        {GPSCoordinates && GPSCoordinates.length > 0
+                          ? GPSCoordinates.map((coordinate, index) => (
+                              <div>
+                                <Row
+                                  key={index}
+                                  style={{ width: "100%" }}
+                                  className="formRow"
+                                >
+                                  <Col>
+                                    <label style={{ fontWeight: "500" }}>
+                                      Datum:
+                                    </label>
+                                    <Row>
+                                      <Col>
+                                        {" "}
+                                        <Field
+                                          placeholder="datum"
+                                          name={`GPSCoordinates.${index}.datum`}
+                                        ></Field>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col className="errorMessage">
                                         <ErrorMessage
-                                          name={`heritageFieldOfficer.${index}.officerName`}
+                                          name={`GPSCoordinates.${index}.datum`}
+                                          className="errorMessage"
+                                        />
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                  <Col>
+                                    <label style={{ fontWeight: "500" }}>
+                                      Easting:
+                                    </label>
+                                    <Field
+                                      placeholder={`${longitude}`}
+                                      name={`GPSCoordinates.${index}.easting`}
+                                    ></Field>
+                                    <Row>
+                                      <Col className="errorMessage">
+                                        <ErrorMessage
+                                          name={`GPSCoordinates.${index}.easting`}
                                           className="invalid-feedback"
                                         />
-                                      </div>
-                                    </Col>
-                                    <Col>
-                                      <Bootform.Group>
-                                        <Bootform.File
-                                          className="position-relative"
-                                          label="Signature:"
-                                          onChange={(e) =>
-                                            handleChangeSignature(
-                                              index,
-                                              officer,
-                                              e
-                                            )
-                                          }
-                                          accept="image/"
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                  <Col>
+                                    <label style={{ fontWeight: "500" }}>
+                                      Northing:
+                                    </label>
+                                    <Field
+                                      placeholder={`${latitude}`}
+                                      name={`GPSCoordinates.${index}.northing`}
+                                    ></Field>
+                                    <Row>
+                                      <Col className="errorMessage">
+                                        <ErrorMessage
+                                          name={`GPSCoordinates.${index}.northing`}
+                                          className="invalid-feedback"
                                         />
-                                      </Bootform.Group>
-                                    </Col>
-                                    <Col>
-                                      <AiFillDelete
-                                        style={{
-                                          color: "red",
-                                          cursor: "pointer",
-                                          fontSize: "27px",
-                                          marginTop: "23px",
-                                        }}
-                                        onClick={(e) => {
-                                          arrayHelpers.remove(index)
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              </div>
+                            ))
+                          : null}
+                      </div>
+                    )
+                  }}
+                ></FieldArray>
 
-                                          setOfficerSignature(
-                                            officerSignature.filter(
-                                              (item, id) => id !== index
-                                            )
-                                          )
-                                        }} // remove a route from the list
+                <Row className="formRow">
+                  <label style={{ fontWeight: "600" }}>
+                    Existing access route examined or not?
+                  </label>
+                </Row>
+                <Row
+                  onChange={(e) => {
+                    setExamined(e.target.value)
+                  }}
+                >
+                  <Col md={1}>
+                    <label style={{ display: "block" }}>
+                      <Field
+                        type="radio"
+                        name="routeExaminedOrNot"
+                        value={`${true}`}
+                      />
+                      Yes
+                    </label>
+                    <ErrorMessage
+                      name={`routeExaminedOrNot`}
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                  <Col>
+                    <label style={{ display: "block" }}>
+                      <Field
+                        type="radio"
+                        name="routeExaminedOrNot"
+                        value={`${false}`}
+                      />
+                      No
+                    </label>
+                    <ErrorMessage
+                      name={`routeExaminedOrNot`}
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                </Row>
+
+                {examined === "true" ? (
+                  <>
+                    <Row>
+                      <label style={{ fontWeight: "600" }}>
+                        Existing access route examined location:
+                      </label>
+                    </Row>
+                    <Row className="formRow">
+                      <Col md={{ span: 8 }}>
+                        <Field
+                          placeholder="Location"
+                          name={`examinedRouteLocation`}
+                        ></Field>
+                        <ErrorMessage
+                          name={`examinedRouteLocation`}
+                          className="invalid-feedback"
+                        />
+                      </Col>
+                    </Row>
+                  </>
+                ) : (
+                  <div>
+                    <Row className="formRow">
+                      <label style={{ fontWeight: "600" }}>
+                        Access route coordinates if no existing track:
+                      </label>
+                    </Row>
+
+                    <FieldArray
+                      name="accessRouteCoordinate"
+                      render={(arrayHelpers) => {
+                        const accessRouteCoordinate =
+                          values.accessRouteCoordinate
+                        return (
+                          <div>
+                            {accessRouteCoordinate &&
+                            accessRouteCoordinate.length > 0
+                              ? accessRouteCoordinate.map(
+                                  (coordinate, index) => (
+                                    <div>
+                                      <Row key={index}>
+                                        <Col>
+                                          <label
+                                            style={{ marginRight: "15px" }}
+                                          >{`Access route ${
+                                            index + 1
+                                          }:`}</label>
+                                          <Field
+                                            placeholder="routeCoordinate"
+                                            name={`accessRouteCoordinate.${index}.routeCoordinate`}
+                                          ></Field>
+                                          <ErrorMessage
+                                            name={`accessRouteCoordinate.${index}.routeCoordinate`}
+                                            className="invalid-feedback"
+                                          />
+                                        </Col>
+                                        <Col>
+                                          <AiFillDelete
+                                            style={{
+                                              color: "red",
+                                              cursor: "pointer",
+                                              fontSize: "27px",
+                                            }}
+                                            onClick={() =>
+                                              arrayHelpers.remove(index)
+                                            } // remove a route from the list
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  )
+                                )
+                              : null}
+                            <Row>
+                              <Col>
+                                <Button
+                                  variant="success"
+                                  size="sm"
+                                  block
+                                  onClick={() =>
+                                    arrayHelpers.push({
+                                      routeCoordinate: "",
+                                    })
+                                  } // insert an empty string at a position
+                                >
+                                  Add a route
+                                </Button>
+                              </Col>
+                            </Row>
+                          </div>
+                        )
+                      }}
+                    ></FieldArray>
+                  </div>
+                )}
+                <Row className="formRow">
+                  <Col>
+                    <label style={{ fontWeight: "600" }}>
+                      Who conducted the inspection?
+                    </label>
+                    <Field
+                      placeholder="Who conducted the inspection?"
+                      name={`inspectionPerson`}
+                      style={{ marginLeft: "10px" }}
+                    ></Field>
+                    <div className="errorMessage">
+                      <ErrorMessage
+                        name={`inspectionPerson`}
+                        className="invalid-feedback"
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row className="formRow">
+                  <Col>
+                    <label style={{ fontWeight: "600" }}>
+                      How was the Inspection carried out?
+                    </label>
+                    <Field
+                      placeholder="How was the Inspection carried out?"
+                      name={`InspectionCarriedOut`}
+                      style={{ width: "400px", marginLeft: "10px" }}
+                    ></Field>
+                    <div className="errorMessage">
+                      <ErrorMessage
+                        name={`InspectionCarriedOut`}
+                        className="invalid-feedback"
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row style={{ fontWeight: "600" }} className="formRow">
+                  <Bootform.Group>
+                    <Bootform.File
+                      className="position-relative"
+                      label="Photographs: "
+                      onChange={(e) => setImageData(e.target.files[0])}
+                      accept="image/"
+                    />
+                  </Bootform.Group>
+                </Row>
+                <Row>
+                  <Col>
+                    <label>Description of the photo: </label>
+                    <Field
+                      placeholder="Description of the photo"
+                      name={`photoDescription`}
+                      style={{ width: "400px", marginLeft: "10px" }}
+                    ></Field>
+                    <ErrorMessage
+                      name={`photoDescription`}
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                </Row>
+                <Row style={{ fontWeight: "600" }} className="formRow">
+                  <Bootform.Group>
+                    <Bootform.File
+                      className="position-relative"
+                      label="Videos: "
+                      onChange={(e) => setVideoData(e.target.files[0])}
+                      accept="video"
+                    />
+                  </Bootform.Group>
+                </Row>
+                <Row>
+                  <Col>
+                    <label>Description of the video: </label>
+                    <Field
+                      placeholder="Description of the video: "
+                      name={`videoDescription`}
+                      style={{ width: "400px", marginLeft: "10px" }}
+                    ></Field>
+
+                    <ErrorMessage
+                      name={`videoDescription`}
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                </Row>
+
+                <Row className="formRow">
+                  <label style={{ fontWeight: "600" }}>
+                    Characteristics of area
+                  </label>
+                </Row>
+                <Row>
+                  <Col md={10}>
+                    <Field
+                      as="textarea"
+                      placeholder="eg. visibility of the ground: grassy, low surface visibility, high surface visibility, rocky etc"
+                      name={`visibility`}
+                      style={{ width: "500px" }}
+                    ></Field>
+                    <div className="errorMessage">
+                      <ErrorMessage
+                        name={`visibility`}
+                        className="errorMessage"
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row className="formRow">
+                  <label style={{ fontWeight: "600" }}>
+                    Site specific issues:
+                  </label>
+                </Row>
+                <Row>
+                  <Col md={{ span: 8 }}>
+                    <Field
+                      as="textarea"
+                      placeholder="Summarize the site specific issue if it has"
+                      name={`siteIssue`}
+                      style={{ width: "500px" }}
+                    ></Field>
+                    <ErrorMessage
+                      name={`siteIssue`}
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                </Row>
+                <Row className="formRow">
+                  <label style={{ fontWeight: "600" }}>
+                    Was any Aboriginal Cultural Heritage identified?
+                  </label>
+                </Row>
+                <Row
+                  onChange={(e) => {
+                    setIdentified(e.target.value)
+                  }}
+                >
+                  <Col md={1}>
+                    <label>
+                      <Field
+                        type="radio"
+                        name="identifiedOrNot"
+                        value={`${true}`}
+                      />
+                      Yes
+                    </label>
+                    <ErrorMessage
+                      name={`identifiedOrNot`}
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                  <Col>
+                    {" "}
+                    <label>
+                      <Field
+                        type="radio"
+                        name="identifiedOrNot"
+                        value={`${false}`}
+                      />
+                      No
+                    </label>
+                    <ErrorMessage
+                      name={`identifiedOrNot`}
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                </Row>
+                {identified === "true" ? (
+                  <div>
+                    <Row>
+                      <label>Please add additional comments:</label>
+                    </Row>
+                    <Row>
+                      <Col md={{ span: 8 }}>
+                        <Field
+                          as="textarea"
+                          placeholder="Recommendations "
+                          name={`additionalComments`}
+                        ></Field>
+                        <ErrorMessage
+                          name={`additionalComments`}
+                          className="invalid-feedback"
+                        />
+                      </Col>
+                    </Row>
+                  </div>
+                ) : (
+                  <div>
+                    <Row className="formRow">
+                      <Col>
+                        <label style={{ fontWeight: "600" }}>
+                          If no, are project activities cleared to proceed
+                          immediately?
+                        </label>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md={1}>
+                        {" "}
+                        <label>
+                          <Field
+                            type="radio"
+                            name="clearedToProceed"
+                            value={`${true}`}
+                          />
+                          Yes
+                        </label>
+                        <ErrorMessage
+                          name={`clearedToProceed`}
+                          className="invalid-feedback"
+                        />
+                      </Col>
+                      <Col>
+                        <label>
+                          <Field
+                            type="radio"
+                            name="clearedToProceed"
+                            value={`${false}`}
+                          />
+                          No
+                        </label>
+                        <ErrorMessage
+                          name={`clearedToProceed`}
+                          className="invalid-feedback"
+                        />
+                      </Col>
+                    </Row>
+                  </div>
+                )}
+                <Row className="formRow">
+                  <label style={{ fontWeight: "600" }}>
+                    The Cultural Heritage Field Officers warrant they have
+                    traditional knowledge and authority for the Activity Area:
+                  </label>
+                </Row>
+                <FieldArray
+                  name="heritageFieldOfficer"
+                  render={(arrayHelpers) => {
+                    const heritageFieldOfficer = values.heritageFieldOfficer
+                    return (
+                      <div>
+                        {heritageFieldOfficer && heritageFieldOfficer.length > 0
+                          ? heritageFieldOfficer.map((officer, index) => (
+                              <div>
+                                <Row key={index}>
+                                  <Col>
+                                    <label style={{ marginRight: "15px" }}>
+                                      Name in full:
+                                    </label>
+                                    <Field
+                                      name={`heritageFieldOfficer.${index}.officerName`}
+                                    ></Field>
+                                    <div className="errorMessage">
+                                      <ErrorMessage
+                                        name={`heritageFieldOfficer.${index}.officerName`}
+                                        className="invalid-feedback"
                                       />
-                                    </Col>
-                                  </Row>
-                                </div>
-                              ))
-                            : null}
-                          <Row style={{ marginTop: "5px" }}>
-                            <Col>
-                              <Button
-                                variant="success"
-                                size="sm"
-                                block
-                                onClick={() =>
-                                  arrayHelpers.push({
-                                    officerName: "",
-                                    officerSignature: "",
-                                  })
-                                } // insert an empty string at a position
-                              >
-                                Add a Officer
-                              </Button>
-                            </Col>
-                          </Row>
-                        </div>
-                      )
-                    }}
-                  ></FieldArray>
-                  <Row className="formRow">
-                    <label style={{ fontWeight: "600" }}>
-                      Technical advisor (where attending):
-                    </label>
-                  </Row>
+                                    </div>
+                                  </Col>
+                                  <Col>
+                                    <Bootform.Group>
+                                      <Bootform.File
+                                        className="position-relative"
+                                        label="Signature:"
+                                        onChange={(e) =>
+                                          handleChangeSignature(
+                                            index,
+                                            officer,
+                                            e
+                                          )
+                                        }
+                                        accept="image/"
+                                      />
+                                    </Bootform.Group>
+                                  </Col>
+                                  <Col>
+                                    <AiFillDelete
+                                      style={{
+                                        color: "red",
+                                        cursor: "pointer",
+                                        fontSize: "27px",
+                                        marginTop: "23px",
+                                      }}
+                                      onClick={(e) => {
+                                        arrayHelpers.remove(index)
 
-                  <FieldArray
-                    name="technicalAdvisor"
-                    render={(arrayHelpers) => {
-                      const technicalAdvisor = values.technicalAdvisor
-                      return (
-                        <div>
-                          {technicalAdvisor && technicalAdvisor.length > 0
-                            ? technicalAdvisor.map((advisor, index) => (
-                                <div>
-                                  <Row key={index} style={{ width: "100%" }}>
-                                    <Col>
-                                      <label>Name:</label>
-                                      <Row>
-                                        <Col>
-                                          {" "}
-                                          <Field
-                                            placeholder="Advisor Name"
-                                            name={`technicalAdvisor.${index}.advisorName`}
-                                          ></Field>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col className="errorMessage">
-                                          <ErrorMessage
-                                            name={`technicalAdvisor.${index}.advisorName`}
-                                            className="errorMessage"
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                    <Col>
-                                      <Bootform.Group>
-                                        <Bootform.File
-                                          className="position-relative"
-                                          label="Signature:"
-                                          onChange={(e) =>
-                                            setAdvisor(e.target.files[0])
-                                          }
-                                          accept="image/"
+                                        setOfficerSignature(
+                                          officerSignature.filter(
+                                            (item, id) => id !== index
+                                          )
+                                        )
+                                      }} // remove a route from the list
+                                    />
+                                  </Col>
+                                </Row>
+                              </div>
+                            ))
+                          : null}
+                        <Row style={{ marginTop: "5px" }}>
+                          <Col>
+                            <Button
+                              variant="success"
+                              size="sm"
+                              block
+                              onClick={() =>
+                                arrayHelpers.push({
+                                  officerName: "",
+                                  officerSignature: "",
+                                })
+                              } // insert an empty string at a position
+                            >
+                              Add a Officer
+                            </Button>
+                          </Col>
+                        </Row>
+                      </div>
+                    )
+                  }}
+                ></FieldArray>
+                <Row className="formRow">
+                  <label style={{ fontWeight: "600" }}>
+                    Technical advisor (where attending):
+                  </label>
+                </Row>
+
+                <FieldArray
+                  name="technicalAdvisor"
+                  render={(arrayHelpers) => {
+                    const technicalAdvisor = values.technicalAdvisor
+                    return (
+                      <div>
+                        {technicalAdvisor && technicalAdvisor.length > 0
+                          ? technicalAdvisor.map((advisor, index) => (
+                              <div>
+                                <Row key={index} style={{ width: "100%" }}>
+                                  <Col>
+                                    <label>Name:</label>
+                                    <Row>
+                                      <Col>
+                                        {" "}
+                                        <Field
+                                          placeholder="Advisor Name"
+                                          name={`technicalAdvisor.${index}.advisorName`}
+                                        ></Field>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col className="errorMessage">
+                                        <ErrorMessage
+                                          name={`technicalAdvisor.${index}.advisorName`}
+                                          className="errorMessage"
                                         />
-                                      </Bootform.Group>
-                                    </Col>
-                                  </Row>
-                                </div>
-                              ))
-                            : null}
-                        </div>
-                      )
-                    }}
-                  ></FieldArray>
-                  <Row className="formRow">
-                    <label style={{ fontWeight: "600" }}>
-                      Proponent Cultural Heritage Coordinator:
-                    </label>
-                  </Row>
-                  <FieldArray
-                    name="coordinator"
-                    render={(arrayHelpers) => {
-                      const coordinator = values.coordinator
-                      return (
-                        <div>
-                          {coordinator && coordinator.length > 0
-                            ? coordinator.map((coordinator, index) => (
-                                <div>
-                                  <Row key={index} style={{ width: "100%" }}>
-                                    <Col>
-                                      <label>Name:</label>
-                                      <Row>
-                                        <Col>
-                                          <Field
-                                            placeholder="Coordinator Name"
-                                            name={`coordinator.${index}.coordinatorName`}
-                                          ></Field>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col className="errorMessage">
-                                          <ErrorMessage
-                                            name={`coordinator.${index}.coordinatorName`}
-                                            className="errorMessage"
-                                          />
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                    <Col>
-                                      <Bootform.Group>
-                                        <Bootform.File
-                                          className="position-relative"
-                                          label="Signature:"
-                                          onChange={(e) =>
-                                            setCoordinator(e.target.files[0])
-                                          }
-                                          accept="image/"
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                  <Col>
+                                    <Bootform.Group>
+                                      <Bootform.File
+                                        className="position-relative"
+                                        label="Signature:"
+                                        onChange={(e) =>
+                                          setAdvisor(e.target.files[0])
+                                        }
+                                        accept="image/"
+                                      />
+                                    </Bootform.Group>
+                                  </Col>
+                                </Row>
+                              </div>
+                            ))
+                          : null}
+                      </div>
+                    )
+                  }}
+                ></FieldArray>
+                <Row className="formRow">
+                  <label style={{ fontWeight: "600" }}>
+                    Proponent Cultural Heritage Coordinator:
+                  </label>
+                </Row>
+                <FieldArray
+                  name="coordinator"
+                  render={(arrayHelpers) => {
+                    const coordinator = values.coordinator
+                    return (
+                      <div>
+                        {coordinator && coordinator.length > 0
+                          ? coordinator.map((coordinator, index) => (
+                              <div>
+                                <Row key={index} style={{ width: "100%" }}>
+                                  <Col>
+                                    <label>Name:</label>
+                                    <Row>
+                                      <Col>
+                                        <Field
+                                          placeholder="Coordinator Name"
+                                          name={`coordinator.${index}.coordinatorName`}
+                                        ></Field>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col className="errorMessage">
+                                        <ErrorMessage
+                                          name={`coordinator.${index}.coordinatorName`}
+                                          className="errorMessage"
                                         />
-                                      </Bootform.Group>
-                                    </Col>
-                                  </Row>
-                                </div>
-                              ))
-                            : null}
-                        </div>
-                      )
-                    }}
-                  ></FieldArray>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                  <Col>
+                                    <Bootform.Group>
+                                      <Bootform.File
+                                        className="position-relative"
+                                        label="Signature:"
+                                        onChange={(e) =>
+                                          setCoordinator(e.target.files[0])
+                                        }
+                                        accept="image/"
+                                      />
+                                    </Bootform.Group>
+                                  </Col>
+                                </Row>
+                              </div>
+                            ))
+                          : null}
+                      </div>
+                    )
+                  }}
+                ></FieldArray>
 
-                  {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
-                  {setJson(values)}
-                  <Row style={{ marginTop: "6px" }}>
-                    <Col>
-                      <Button
-                        variant="primary"
-                        // type="submit"
+                {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
+                {setJson(values)}
+                <Row style={{ marginTop: "6px" }}>
+                  <Col>
+                    <Button
+                      variant="primary"
+                      // type="submit"
 
-                        onClick={() => {
-                          handleSubmitForm(json)
-                        }}
-                      >
-                        Submit form
-                      </Button>
-                    </Col>
-                  </Row>
-                </Form>
-              )}
-            />
-          </div>
-        )}
+                      onClick={() => {
+                        handleSubmitForm(json)
+                      }}
+                    >
+                      Submit form
+                    </Button>
+                  </Col>
+                </Row>
+              </Form>
+            )}
+          />
+        </div>
       </div>
     </Container>
   )

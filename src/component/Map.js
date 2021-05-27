@@ -96,52 +96,8 @@ export default function Map() {
   //Video function to play the video according to the Video Name
   const video = async (VideoName) => {
     try {
-      const previousVideoChange = [
-        "Camp_Man_Kneel_Carving_Fire",
-        "Camp_Man_Woman_Fire_Flyover",
-        "Camp_ManThree_Shield_Fire",
-        "Camp_Woman_Two_Fire_Yarn",
-        "Corroboree_Elder_Man_Fire",
-        "Corroboree_Man_Woman_Fire_Spin",
-        "Ducks",
-        "Gathering Bush",
-        "Gathering Mangroves",
-        "Gathering Stream",
-        "Goanna_Bush_Stream_Walking",
-        "Kangaroo_Bush_Graze",
-        "Kangaroo_Grass_Stays",
-        "Kangaroo_Three_Stream_Fight1",
-        "Man_Group_River_Spearfishing",
-        "Man_River_Canoe_Crossing",
-        "Man_Three_River_Canoe_PanShot",
-        "Man_Walking_Group_Spears_Shields_Grass_Emu",
-        "Man_Walking_Shield_Spear_Morning",
-        "Man_Walking_Spears_Shields_River",
-        "ManThree_River_Canoe",
-        "Men_Three_Spearfish_DroppedSpear1",
-        "Men_Three_Spearfish_DroppedSpear2",
-        "Men_Three_Spearfish_DroppedSpear3",
-        "Midden",
-        "Pelican_Flying_Water_Low_SeeIntoRiver",
-        "Possum_Kangaroo_Tree_River_Bush",
-        "River_Bass_Loop",
-        "Tournament",
-        "Woman_Flyover_Birds_Emu",
-        "Woman_Tree_Dillybag_PurpleFlowers",
-        "Woman_Tree_Dillybag1",
-        "Woman_Two_Tree_Dillybag1",
-        "Woman_WaterStream_Goanna_Coolamon1",
-      ]
-      if (VideoName === "Ducks" || VideoName === "Gathering Bush") {
-        var path =
-          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
-          "Camp_Bush_Children_Running.mp4"
-      } else if (previousVideoChange.includes(VideoName)) {
-        var path =
-          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
-          VideoName +
-          ".mp4"
-      } else if (VideoName.length != 0) {
+      console.log("videoURL FOR REAL", VideoName)
+      if (VideoName.length != 0) {
         var path = await Storage.get(`${VideoName}`, {
           level: "public",
         })
@@ -341,7 +297,7 @@ export default function Map() {
           {...viewpoint}
           mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
           onViewportChange={handleViewportChange}
-          mapStyle="mapbox://styles/guneriboi/ck2s4jkxp0vin1cnzzrgslsnm"
+          mapStyle="mapbox://styles/guneriboi/ckp69hfy90ibu18pimha653fd"
           //Define the interactive layer
           interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
@@ -411,6 +367,9 @@ export default function Map() {
               anchor="right"
               color="black"
               captureScroll={true}
+              dynamicPosition={false}
+              captureScroll={true}
+              captureDrag={false}
             >
               <HeritageInput
                 longitude={marker.longitude}
@@ -430,6 +389,9 @@ export default function Map() {
               closeOnClick={false}
               onClose={() => setPopup(false)}
               anchor="bottom"
+              dynamicPosition={true}
+              captureScroll={true}
+              captureDrag={false}
             >
               {console.log(
                 "VideoURLLLLLLLLLLLLLLLLLL",
@@ -440,7 +402,7 @@ export default function Map() {
 
               <PopInfo
                 src={videoUrl}
-                description={clickInfo.properties.videoDescription}
+                description={clickInfo.properties.visibility}
                 title={clickInfo.properties.InspectionCarriedOut}
               />
             </Popup>
