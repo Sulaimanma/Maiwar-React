@@ -28,6 +28,7 @@ export const createHeritages = /* GraphQL */ `
       heritageFieldOfficer
       technicalAdvisor
       coordinator
+      revised
       createdAt
       updatedAt
     }
@@ -60,6 +61,7 @@ export const updateHeritages = /* GraphQL */ `
       heritageFieldOfficer
       technicalAdvisor
       coordinator
+      revised
       createdAt
       updatedAt
     }
@@ -92,6 +94,7 @@ export const deleteHeritages = /* GraphQL */ `
       heritageFieldOfficer
       technicalAdvisor
       coordinator
+      revised
       createdAt
       updatedAt
     }

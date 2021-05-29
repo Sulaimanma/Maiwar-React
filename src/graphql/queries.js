@@ -25,6 +25,7 @@ export const getHeritages = /* GraphQL */ `
       heritageFieldOfficer
       technicalAdvisor
       coordinator
+      revised
       createdAt
       updatedAt
     }
@@ -59,6 +60,7 @@ export const listHeritagess = /* GraphQL */ `
         heritageFieldOfficer
         technicalAdvisor
         coordinator
+        revised
         createdAt
         updatedAt
       }
