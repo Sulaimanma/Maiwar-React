@@ -232,6 +232,7 @@ export default function HeritageInput(props) {
         heritageFieldOfficer: JSON.stringify(initialJSON.heritageFieldOfficer),
         technicalAdvisor: JSON.stringify(initialJSON.technicalAdvisor),
         coordinator: JSON.stringify(initialJSON.coordinator),
+        revised: true,
       }
       // submit the form
       setLoading(true)
