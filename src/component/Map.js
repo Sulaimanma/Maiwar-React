@@ -88,7 +88,15 @@ export default function Map() {
   //Spinner state control
   const [loading, setLoading] = useState(false)
   //Display  different historic map
-  const [historicMap, setHistoricMap] = useState({ url: "", coordinates: [] })
+  const [historicMap, setHistoricMap] = useState({
+    url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/GreaterMeeanjinMap1798.jpg",
+    coordinates: [
+      [152.962180055, -27.362875842],
+      [153.114333621, -27.362876876],
+      [153.114334004, -27.579233505],
+      [152.962180049, -27.579232338],
+    ],
+  })
   //Map1798
 
   const map1798 = {
