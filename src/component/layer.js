@@ -15,7 +15,7 @@ export const clusterLayer = {
     ],
     "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40],
   },
-};
+}
 
 export const clusterCountLayer = {
   id: "cluster-count",
@@ -27,9 +27,9 @@ export const clusterCountLayer = {
     "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
     "text-size": 12,
   },
-};
+}
 
-const color = "11b4da";
+const color = "11b4da"
 export const unclusteredPointLayer = {
   id: "unclustered-point",
   type: "circle",
@@ -41,4 +41,11 @@ export const unclusteredPointLayer = {
     "circle-stroke-width": 4,
     "circle-stroke-color": "#fff",
   },
-};
+}
+export const mapRasterLayer = {
+  id: "mapRaster",
+  type: "raster",
+  source: "mapRaster",
+
+  paint: { "raster-opacity": 1 },
+}

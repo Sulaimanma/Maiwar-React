@@ -8,6 +8,7 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "aws-amplify": "^3.3.27",
+    "baseui": "^9.115.3",
     "bootstrap": "^5.0.0",
     "clone-deep": "^4.0.1",
     "csv": "^5.5.0",
@@ -29,6 +30,8 @@
     "react-spinners": "^0.10.6",
     "react-transition-group": "^4.4.1",
     "sass": "^1.32.8",
+    "styletron-engine-atomic": "^1.4.8",
+    "styletron-react": "^6.0.1",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.1",
     "yup": "^0.32.9"

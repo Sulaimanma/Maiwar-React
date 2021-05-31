@@ -16,7 +16,12 @@ import ReactMapGl, {
 import "mapbox-gl/dist/mapbox-gl.css"
 import mapboxgl from "mapbox-gl"
 import "./map.css"
-import { clusterLayer, clusterCountLayer, unclusteredPointLayer } from "./layer"
+import {
+  clusterLayer,
+  clusterCountLayer,
+  unclusteredPointLayer,
+  mapRasterLayer,
+} from "./layer"
 
 import PopInfo from "./PopInfo"
 // import Pins from "./Pins"
@@ -28,12 +33,23 @@ import { v4 as uuid } from "uuid"
 import { HeritageContext } from "./Helpers/Context"
 import HeritageInput from "./HeritageInput"
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css"
+import { Client as Styletron } from "styletron-engine-atomic"
+import { Provider as StyletronProvider } from "styletron-react"
+import { LightTheme, BaseProvider, styled } from "baseui"
+import { Tabs, Tab, ORIENTATION, FILL } from "baseui/tabs-motion"
 import Geocoder from "react-map-gl-geocoder"
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker"
 import Storage from "@aws-amplify/storage"
 
 mapboxgl.workerClass = MapboxWorker
+const engine = new Styletron()
+const Centered = styled("div", {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100%",
+})
 
 export default function Map() {
   const mapRef = useRef()
@@ -67,9 +83,34 @@ export default function Map() {
   const [videoUrl, setVideoUrl] = useState("")
   const [audioUrl, setAudioUrl] = useState("")
   const [imageUrl, setImageUrl] = useState("")
+  //Tabs Control
+  const [activeKey, setActiveKey] = useState("0")
   //Spinner state control
   const [loading, setLoading] = useState(false)
+  //Display  different historic map
+  const [historicMap, setHistoricMap] = useState({ url: "", coordinates: [] })
+  //Map1798
 
+  const map1798 = {
+    url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/GreaterMeeanjinMap1798.jpg",
+    coordinates: [
+      [152.962180055, -27.362875842],
+      [153.114333621, -27.362876876],
+      [153.114334004, -27.579233505],
+      [152.962180049, -27.579232338],
+    ],
+  }
+  //Map1858
+
+  const map1858 = {
+    url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/cad-map-brisbane-1858.jpg",
+    coordinates: [
+      [153.009207, -27.442971],
+      [153.055312, -27.448955],
+      [153.045831, -27.505405],
+      [152.999768, -27.499457],
+    ],
+  }
   // Fetch the Layer GeoJson data for display
   // useEffect(() => {
   //   /* global fetch */
@@ -291,6 +332,7 @@ export default function Map() {
         outerContainerId={"body"}
         locateUser={locateUser}
       />
+
       <div id="map">
         <ReactMapGl
           ref={mapRef}
@@ -304,6 +346,61 @@ export default function Map() {
           width="100%"
           height="100%"
         >
+          <div className="tabs">
+            <StyletronProvider value={engine}>
+              <BaseProvider theme={LightTheme}>
+                <Centered>
+                  <Tabs
+                    activeKey={activeKey}
+                    onChange={({ activeKey }) => setActiveKey(activeKey)}
+                    orientation={ORIENTATION.vertical}
+                    activateOnFocus
+                    fill={FILL.fixed}
+                  >
+                    <Tab
+                      title="Brisbane 1798"
+                      onClick={() => {
+                        setHistoricMap({
+                          url: map1798.url,
+                          coordinates: map1798.coordinates,
+                        })
+                        setViewpoint({
+                          ...viewpoint,
+                          longitude: 153.03807,
+                          latitude: -27.4710546,
+                          zoom: 11.5,
+                          transitionInterpolator: new FlyToInterpolator({
+                            speed: 1.7,
+                          }),
+                          transitionDuration: "auto",
+                        })
+                      }}
+                    ></Tab>
+                    <Tab
+                      title="Brisbane 1858"
+                      onClick={() => {
+                        setHistoricMap({
+                          url: map1858.url,
+                          coordinates: map1858.coordinates,
+                        })
+                        setViewpoint({
+                          ...viewpoint,
+                          longitude: 153.02754,
+                          latitude: -27.4741875,
+                          zoom: 13,
+                          transitionInterpolator: new FlyToInterpolator({
+                            speed: 1.7,
+                          }),
+                          transitionDuration: "auto",
+                        })
+                      }}
+                    ></Tab>
+                    {console.log(historicMap)}
+                  </Tabs>
+                </Centered>
+              </BaseProvider>
+            </StyletronProvider>
+          </div>
           <Geocoder
             mapRef={mapRef}
             marker={false}
@@ -335,6 +432,16 @@ export default function Map() {
               <Layer {...unclusteredPointLayer} />
             </Source>
           )}
+          <Source
+            // maxzoom={22}
+            // minzoom={9}
+            id="mapRaster"
+            type="image"
+            url={historicMap.url}
+            coordinates={historicMap.coordinates}
+          >
+            <Layer {...mapRasterLayer}></Layer>
+          </Source>
 
           {/* {geoConvertedjson != null && (
             <Pins data={geoConvertedjson} onClick={onClick} />
