@@ -140,14 +140,17 @@ export default function HeritageInput(props) {
   const handleSubmitForm = async (json) => {
     setEnter(false)
     // Upload the media and get the key
-    const Photokey = await Storage.put(
-      `img/${uuid()}${imageData.name}`,
-      imageData,
-      {
-        contentType: "image/png,image/jpeg,image/jpg",
-        level: "public",
-      }
-    )
+    var Photokey
+    imageData.length != 0
+      ? (Photokey = await Storage.put(
+          `img/${uuid()}${imageData.name}`,
+          imageData,
+          {
+            contentType: "image/png,image/jpeg,image/jpg",
+            level: "public",
+          }
+        ))
+      : (Photokey = { key: "" })
     const Videokey = await Storage.put(
       `video/${uuid()}${videoData.name}`,
       videoData,
