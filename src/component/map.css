@@ -189,6 +189,7 @@ body {
   position: absolute;
   top: 88px;
 }
+/* tabs */
 .tabs {
   position: absolute;
   z-index: 1;
@@ -200,3 +201,5 @@ body {
     font-size: 0.5em;
   }
 }
+/* 
+IOS switch */

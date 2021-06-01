@@ -354,6 +354,13 @@ export default function Map() {
           width="100%"
           height="100%"
         >
+          <Geocoder
+            mapRef={mapRef}
+            marker={false}
+            onViewportChange={handleGeocoderViewportChange}
+            mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
+            position="top-right"
+          />
           <div className="tabs">
             <StyletronProvider value={engine}>
               <BaseProvider theme={LightTheme}>
@@ -376,7 +383,9 @@ export default function Map() {
                           ...viewpoint,
                           longitude: 153.03807,
                           latitude: -27.4710546,
-                          zoom: 11.5,
+                          zoom: 12.3,
+                          pitch: 60,
+                          bearing: 20,
                           transitionInterpolator: new FlyToInterpolator({
                             speed: 1.7,
                           }),
@@ -395,7 +404,9 @@ export default function Map() {
                           ...viewpoint,
                           longitude: 153.02754,
                           latitude: -27.4741875,
-                          zoom: 13,
+                          zoom: 14,
+                          pitch: 60,
+                          bearing: 40,
                           transitionInterpolator: new FlyToInterpolator({
                             speed: 1.7,
                           }),
@@ -409,13 +420,16 @@ export default function Map() {
               </BaseProvider>
             </StyletronProvider>
           </div>
-          <Geocoder
-            mapRef={mapRef}
-            marker={false}
-            onViewportChange={handleGeocoderViewportChange}
-            mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
-            position="top-right"
-          />
+          {/* <div class="toggleWrapper">
+            <input
+              type="checkbox"
+              name="toggle1"
+              class="mobileToggle"
+              id="toggle1"
+              checked
+            ></input>
+            <label for="toggle1"></label>
+          </div> */}
           <div id="logo">
             <img
               src="https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/img/logo.svg"
