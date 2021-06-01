@@ -15,6 +15,7 @@ import { listHeritagess } from "./graphql/queries"
 import { HeritageContext } from "./component/Helpers/Context"
 import { Route } from "react-router"
 import HeritageInput from "./component/HeritageInput"
+import { Button } from "react-bootstrap"
 
 Amplify.configure(awsconfig)
 
@@ -61,14 +62,16 @@ function App() {
       <HeritageContext.Provider value={{ heritages, fetchHeritages }}>
         <div className="signOut">
           <div className="greeting">Hello, {user.attributes.email}</div>
-          <button
+          <Button
+            variant="secondary"
+            size="sm"
             className="signoutBtn"
             onClick={() => {
               Auth.signOut()
             }}
           >
             Sign Out
-          </button>
+          </Button>
         </div>
         {/* map module */}
         <Route exact path="/test" component={HeritageInput}></Route>

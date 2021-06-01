@@ -37,6 +37,7 @@ import { Client as Styletron } from "styletron-engine-atomic"
 import { Provider as StyletronProvider } from "styletron-react"
 import { LightTheme, BaseProvider, styled } from "baseui"
 import { Tabs, Tab, ORIENTATION, FILL } from "baseui/tabs-motion"
+import { Checkbox, STYLE_TYPE } from "baseui/checkbox"
 import Geocoder from "react-map-gl-geocoder"
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker"
@@ -44,12 +45,6 @@ import Storage from "@aws-amplify/storage"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
-const Centered = styled("div", {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100%",
-})
 
 export default function Map() {
   const mapRef = useRef()
@@ -88,6 +83,7 @@ export default function Map() {
   //Spinner state control
   const [loading, setLoading] = useState(false)
   //Display  different historic map
+
   const [historicMap, setHistoricMap] = useState({
     url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/GreaterMeeanjinMap1798.jpg",
     coordinates: [
@@ -97,6 +93,9 @@ export default function Map() {
       [152.962180049, -27.579232338],
     ],
   })
+  //Toggle button of 3d map
+  const [checkboxes, setCheckboxes] = React.useState([false, false])
+  const [threeD, setThreeD] = useState(false)
   //Map1798
 
   const map1798 = {
@@ -128,6 +127,20 @@ export default function Map() {
   //     .then((res) => res.json())
   //     .then((json) => setAllData(json))
   // }, [])
+
+  useEffect(() => {
+    checkboxes[0]
+      ? setViewpoint({
+          ...viewpoint,
+          pitch: 75,
+          bearing: 0,
+        })
+      : setViewpoint({
+          ...viewpoint,
+          pitch: 0,
+          bearing: 0,
+        })
+  }, [checkboxes[0]])
 
   const onClick = useCallback((event) => {
     // Destructure features from the click event data
@@ -364,59 +377,57 @@ export default function Map() {
           <div className="tabs">
             <StyletronProvider value={engine}>
               <BaseProvider theme={LightTheme}>
-                <Centered>
-                  <Tabs
-                    activeKey={activeKey}
-                    onChange={({ activeKey }) => setActiveKey(activeKey)}
-                    orientation={ORIENTATION.vertical}
-                    activateOnFocus
-                    fill={FILL.fixed}
-                  >
-                    <Tab
-                      title="Brisbane 1798"
-                      onClick={() => {
-                        setHistoricMap({
-                          url: map1798.url,
-                          coordinates: map1798.coordinates,
-                        })
-                        setViewpoint({
-                          ...viewpoint,
-                          longitude: 153.03807,
-                          latitude: -27.4710546,
-                          zoom: 12.3,
-                          pitch: 60,
-                          bearing: 20,
-                          transitionInterpolator: new FlyToInterpolator({
-                            speed: 1.7,
-                          }),
-                          transitionDuration: "auto",
-                        })
-                      }}
-                    ></Tab>
-                    <Tab
-                      title="Brisbane 1858"
-                      onClick={() => {
-                        setHistoricMap({
-                          url: map1858.url,
-                          coordinates: map1858.coordinates,
-                        })
-                        setViewpoint({
-                          ...viewpoint,
-                          longitude: 153.02754,
-                          latitude: -27.4741875,
-                          zoom: 14,
-                          pitch: 60,
-                          bearing: 40,
-                          transitionInterpolator: new FlyToInterpolator({
-                            speed: 1.7,
-                          }),
-                          transitionDuration: "auto",
-                        })
-                      }}
-                    ></Tab>
-                    {console.log(historicMap)}
-                  </Tabs>
-                </Centered>
+                <Tabs
+                  activeKey={activeKey}
+                  onChange={({ activeKey }) => setActiveKey(activeKey)}
+                  orientation={ORIENTATION.vertical}
+                  activateOnFocus
+                  fill={FILL.fixed}
+                >
+                  <Tab
+                    title="Brisbane 1798"
+                    onClick={() => {
+                      setHistoricMap({
+                        url: map1798.url,
+                        coordinates: map1798.coordinates,
+                      })
+                      setViewpoint({
+                        ...viewpoint,
+                        longitude: 153.03807,
+                        latitude: -27.4710546,
+                        zoom: 12.3,
+                        pitch: 60,
+                        bearing: 20,
+                        transitionInterpolator: new FlyToInterpolator({
+                          speed: 1.7,
+                        }),
+                        transitionDuration: "auto",
+                      })
+                    }}
+                  ></Tab>
+                  <Tab
+                    title="Brisbane 1858"
+                    onClick={() => {
+                      setHistoricMap({
+                        url: map1858.url,
+                        coordinates: map1858.coordinates,
+                      })
+                      setViewpoint({
+                        ...viewpoint,
+                        longitude: 153.02754,
+                        latitude: -27.4741875,
+                        zoom: 14,
+                        pitch: 60,
+                        bearing: 40,
+                        transitionInterpolator: new FlyToInterpolator({
+                          speed: 1.7,
+                        }),
+                        transitionDuration: "auto",
+                      })
+                    }}
+                  ></Tab>
+                  {console.log(historicMap)}
+                </Tabs>
               </BaseProvider>
             </StyletronProvider>
           </div>
@@ -437,7 +448,39 @@ export default function Map() {
             />
             <h1>VIRTUAL SONGLINES</h1>
           </div>
-
+          <div className="Toggle3d" style={{ width: "150px" }}>
+            <StyletronProvider value={engine}>
+              <BaseProvider theme={LightTheme}>
+                <React.Fragment>
+                  <Checkbox
+                    checked={checkboxes[0]}
+                    onChange={(e) => {
+                      const nextCheckboxes = [...checkboxes]
+                      nextCheckboxes[0] = e.currentTarget.checked
+                      setCheckboxes(nextCheckboxes)
+                    }}
+                    checkmarkType={STYLE_TYPE.toggle_round}
+                    overrides={{
+                      Label: {
+                        style: ({ $theme }) => ({
+                          color: "white",
+                        }),
+                      },
+                      Checkmark: {
+                        style: ({ $checked, $theme }) => ({
+                          backgroundColor: $checked
+                            ? $theme.colors.accent
+                            : $theme.colors.warning,
+                        }),
+                      },
+                    }}
+                  >
+                    3D terrain
+                  </Checkbox>
+                </React.Fragment>
+              </BaseProvider>
+            </StyletronProvider>
+          </div>
           {/* Load the Layer source data*/}
           {console.log("geoConvertedjson", geoConvertedjson)}
           {geoConvertedjson != null && (

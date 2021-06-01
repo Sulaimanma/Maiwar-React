@@ -2,9 +2,12 @@
   position: fixed;
   right: 0px;
   z-index: 17;
+  width: fit-content;
 }
 .greeting {
   color: white;
+  position: relative;
+  right: 10%;
 }
 amplify-sign-out {
   background: green;
@@ -14,14 +17,13 @@ amplify-button .button {
   background: black !important;
 }
 .signoutBtn {
-  height: 24px;
-  width: 100px;
   position: absolute;
-  right: 0%;
-  font: white;
-  font-size: medium;
-  border: none;
-  background: grey;
-  margin-top: 3px;
+  right: 10%;
+  height: 28px;
+  margin-top: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   cursor: pointer;
 }
