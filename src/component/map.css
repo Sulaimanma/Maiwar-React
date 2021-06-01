@@ -168,7 +168,7 @@ body {
   font-size: 1.15em;
 }
 .bm-menu-wrap {
-  background: #000;
+  background: rgb(31, 40, 24, 0);
 }
 /* Morph shape necessary with bubble or elastic */
 .bm-morph-shape {
@@ -182,7 +182,7 @@ body {
 
 /* Styling of overlay */
 .bm-overlay {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgb(31, 40, 24, 0.3);
 }
 /* Searchbar  */
 .mapboxgl-ctrl-top-right {
@@ -203,8 +203,53 @@ body {
   height: 20px;
 }
 @media only screen and (max-width: 600px) {
-  #logo {
-    font-size: 0.5em;
+  /* burger menu div */
+  .bm-menu-wrap {
+    background: rgb(31, 40, 24, 0);
+    width: 37% !important;
+  }
+  .bm-menu {
+    background: #000;
+    padding: 2.5em 1.5em 0;
+    font-size: 14px !important;
+  }
+  .bm-item-list {
+    margin-top: 5px;
+  }
+  .bm-cross-button {
+    display: none;
+  }
+  /* Position and sizing of clickable cross button */
+  .bm-burger-button {
+    position: fixed;
+    width: 46px;
+    height: 25px;
+    left: 23px;
+    top: 8px;
+    cursor: pointer;
+  }
+  .logoText {
+    display: none;
+  }
+
+  #logo img {
+    display: none;
+  }
+  .Toggle3d {
+    position: fixed;
+    z-index: 996;
+    top: 24px;
+    right: 65px;
+    height: 20px;
+  }
+
+  .mapboxgl-ctrl-geocoder {
+    top: -41px;
+    left: -16px;
+
+    width: 122%;
+    height: 44px;
+    font-size: 13px;
   }
 }
 /* 

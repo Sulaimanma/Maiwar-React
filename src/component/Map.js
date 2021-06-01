@@ -446,7 +446,7 @@ export default function Map() {
               src="https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/img/logo.svg"
               alt="LOGO"
             />
-            <h1>VIRTUAL SONGLINES</h1>
+            <h1 className="logoText">VIRTUAL SONGLINES</h1>
           </div>
           <div className="Toggle3d" style={{ width: "150px" }}>
             <StyletronProvider value={engine}>
@@ -534,7 +534,7 @@ export default function Map() {
               latitude={marker.latitude}
               longitude={marker.longitude}
               closeButton={!loading}
-              closeOnClick={false}
+              closeOnClick={true}
               onClose={() => setEnter(false)}
               anchor="right"
               color="black"
