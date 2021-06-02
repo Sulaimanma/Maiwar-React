@@ -46,6 +46,7 @@ function App() {
   }
 
   //Load the user information
+
   useEffect(() => {
     return onAuthUIStateChange((nextAuthState, authData) => {
       setAuthState(nextAuthState)
