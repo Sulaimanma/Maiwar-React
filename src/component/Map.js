@@ -158,7 +158,6 @@ export default function Map() {
   //Video function to play the video according to the Video Name
   const video = async (VideoName) => {
     try {
-      console.log("videoURL FOR REAL", VideoName)
       if (VideoName.length != 0) {
         var path = await Storage.get(`${VideoName}`, {
           level: "public",
@@ -264,7 +263,7 @@ export default function Map() {
   // }, [])
 
   // Covert to Geojson
-  console.log("before converted to geojson", heritages[0])
+
   const covertGeojson = (data) => {
     if (data && data.length != 0) {
       const heritagesArray = data.map((heritage, id) => ({
@@ -322,14 +321,13 @@ export default function Map() {
   }, [heritages])
   var geoConvertedjson = null
   geojson && (geoConvertedjson = geojson)
-  console.log(geojson)
+
   const handleViewportChange = useCallback((viewpoint) => {
     setViewpoint(viewpoint)
   }, [])
 
   const handleGeocoderViewportChange = useCallback(
     (newViewport) => {
-      console.log("New viewpoint", newViewport)
       setMarker({
         longitude: newViewport.longitude,
         latitude: newViewport.latitude,
@@ -426,7 +424,6 @@ export default function Map() {
                       })
                     }}
                   ></Tab>
-                  {console.log(historicMap)}
                 </Tabs>
               </BaseProvider>
             </StyletronProvider>
@@ -482,7 +479,7 @@ export default function Map() {
             </StyletronProvider>
           </div>
           {/* Load the Layer source data*/}
-          {console.log("geoConvertedjson", geoConvertedjson)}
+
           {geoConvertedjson != null && (
             <Source
               // id="heritages"

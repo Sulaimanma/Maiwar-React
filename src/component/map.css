@@ -252,5 +252,7 @@ body {
     font-size: 13px;
   }
 }
-/* 
-IOS switch */
+/* Ipad */
+@media only screen and (max-width: 800px) {
+  /* burger menu div */
+}

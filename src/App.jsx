@@ -40,7 +40,6 @@ function App() {
       )
 
       setHeritages(heritageList)
-      console.log("heritages list", heritageData.data.listHeritagess.items)
     } catch (error) {
       console.log("error on fetching heritages", error)
     }
