@@ -58,8 +58,8 @@ export default function HistoricMap(props) {
       zoom: 13.5,
       pitch: 30,
       bearing: 0,
-      longitude: 153.03807,
-      latitude: -27.4710546,
+      longitude: 153.03107,
+      latitude: -27.4680546,
     },
     {
       name: "Brisbane 1823",
@@ -127,6 +127,18 @@ export default function HistoricMap(props) {
             ></Tab>
           )
         })}
+        <Tab
+          title="Now"
+          onClick={() => {
+            setHistoricMap({
+              url: "",
+              coordinates: "",
+            })
+            setViewpoint({
+              ...viewpoint,
+            })
+          }}
+        ></Tab>
       </Tabs>
     </>
   )
