@@ -1,12 +1,5 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
-import ReactMapGl, { FlyToInterpolator } from "react-map-gl"
+import React, { useState } from "react"
+import { FlyToInterpolator } from "react-map-gl"
 import { Tabs, Tab, ORIENTATION, FILL } from "baseui/tabs-motion"
 
 export default function HistoricMap(props) {
