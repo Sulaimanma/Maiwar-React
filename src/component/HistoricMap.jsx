@@ -146,6 +146,19 @@ export default function HistoricMap(props) {
       pitch: 60,
       bearing: 40,
     },
+    {
+      name: "Birrarung 1834",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Birrarung+1834.jpg",
+      coordinates: [
+        [144.88455012, -37.77141853],
+        [145.01453333, -37.77141671],
+        [145.01453428, -37.87208986],
+        [144.884549443, -37.87208482],
+      ],
+      zoom: 15,
+      pitch: 60,
+      bearing: 40,
+    },
   ]
   return (
     <>
