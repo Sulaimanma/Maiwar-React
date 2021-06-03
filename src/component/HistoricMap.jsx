@@ -25,11 +25,9 @@ export default function HistoricMap(props) {
         [153.114334004, -27.547],
         [152.962180049, -27.547],
       ],
-      zoom: 12.3,
+      zoom: 11.8,
       pitch: 60,
       bearing: 20,
-      longitude: 153.03807,
-      latitude: -27.4710546,
     },
     {
       name: "Brisbane 1800",
@@ -43,8 +41,6 @@ export default function HistoricMap(props) {
       zoom: 13.3,
       pitch: 40,
       bearing: -20,
-      longitude: 153.03807,
-      latitude: -27.4710546,
     },
     {
       name: "Brisbane 1816",
@@ -58,8 +54,6 @@ export default function HistoricMap(props) {
       zoom: 13.5,
       pitch: 30,
       bearing: 0,
-      longitude: 153.03107,
-      latitude: -27.4680546,
     },
     {
       name: "Brisbane 1823",
@@ -73,8 +67,6 @@ export default function HistoricMap(props) {
       zoom: 13,
       pitch: 40,
       bearing: 40,
-      longitude: 153.03807,
-      latitude: -27.4710546,
     },
     {
       name: "Brisbane 1858",
@@ -88,8 +80,71 @@ export default function HistoricMap(props) {
       zoom: 14,
       pitch: 60,
       bearing: 40,
-      longitude: 153.03807,
-      latitude: -27.4710546,
+    },
+    {
+      name: "Kurrungul 1816",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Kurrungul 1816.jpg",
+      coordinates: [
+        [153.334676793, -27.92300396],
+        [153.421868742, -27.923004024],
+        [153.421868742, -28.00243441],
+        [153.3346765, -28.00243748],
+      ],
+      zoom: 13,
+      pitch: 60,
+      bearing: 40,
+    },
+    {
+      name: "Warrane 1786",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Warrane 1786.jpg",
+      coordinates: [
+        [151.177312199, -33.835356359],
+        [151.24336813, -33.83535825],
+        [151.243368311, -33.88910107],
+        [151.177312216, -33.889101051],
+      ],
+      zoom: 13,
+      pitch: 60,
+      bearing: 40,
+    },
+    {
+      name: "Warrane 1787",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Warrane 1787.jpg",
+      coordinates: [
+        [151.177312199, -33.835356359],
+        [151.24336813, -33.83535825],
+        [151.243368311, -33.88910107],
+        [151.177312216, -33.889101051],
+      ],
+      zoom: 13,
+      pitch: 60,
+      bearing: 40,
+    },
+    {
+      name: "Kamay 1770",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Kamay 1770.jpg",
+      coordinates: [
+        [151.112236975, -33.888807613],
+        [151.226556753, -33.888807052],
+        [151.22655846, -33.97830052],
+        [151.11223661, -33.97829088],
+      ],
+      zoom: 13,
+      pitch: 60,
+      bearing: 40,
+    },
+    {
+      name: "Wadjuk Boodjar 1816",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Wadjuk Boodjar 1816.jpg",
+      coordinates: [
+        [115.84148433, -31.94268772],
+        [115.871902048, -31.942686081],
+        [115.871902038, -31.969304669],
+        [115.841483696, -31.969304798],
+      ],
+      zoom: 15,
+      pitch: 60,
+      bearing: 40,
     },
   ]
   return (
@@ -113,8 +168,10 @@ export default function HistoricMap(props) {
                 })
                 setViewpoint({
                   ...viewpoint,
-                  longitude: map.longitude,
-                  latitude: map.latitude,
+                  longitude:
+                    (map.coordinates[0][0] + map.coordinates[1][0]) / 2,
+                  latitude:
+                    (map.coordinates[0][1] + map.coordinates[1][1]) / 2 - 0.034,
                   zoom: map.zoom,
                   pitch: map.pitch,
                   bearing: map.bearing,
