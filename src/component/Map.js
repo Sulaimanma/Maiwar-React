@@ -62,8 +62,8 @@ export default function Map() {
   const [viewpoint, setViewpoint] = useState({
     latitude: -27.477173,
     longitude: 138.014308,
-    width: "100vw",
-    height: "100vh",
+    width: window.innerWidth,
+    height: window.innerHeight,
     zoom: 4.5,
     bearing: 0,
     pitch: 0,
@@ -119,7 +119,20 @@ export default function Map() {
           bearing: 0,
         })
   }, [checkboxes[0]])
-
+  //Resize window function
+  const resize = () => {
+    setViewpoint({
+      ...viewpoint,
+      width: window.innerWidth,
+      height: window.innerHeight,
+    })
+  }
+  useEffect(() => {
+    window.addEventListener("resize", resize)
+    return function cleanUp() {
+      window.removeEventListener("resize", resize)
+    }
+  }, [])
   const onClick = useCallback((event) => {
     // Destructure features from the click event data
     const { features } = event
@@ -340,8 +353,6 @@ export default function Map() {
           //Define the interactive layer
           interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
-          width="100%"
-          height="100%"
         >
           <Geocoder
             mapRef={mapRef}
