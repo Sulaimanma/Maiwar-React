@@ -166,7 +166,7 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Palm Island",
+      name: "Bwgcolman 1770",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Palm Island.jpg",
       coordinates: [
         [146.5275676, -18.6398716],
@@ -174,9 +174,9 @@ export default function HistoricMap(props) {
         [146.6972289, -18.8091968],
         [146.527562, -18.8091668],
       ],
-      zoom: 12.5,
-      pitch: 60,
-      bearing: 40,
+      zoom: 12.2,
+      pitch: 75,
+      bearing: -40,
     },
 
     {
@@ -193,7 +193,7 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Karalee 1770",
+      name: "Karalee 1826",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Karalee 1770.jpg",
       coordinates: [
         [152.7351484, -27.5856311],
