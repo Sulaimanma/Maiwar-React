@@ -244,6 +244,19 @@ export default function HistoricMap(props) {
       pitch: 45,
       bearing: 40,
     },
+    {
+      name: "Brewarrina 1876",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brewarrina.jpg",
+      coordinates: [
+        [146.8355683, -29.9401134],
+        [146.87441244, -29.94009897],
+        [146.874411461, -29.973468028],
+        [146.835553179, -29.973467828],
+      ],
+      zoom: 14,
+      pitch: 45,
+      bearing: 40,
+    },
   ]
 
   return (
