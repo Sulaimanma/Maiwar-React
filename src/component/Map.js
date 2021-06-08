@@ -88,14 +88,27 @@ export default function Map() {
   const [checkboxes, setCheckboxes] = React.useState([false, false])
   //historic map initial value
   const [historicMap, setHistoricMap] = useState({
-    url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/MeeanjinMap1798.jpg",
+    url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1798.jpg",
     coordinates: [
-      [152.962180055, -27.362875842],
-      [153.114333621, -27.362876876],
-      [153.114334004, -27.579233505],
-      [152.962180049, -27.579232338],
+      [152.962180055, -27.395],
+      [153.114333621, -27.395],
+      [153.114334004, -27.547],
+      [152.962180049, -27.547],
     ],
+    zoom: 11.8,
+    pitch: 60,
+    bearing: 20,
   })
+
+  const skyLayer = {
+    id: "sky",
+    type: "sky",
+    paint: {
+      "sky-type": "atmosphere",
+      "sky-atmosphere-sun": [0.0, 0.0],
+      "sky-atmosphere-sun-intensity": 15,
+    },
+  }
   // Fetch the Layer GeoJson data for display
   // useEffect(() => {
   //   /* global fetch */
@@ -349,7 +362,7 @@ export default function Map() {
           {...viewpoint}
           mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
           onViewportChange={handleViewportChange}
-          mapStyle="mapbox://styles/guneriboi/ckpncce5v0cee17pbc08cky3t"
+          mapStyle="mapbox://styles/guneriboi/ckp69hfy90ibu18pimha653fd"
           //Define the interactive layer
           interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
@@ -423,6 +436,7 @@ export default function Map() {
               </BaseProvider>
             </StyletronProvider>
           </div>
+          <Layer {...skyLayer} />
           {/* Load the Layer source data*/}
           {geoConvertedjson != null && (
             <Source
