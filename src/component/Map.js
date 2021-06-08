@@ -349,7 +349,7 @@ export default function Map() {
           {...viewpoint}
           mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
           onViewportChange={handleViewportChange}
-          mapStyle="mapbox://styles/guneriboi/ckp69hfy90ibu18pimha653fd"
+          mapStyle="mapbox://styles/guneriboi/ckpncce5v0cee17pbc08cky3t"
           //Define the interactive layer
           interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}

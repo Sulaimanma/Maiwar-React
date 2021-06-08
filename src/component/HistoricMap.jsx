@@ -127,7 +127,7 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Wadjuk Boodjar 1816",
+      name: "Whadjuk Boodjar 1816",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Wadjuk Boodjar 1816.jpg",
       coordinates: [
         [115.84148433, -31.94268772],
@@ -136,6 +136,19 @@ export default function HistoricMap(props) {
         [115.841483696, -31.969304798],
       ],
       zoom: 15,
+      pitch: 60,
+      bearing: 40,
+    },
+    {
+      name: "Greater Whadjuk 1829",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Greater Whadjuk 1829.jpg",
+      coordinates: [
+        [115.7469694, -31.8457384],
+        [115.9370506, -31.8457365],
+        [115.9370638, -32.037862],
+        [115.7469694, -32.037847],
+      ],
+      zoom: 11.5,
       pitch: 60,
       bearing: 40,
     },
@@ -152,7 +165,87 @@ export default function HistoricMap(props) {
       pitch: 60,
       bearing: 40,
     },
+    {
+      name: "Palm Island",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Palm Island.jpg",
+      coordinates: [
+        [146.5275676, -18.6398716],
+        [146.69722193, -18.63985544],
+        [146.6972289, -18.8091968],
+        [146.527562, -18.8091668],
+      ],
+      zoom: 12.5,
+      pitch: 60,
+      bearing: 40,
+    },
+
+    {
+      name: "Canberra 1816",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Canberra 1816.jpg",
+      coordinates: [
+        [149.0942832, -35.2591583],
+        [149.1650571, -35.2590921],
+        [149.1650594, -35.3073807],
+        [149.0942855, -35.3074128],
+      ],
+      zoom: 13.5,
+      pitch: 60,
+      bearing: 40,
+    },
+    {
+      name: "Karalee 1770",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Karalee 1770.jpg",
+      coordinates: [
+        [152.7351484, -27.5856311],
+        [152.78985938, -27.58561056],
+        [152.7898663, -27.6340426],
+        [152.73516, -27.6340303],
+      ],
+      zoom: 13.5,
+      pitch: 45,
+      bearing: 40,
+    },
+    {
+      name: "Toowoomba 1830",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Toowoomba 1830.jpg",
+      coordinates: [
+        [151.8909577, -27.5061305],
+        [152.010741, -27.506273],
+        [152.010706, -27.616335],
+        [151.890993, -27.61635],
+      ],
+      zoom: 13.5,
+      pitch: 45,
+      bearing: 40,
+    },
+    {
+      name: "Meerooni",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Meerooni 1770.jpg",
+      coordinates: [
+        [151.8317444, -24.146476],
+        [151.9212295, -24.1465335],
+        [151.92125171, -24.22584685],
+        [151.83173973, -24.22584432],
+      ],
+      zoom: 13.5,
+      pitch: 45,
+      bearing: 40,
+    },
+    {
+      name: "Oakey 1830",
+      url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Oakey 1830.jpg",
+      coordinates: [
+        [151.705706, -27.432911],
+        [151.7275535, -27.4325134],
+        [151.72756741, -27.45180908],
+        [151.7057197, -27.4518239],
+      ],
+      zoom: 14,
+      pitch: 45,
+      bearing: 40,
+    },
   ]
+
   return (
     <>
       <Tabs
