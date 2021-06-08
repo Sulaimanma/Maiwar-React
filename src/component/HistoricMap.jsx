@@ -10,7 +10,7 @@ export default function HistoricMap(props) {
   //map data
   const mapData = [
     {
-      name: "Brisbane 1798",
+      name: "Maiwar 1798",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1798.jpg",
       coordinates: [
         [152.962180055, -27.395],
@@ -23,7 +23,7 @@ export default function HistoricMap(props) {
       bearing: 20,
     },
     {
-      name: "Brisbane 1800",
+      name: "Maiwar 1800",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1800.jpg",
       coordinates: [
         [152.986169867, -27.431091701],
@@ -36,7 +36,7 @@ export default function HistoricMap(props) {
       bearing: -20,
     },
     {
-      name: "Brisbane 1816",
+      name: "Maiwar 1816",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1816.jpg",
       coordinates: [
         [152.986703201, -27.433308598],
@@ -49,7 +49,7 @@ export default function HistoricMap(props) {
       bearing: 0,
     },
     {
-      name: "Brisbane 1823",
+      name: "Maiwar 1823",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1823.jpg",
       coordinates: [
         [152.9862592, -27.431079139],
@@ -62,7 +62,7 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Brisbane 1858",
+      name: "Maiwar 1858",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1858.jpg",
       coordinates: [
         [153.009207, -27.442971],
@@ -180,7 +180,7 @@ export default function HistoricMap(props) {
     },
 
     {
-      name: "Canberra 1816",
+      name: "Kambera 1816",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Canberra 1816.jpg",
       coordinates: [
         [149.0942832, -35.2591583],
@@ -219,7 +219,7 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Meerooni",
+      name: "Meerooni 1770",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Meerooni 1770.jpg",
       coordinates: [
         [151.8317444, -24.146476],
