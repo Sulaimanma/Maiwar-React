@@ -13,7 +13,7 @@ import ReactMapGl, {
   Layer,
   FlyToInterpolator,
 } from "react-map-gl"
-import "mapbox-gl/dist/mapbox-gl.css"
+// import "mapbox-gl/dist/mapbox-gl.css"
 import mapboxgl from "mapbox-gl"
 import "./map.css"
 import {
