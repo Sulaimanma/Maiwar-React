@@ -364,7 +364,7 @@ export default function Map() {
           onViewportChange={handleViewportChange}
           mapStyle="mapbox://styles/guneriboi/ckp69hfy90ibu18pimha653fd"
           //Define the interactive layer
-          interactiveLayerIds={[unclusteredPointLayer.id]}
+          // interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
         >
           <Geocoder
@@ -438,7 +438,7 @@ export default function Map() {
           </div>
           <Layer {...skyLayer} />
           {/* Load the Layer source data*/}
-          {geoConvertedjson != null && (
+          {/* {geoConvertedjson != null && (
             <Source
               // id="heritages"
               type="geojson"
@@ -451,7 +451,7 @@ export default function Map() {
               <Layer {...clusterCountLayer} />
               <Layer {...unclusteredPointLayer} />
             </Source>
-          )}
+          )} */}
           {historicMap.url.length != 0 && (
             <Source
               // maxzoom={22}
