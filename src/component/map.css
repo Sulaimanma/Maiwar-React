@@ -202,6 +202,20 @@ body {
   right: 0px;
   height: 20px;
 }
+
+.mapboxgl-ctrl-geocoder {
+  top: 7vh;
+  left: -16px;
+
+  width: 122%;
+  height: 39px;
+  font-size: 13px;
+  border: none !important;
+}
+.mapboxgl-ctrl-geocoder--input {
+  height: 40px !important;
+  border: none !important;
+}
 @media only screen and (max-width: 600px) {
   /* burger menu div */
   .bm-menu-wrap {
