@@ -57,10 +57,11 @@ function App() {
 
   console.log("heritages on the homepage!!!!!!!!!!!!!!!!!!!!!!!!!", heritages)
 
-  return authState === AuthState.SignedIn && user ? (
+  // return authState === AuthState.SignedIn && user ? (
+  return (
     <div className="App" id="App">
       <HeritageContext.Provider value={{ heritages, fetchHeritages }}>
-        <div className="signOut">
+        {/* <div className="signOut">
           <div className="greeting">Hello, {user.attributes.email}</div>
           <Button
             variant="secondary"
@@ -72,25 +73,26 @@ function App() {
           >
             Sign Out
           </Button>
-        </div>
+        </div> */}
         {/* map module */}
         <Route exact path="/test" component={HeritageInput}></Route>
         <Route exact path="/" component={Map}></Route>
       </HeritageContext.Provider>
     </div>
-  ) : (
-    // Sign up window
-    <AmplifyAuthenticator>
-      <AmplifySignUp
-        slot="sign-up"
-        formFields={[
-          { type: "username" },
-          { type: "password" },
-          { type: "email" },
-        ]}
-      />
-    </AmplifyAuthenticator>
   )
+  // ) : (
+  //   // Sign up window
+  //   <AmplifyAuthenticator>
+  //     <AmplifySignUp
+  //       slot="sign-up"
+  //       formFields={[
+  //         { type: "username" },
+  //         { type: "password" },
+  //         { type: "email" },
+  //       ]}
+  //     />
+  //   </AmplifyAuthenticator>
+  // )
 }
 
 export default App
