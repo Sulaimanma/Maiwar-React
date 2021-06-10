@@ -22,7 +22,8 @@ import {
   unclusteredPointLayer,
   mapRasterLayer,
 } from "./layer"
-
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import Switch from "@material-ui/core/Switch"
 import PopInfo from "./PopInfo"
 // import Pins from "./Pins"
 import Sidebar from "./Sidebar/Sidebar"
@@ -43,6 +44,7 @@ import Geocoder from "react-map-gl-geocoder"
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker"
 import Storage from "@aws-amplify/storage"
 import HistoricMap from "./HistoricMap"
+import { withStyles } from "@material-ui/core/styles"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
@@ -350,6 +352,20 @@ export default function Map() {
     },
     [handleViewportChange]
   )
+  //Restyle the switch button
+  const GreenSwitch = withStyles({
+    switchBase: {
+      color: "#6c757d",
+      "&$checked": {
+        color: "#32c40e",
+      },
+      "&$checked + $track": {
+        backgroundColor: "#32c40e",
+      },
+    },
+    checked: {},
+    track: {},
+  })(Switch)
   return (
     <div className="body" id="body">
       <Sidebar
@@ -406,37 +422,22 @@ export default function Map() {
             <h1 className="logoText">VIRTUAL SONGLINES</h1>
           </div>
           <div className="Toggle3d" style={{ width: "150px" }}>
-            <StyletronProvider value={engine}>
-              <BaseProvider theme={LightTheme}>
-                <React.Fragment>
-                  <Checkbox
-                    checked={checkboxes[0]}
-                    onChange={(e) => {
-                      const nextCheckboxes = [...checkboxes]
-                      nextCheckboxes[0] = e.currentTarget.checked
-                      setCheckboxes(nextCheckboxes)
-                    }}
-                    checkmarkType={STYLE_TYPE.toggle_round}
-                    overrides={{
-                      Label: {
-                        style: ({ $theme }) => ({
-                          color: "white",
-                        }),
-                      },
-                      Checkmark: {
-                        style: ({ $checked, $theme }) => ({
-                          backgroundColor: $checked
-                            ? $theme.colors.accent
-                            : $theme.colors.warning,
-                        }),
-                      },
-                    }}
-                  >
-                    3D
-                  </Checkbox>
-                </React.Fragment>
-              </BaseProvider>
-            </StyletronProvider>
+            <FormControlLabel
+              control={
+                <GreenSwitch
+                  checked={checkboxes[0]}
+                  onChange={(e) => {
+                    const nextCheckboxes = [...checkboxes]
+                    nextCheckboxes[0] = e.currentTarget.checked
+                    setCheckboxes(nextCheckboxes)
+                  }}
+                  name="checkedB"
+                  color="secondary"
+                  size="large"
+                />
+              }
+            />
+            <div className="Text3d">3D</div>
           </div>
           <Layer {...skyLayer} />
           {/* Load the Layer source data*/}

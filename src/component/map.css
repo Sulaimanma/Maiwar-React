@@ -195,12 +195,23 @@ body {
   z-index: 1 !important;
   top: 14% !important;
 }
+/* 3d switch */
 .Toggle3d {
   position: absolute;
   z-index: 999;
   top: 33px;
   right: 0px;
   height: 20px;
+}
+.Text3d {
+  position: absolute;
+  font-family: system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  top: 6px;
+  right: 83px;
+  height: 20px;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
 }
 
 .mapboxgl-ctrl-geocoder {
