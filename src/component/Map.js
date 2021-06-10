@@ -95,6 +95,8 @@ export default function Map() {
       [153.114334004, -27.547],
       [152.962180049, -27.547],
     ],
+    longitude: 152.962180049,
+    latitude: -27.547,
     zoom: 11.8,
     pitch: 60,
     bearing: 20,
@@ -119,14 +121,14 @@ export default function Map() {
   //     .then((json) => setAllData(json))
   // }, [])
 
-  useEffect(() => {
+  useEffect(async () => {
     checkboxes[0]
-      ? setViewpoint({
+      ? await setViewpoint({
           ...viewpoint,
           pitch: 75,
           bearing: 0,
         })
-      : setViewpoint({
+      : await setViewpoint({
           ...viewpoint,
           pitch: 0,
           bearing: 0,
@@ -146,11 +148,11 @@ export default function Map() {
       window.removeEventListener("resize", resize)
     }
   }, [])
-  const onClick = useCallback((event) => {
+  const onClick = useCallback(async (event) => {
     // Destructure features from the click event data
-    const { features } = event
+    const { features } = await event
     // Make sure feature data is not undefined
-    const clickedFeature = features && features[0]
+    const clickedFeature = (await features) && features[0]
     //Control the state of pop up
     setPopup(true)
     //Set the data to display
@@ -365,7 +367,7 @@ export default function Map() {
           mapStyle="mapbox://styles/guneriboi/ckp69hfy90ibu18pimha653fd"
           //Define the interactive layer
           // interactiveLayerIds={[unclusteredPointLayer.id]}
-          onClick={onClick}
+          // onClick={onClick}
         >
           <Geocoder
             mapRef={mapRef}
@@ -430,7 +432,7 @@ export default function Map() {
                       },
                     }}
                   >
-                    3D terrain
+                    3D
                   </Checkbox>
                 </React.Fragment>
               </BaseProvider>

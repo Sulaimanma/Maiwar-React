@@ -269,6 +269,10 @@ export default function HistoricMap(props) {
         fill={FILL.fixed}
       >
         {mapData.map((map, id) => {
+          const longi = (map.coordinates[0][0] + map.coordinates[1][0]) / 2
+          const lati =
+            (map.coordinates[0][1] + map.coordinates[1][1]) / 2 - 0.034
+          console.log("debug the error", longi, lati)
           return (
             <Tab
               key={id}
@@ -280,10 +284,8 @@ export default function HistoricMap(props) {
                 })
                 setViewpoint({
                   ...viewpoint,
-                  longitude:
-                    (map.coordinates[0][0] + map.coordinates[1][0]) / 2,
-                  latitude:
-                    (map.coordinates[0][1] + map.coordinates[1][1]) / 2 - 0.034,
+                  longitude: longi,
+                  latitude: lati,
                   zoom: map.zoom,
                   pitch: map.pitch,
                   bearing: map.bearing,
