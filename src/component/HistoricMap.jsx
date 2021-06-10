@@ -1,16 +1,36 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { FlyToInterpolator } from "react-map-gl"
 import { Tabs, Tab, ORIENTATION, FILL } from "baseui/tabs-motion"
+import { makeStyles, withStyles } from "@material-ui/core/styles"
+import "./historicMap.css"
+
+import Slider from "@material-ui/core/Slider"
 
 export default function HistoricMap(props) {
   const { viewpoint, setViewpoint, historicMap, setHistoricMap } = props
   //Tabs Control
-  const [activeKey, setActiveKey] = useState("0")
+  // const [activeKey, setActiveKey] = useState("0")
 
-  //map data
+  const [mapValue, setMapValue] = useState({
+    value: 100,
+    label: "Maiwar 1798",
+    url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1798.jpg",
+    coordinates: [
+      [152.962180055, -27.395],
+      [153.114333621, -27.395],
+      [153.114334004, -27.547],
+      [152.962180049, -27.547],
+    ],
+    zoom: 11.8,
+    pitch: 60,
+    bearing: 20,
+  })
+  const [barValue, setBarValue] = useState(100)
+
   const mapData = [
     {
-      name: "Maiwar 1798",
+      value: 100,
+      label: "Maiwar 1798",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1798.jpg",
       coordinates: [
         [152.962180055, -27.395],
@@ -23,7 +43,8 @@ export default function HistoricMap(props) {
       bearing: 20,
     },
     {
-      name: "Maiwar 1800",
+      value: 94.7,
+      label: "Maiwar 1800",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1800.jpg",
       coordinates: [
         [152.986169867, -27.431091701],
@@ -36,7 +57,8 @@ export default function HistoricMap(props) {
       bearing: -20,
     },
     {
-      name: "Maiwar 1816",
+      value: 84.1,
+      label: "Maiwar 1816",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1816.jpg",
       coordinates: [
         [152.986703201, -27.433308598],
@@ -49,7 +71,8 @@ export default function HistoricMap(props) {
       bearing: 0,
     },
     {
-      name: "Maiwar 1823",
+      value: 78.8,
+      label: "Maiwar 1823",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1823.jpg",
       coordinates: [
         [152.9862592, -27.431079139],
@@ -62,7 +85,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Maiwar 1858",
+      value: 73.5,
+      label: "Maiwar 1858",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1858.jpg",
       coordinates: [
         [153.009207, -27.442971],
@@ -75,7 +99,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Kurrungul 1816",
+      value: 68.2,
+      label: "Kurrungul 1816",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Kurrungul 1816.jpg",
       coordinates: [
         [153.334676793, -27.92300396],
@@ -88,7 +113,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Warrane 1786",
+      value: 62.9,
+      label: "Warrane 1786",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Warrane 1786.jpg",
       coordinates: [
         [151.177312199, -33.835356359],
@@ -101,7 +127,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Warrane 1787",
+      value: 57.6,
+      label: "Warrane 1787",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Warrane 1787.jpg",
       coordinates: [
         [151.177312199, -33.835356359],
@@ -114,7 +141,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Kamay 1770",
+      value: 52.3,
+      label: "Kamay 1770",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Kamay 1770.jpg",
       coordinates: [
         [151.112236975, -33.888807613],
@@ -127,7 +155,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Whadjuk Boodjar 1816",
+      value: 47,
+      label: "Whadjuk Boodjar 1816",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Wadjuk Boodjar 1816.jpg",
       coordinates: [
         [115.84148433, -31.94268772],
@@ -140,7 +169,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Greater Whadjuk 1829",
+      value: 41.7,
+      label: "Greater Whadjuk 1829",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Greater Whadjuk 1829.jpg",
       coordinates: [
         [115.7469694, -31.8457384],
@@ -153,7 +183,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Birrarung 1834",
+      value: 36.4,
+      label: "Birrarung 1834",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Birrarung+1834.jpg",
       coordinates: [
         [144.88455012, -37.77141853],
@@ -166,7 +197,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Bwgcolman 1770",
+      value: 31.1,
+      label: "Bwgcolman 1770",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Palm Island.jpg",
       coordinates: [
         [146.5275676, -18.6398716],
@@ -180,7 +212,8 @@ export default function HistoricMap(props) {
     },
 
     {
-      name: "Kambera 1816",
+      value: 25.8,
+      label: "Kambera 1816",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Canberra 1816.jpg",
       coordinates: [
         [149.0942832, -35.2591583],
@@ -193,7 +226,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Karalee 1826",
+      value: 20.5,
+      label: "Karalee 1826",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Karalee 1770.jpg",
       coordinates: [
         [152.7351484, -27.5856311],
@@ -206,7 +240,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Toowoomba 1830",
+      value: 15.2,
+      label: "Toowoomba 1830",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Toowoomba 1830.jpg",
       coordinates: [
         [151.8909577, -27.5061305],
@@ -219,7 +254,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Meerooni 1770",
+      value: 9.9,
+      label: "Meerooni 1770",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Meerooni 1770.jpg",
       coordinates: [
         [151.8317444, -24.146476],
@@ -232,7 +268,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Oakey 1830",
+      value: 4.6,
+      label: "Oakey 1830",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Oakey_icons.jpg",
       coordinates: [
         [151.705706, -27.432911],
@@ -245,7 +282,8 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
     {
-      name: "Brewarrina 1876",
+      value: 0,
+      label: "Brewarrina 1876",
       url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brewarrina.jpg",
       coordinates: [
         [146.8355683, -29.9401134],
@@ -258,10 +296,72 @@ export default function HistoricMap(props) {
       bearing: 40,
     },
   ]
+  const mapDataChange = mapData.map((item, id) => {
+    item.value = 100 - id * 5.26315789
+    return item
+  })
 
+  const PrettoSlider = withStyles({
+    root: {
+      color: "#52af77",
+      height: 8,
+    },
+    thumb: {
+      height: 14,
+      width: 14,
+      backgroundColor: "#fff",
+      border: "2px solid currentColor",
+    },
+    label: {
+      color: "#52af77",
+    },
+    rail: {
+      height: 8,
+      borderRadius: 4,
+    },
+    valueLabel: {
+      left: "calc(-50% + 4px)",
+    },
+    "& .bar": {
+      // display: inline-block !important;
+      height: 9,
+      width: 9,
+      backgroundColor: "currentColor",
+      marginLeft: 1,
+      marginRight: 1,
+    },
+  })(Slider)
+
+  const handleChange = useCallback(async (value) => {
+    const current = await mapDataChange.filter((mark) => mark.label === value)
+    const valueChange = current[0]
+    const longi =
+      (valueChange.coordinates[0][0] + valueChange.coordinates[1][0]) / 2
+    const lati =
+      (valueChange.coordinates[0][1] + valueChange.coordinates[1][1]) / 2 -
+      0.034
+    setHistoricMap({
+      url: valueChange.url,
+      coordinates: valueChange.coordinates,
+    })
+    setViewpoint({
+      ...viewpoint,
+      longitude: longi,
+      latitude: lati,
+      zoom: valueChange.zoom,
+      pitch: valueChange.pitch,
+      bearing: valueChange.bearing,
+      transitionInterpolator: new FlyToInterpolator({
+        speed: 1.7,
+      }),
+      transitionDuration: "auto",
+    })
+    setBarValue(valueChange.value)
+    console.log("findit", current)
+  }, [])
   return (
     <>
-      <Tabs
+      {/* <Tabs
         activeKey={activeKey}
         onChange={({ activeKey }) => setActiveKey(activeKey)}
         orientation={ORIENTATION.vertical}
@@ -310,7 +410,28 @@ export default function HistoricMap(props) {
             })
           }}
         ></Tab>
-      </Tabs>
+      </Tabs> */}
+
+      <div
+        style={{
+          height: "1100px",
+          color: "white",
+          background: "white",
+          width: "220px",
+          borderRadius: "10px",
+          opacity: "0.76",
+        }}
+        onClick={(value) => handleChange(value.target.innerText)}
+      >
+        <PrettoSlider
+          orientation="vertical"
+          defaultValue={barValue}
+          aria-labelledby="discrete-slider-restrict"
+          step={null}
+          marks={mapDataChange}
+          track={false}
+        />
+      </div>
     </>
   )
 }

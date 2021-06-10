@@ -1,0 +1,15 @@
+.MuiSlider-markLabel {
+  color: rgb(117, 121, 117) !important;
+  font-weight: 800 !important;
+  margin-top: 60px;
+}
+.MuiSlider-root.MuiSlider-vertical {
+  width: 2px;
+  height: 78vh !important;
+  padding: 0 13px;
+}
+.MuiSlider-marked.MuiSlider-vertical {
+  margin-right: 20px;
+  margin-bottom: auto;
+  margin-top: 46px;
+}
