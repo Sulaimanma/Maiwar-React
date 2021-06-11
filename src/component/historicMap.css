@@ -14,21 +14,170 @@
   margin-top: 46px;
 }
 .sliderDiv {
+  height: 910px;
+  color: white;
+  background: white;
+  width: 220px;
+  border-radius: 10px;
+  opacity: 0.76;
+  position: absolute;
+  left: 0px;
+}
+.slideLeft {
+  color: #909c7d;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+.slideRight {
+  color: #658137;
+  position: absolute;
+  top: 460px;
+  right: -6px;
+  font-size: 3rem;
+  cursor: pointer;
+}
+.sliderDivHide {
   height: 1100px;
   color: white;
   background: white;
   width: 220px;
   border-radius: 10px;
   opacity: 0.76;
+  position: absolute;
+  left: -185px;
 }
+/* swipe-left */
+.swipeLeft-container {
+  position: absolute;
+}
+
+.swipeLeft-enter {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.swipeLeft-enter-active {
+  transform: translateX(0%);
+  opacity: 0.76;
+  transition: all 400ms;
+}
+
+.swipeLeft-exit {
+  transform: translateX(0%);
+  opacity: 0.76;
+}
+
+.swipeLeft-exit-active {
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: all 400ms;
+}
+
+/* swipe-right */
+.swipeRight-container {
+  position: absolute;
+}
+
+.swipeRight-enter {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.swipeRight-enter-active {
+  transform: translateX(0%);
+  opacity: 0.76;
+  transition: all 400ms;
+}
+
+.swipeRight-exit {
+  transform: translateX(0%);
+  opacity: 0.76;
+}
+
+.swipeRight-exit-active {
+  transform: translateX(0%);
+  opacity: 0;
+  transition: all 400ms;
+}
+
 @media only screen and (max-width: 1400px) {
   .sliderDiv {
     height: max-content;
     width: 200px;
   }
-
+  .sliderDivHide {
+    height: max-content;
+    width: 200px;
+  }
   .MuiSlider-marked.MuiSlider-vertical {
     margin-top: 40px;
     margin-bottom: 20px !important;
+  }
+  .slideLeft {
+    color: #909c7d;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .MuiSlider-markLabel {
+    color: rgb(117, 121, 117) !important;
+    font-size: small !important;
+    font-weight: 400 !important;
+    margin-top: 20px;
+  }
+  .sliderDiv {
+    height: min-content;
+    top: 40px;
+    width: 180px;
+    font-size: small !important;
+    position: absolute;
+    left: -10px;
+  }
+  .sliderDivHide {
+    height: min-content;
+    width: 180px;
+    position: absolute;
+    left: -170px;
+    top: 40px;
+  }
+  .MuiSlider-marked.MuiSlider-vertical {
+    margin-top: 40px;
+    margin-bottom: 20px !important;
+  }
+  .slideLeft {
+    color: #909c7d;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+  .slideRight {
+    color: #909c7d;
+    position: absolute;
+    top: 312px;
+    right: -15px;
+    font-size: 2.6rem;
+    cursor: pointer;
+  }
+  .mapboxgl-ctrl-top-right {
+    top: 88px !important;
+    right: -26px !important;
+    z-index: 11 !important;
+  }
+  .mapboxgl-ctrl-geocoder {
+    width: 100vw !important;
+    min-width: 120px;
+  }
+  .mapboxgl-ctrl-geocoder--icon-search {
+    top: 7px;
+    left: 18px;
   }
 }

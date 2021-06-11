@@ -3,8 +3,10 @@ import { FlyToInterpolator } from "react-map-gl"
 import { Tabs, Tab, ORIENTATION, FILL } from "baseui/tabs-motion"
 import { makeStyles, withStyles } from "@material-ui/core/styles"
 import "./historicMap.css"
-
+import { BsArrowBarLeft } from "react-icons/bs"
+import { HiOutlineDotsVertical } from "react-icons/hi"
 import Slider from "@material-ui/core/Slider"
+import { CSSTransition, TransitionGroup } from "react-transition-group"
 
 export default function HistoricMap(props) {
   const { viewpoint, setViewpoint, historicMap, setHistoricMap } = props
@@ -26,7 +28,8 @@ export default function HistoricMap(props) {
     bearing: 20,
   })
   const [barValue, setBarValue] = useState(100)
-
+  const [CSSControl, setCSSControl] = useState("sliderDiv")
+  const [swipe, setSwipe] = useState("swipeLeft")
   const mapData = [
     {
       value: 100,
@@ -300,6 +303,7 @@ export default function HistoricMap(props) {
     item.value = 100 - id * 5.26315789
     return item
   })
+
   useEffect(() => {
     const longi = (mapValue.coordinates[0][0] + mapValue.coordinates[1][0]) / 2
     const lati =
@@ -321,6 +325,7 @@ export default function HistoricMap(props) {
       transitionDuration: "auto",
     })
   }, [mapValue])
+
   const PrettoSlider = withStyles({
     root: {
       color: "#52af77",
@@ -403,18 +408,39 @@ export default function HistoricMap(props) {
           }}
         ></Tab>
       </Tabs> */}
+      <TransitionGroup>
+        <CSSTransition key={CSSControl} classNames={swipe} timeout={600}>
+          <div className={CSSControl}>
+            {CSSControl === "sliderDiv" ? (
+              <BsArrowBarLeft
+                className="slideLeft"
+                onClick={() => {
+                  setSwipe("swipeLeft")
+                  setCSSControl("sliderDivHide")
+                }}
+              />
+            ) : (
+              <HiOutlineDotsVertical
+                className="slideRight"
+                onClick={() => {
+                  setSwipe("swipeRight")
+                  setCSSControl("sliderDiv")
+                }}
+              />
+            )}
 
-      <div className="sliderDiv">
-        <PrettoSlider
-          orientation="vertical"
-          defaultValue={barValue}
-          getAriaValueText={handleChange}
-          aria-labelledby="discrete-slider-restrict"
-          step={null}
-          marks={mapDataChange}
-          track={false}
-        />
-      </div>
+            <PrettoSlider
+              orientation="vertical"
+              defaultValue={barValue}
+              getAriaValueText={handleChange}
+              aria-labelledby="discrete-slider-restrict"
+              step={null}
+              marks={mapDataChange}
+              track={false}
+            />
+          </div>
+        </CSSTransition>{" "}
+      </TransitionGroup>{" "}
     </>
   )
 }
