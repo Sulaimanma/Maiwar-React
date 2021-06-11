@@ -1,6 +1,6 @@
 .MuiSlider-markLabel {
   color: rgb(117, 121, 117) !important;
-  font-weight: 800 !important;
+  font-weight: 600 !important;
   margin-top: 60px;
 }
 .MuiSlider-root.MuiSlider-vertical {
@@ -12,4 +12,23 @@
   margin-right: 20px;
   margin-bottom: auto;
   margin-top: 46px;
+}
+.sliderDiv {
+  height: 1100px;
+  color: white;
+  background: white;
+  width: 220px;
+  border-radius: 10px;
+  opacity: 0.76;
+}
+@media only screen and (max-width: 1400px) {
+  .sliderDiv {
+    height: max-content;
+    width: 200px;
+  }
+
+  .MuiSlider-marked.MuiSlider-vertical {
+    margin-top: 40px;
+    margin-bottom: 20px !important;
+  }
 }

@@ -404,16 +404,7 @@ export default function HistoricMap(props) {
         ></Tab>
       </Tabs> */}
 
-      <div
-        style={{
-          height: "1100px",
-          color: "white",
-          background: "white",
-          width: "220px",
-          borderRadius: "10px",
-          opacity: "0.76",
-        }}
-      >
+      <div className="sliderDiv">
         <PrettoSlider
           orientation="vertical"
           defaultValue={barValue}

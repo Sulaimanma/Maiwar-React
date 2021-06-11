@@ -277,7 +277,19 @@ body {
     font-size: 13px;
   }
 }
-/* Ipad */
-@media only screen and (max-width: 800px) {
-  /* burger menu div */
+/* Surgace Pro */
+@media only screen and (max-width: 1400px) {
+  .tabs {
+    top: 9% !important;
+  }
+  .bm-burger-button {
+    top: 15px;
+  }
+  .Toggle3d {
+    top: 10px;
+  }
+  .logoText {
+    font-family: ui sans-serif;
+    font-size: 2rem;
+  }
 }
