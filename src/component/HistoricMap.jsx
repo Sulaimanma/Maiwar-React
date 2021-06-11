@@ -300,7 +300,27 @@ export default function HistoricMap(props) {
     item.value = 100 - id * 5.26315789
     return item
   })
-
+  useEffect(() => {
+    const longi = (mapValue.coordinates[0][0] + mapValue.coordinates[1][0]) / 2
+    const lati =
+      (mapValue.coordinates[0][1] + mapValue.coordinates[1][1]) / 2 - 0.034
+    setHistoricMap({
+      url: mapValue.url,
+      coordinates: mapValue.coordinates,
+    })
+    setViewpoint({
+      ...viewpoint,
+      longitude: longi,
+      latitude: lati,
+      zoom: mapValue.zoom,
+      pitch: mapValue.pitch,
+      bearing: mapValue.bearing,
+      transitionInterpolator: new FlyToInterpolator({
+        speed: 1.7,
+      }),
+      transitionDuration: "auto",
+    })
+  }, [mapValue])
   const PrettoSlider = withStyles({
     root: {
       color: "#52af77",
@@ -312,52 +332,24 @@ export default function HistoricMap(props) {
       backgroundColor: "#fff",
       border: "2px solid currentColor",
     },
-    label: {
-      color: "#52af77",
-    },
+
     rail: {
       height: 8,
       borderRadius: 4,
     },
-    valueLabel: {
-      left: "calc(-50% + 4px)",
-    },
-    "& .bar": {
-      // display: inline-block !important;
-      height: 9,
-      width: 9,
-      backgroundColor: "currentColor",
-      marginLeft: 1,
-      marginRight: 1,
-    },
   })(Slider)
 
   const handleChange = useCallback(async (value) => {
-    const current = await mapDataChange.filter((mark) => mark.label === value)
+    const current = await mapDataChange.filter((mark) => mark.value === value)
+
     const valueChange = current[0]
-    const longi =
-      (valueChange.coordinates[0][0] + valueChange.coordinates[1][0]) / 2
-    const lati =
-      (valueChange.coordinates[0][1] + valueChange.coordinates[1][1]) / 2 -
-      0.034
-    setHistoricMap({
-      url: valueChange.url,
-      coordinates: valueChange.coordinates,
-    })
-    setViewpoint({
-      ...viewpoint,
-      longitude: longi,
-      latitude: lati,
-      zoom: valueChange.zoom,
-      pitch: valueChange.pitch,
-      bearing: valueChange.bearing,
-      transitionInterpolator: new FlyToInterpolator({
-        speed: 1.7,
-      }),
-      transitionDuration: "auto",
-    })
+
+    console.log("findit", value)
+
     setBarValue(valueChange.value)
-    console.log("findit", current)
+    setMapValue(current[0])
+
+    // return value
   }, [])
   return (
     <>
@@ -421,11 +413,11 @@ export default function HistoricMap(props) {
           borderRadius: "10px",
           opacity: "0.76",
         }}
-        onClick={(value) => handleChange(value.target.innerText)}
       >
         <PrettoSlider
           orientation="vertical"
           defaultValue={barValue}
+          getAriaValueText={handleChange}
           aria-labelledby="discrete-slider-restrict"
           step={null}
           marks={mapDataChange}
