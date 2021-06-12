@@ -366,6 +366,7 @@ export default function Map() {
     checked: {},
     track: {},
   })(Switch)
+
   return (
     <div className="body" id="body">
       <Sidebar

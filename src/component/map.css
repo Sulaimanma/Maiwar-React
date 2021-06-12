@@ -303,4 +303,8 @@ body {
     font-family: ui sans-serif;
     font-size: 2rem;
   }
+  .slideRight {
+    top: 329px !important;
+    right: -16px !important;
+  }
 }
