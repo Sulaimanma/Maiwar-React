@@ -17,9 +17,9 @@
   height: 910px;
   color: white;
   background: white;
-  width: 220px;
+  width: 320px;
   border-radius: 10px;
-  opacity: 0.76;
+  opacity: 1;
   position: absolute;
   left: 0px;
 }
@@ -45,10 +45,11 @@
   background: white;
   width: 220px;
   border-radius: 10px;
-  opacity: 0.76;
+  opacity: 1;
   position: absolute;
   left: -185px;
 }
+
 /* swipe-left */
 .swipeLeft-container {
   position: absolute;
@@ -61,13 +62,13 @@
 
 .swipeLeft-enter-active {
   transform: translateX(0%);
-  opacity: 0.76;
+  opacity: 1;
   transition: all 400ms;
 }
 
 .swipeLeft-exit {
   transform: translateX(0%);
-  opacity: 0.76;
+  opacity: 1;
 }
 
 .swipeLeft-exit-active {
@@ -88,13 +89,13 @@
 
 .swipeRight-enter-active {
   transform: translateX(0%);
-  opacity: 0.76;
+  opacity: 1;
   transition: all 400ms;
 }
 
 .swipeRight-exit {
   transform: translateX(0%);
-  opacity: 0.76;
+  opacity: 1;
 }
 
 .swipeRight-exit-active {
@@ -103,13 +104,32 @@
   transition: all 400ms;
 }
 
+.list {
+  position: absolute;
+  left: 15px;
+  margin-top: 60px;
+  width: 90%;
+  border-bottom: none;
+}
+.state {
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  color: #658137;
+}
+.region {
+  color: #5e7736;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  cursor: pointer;
+}
+.sliderDivHide .list {
+  display: none;
+}
 @media only screen and (max-width: 1400px) {
   .sliderDiv {
-    height: max-content;
     width: 200px;
   }
   .sliderDivHide {
-    height: max-content;
     width: 200px;
   }
   .MuiSlider-marked.MuiSlider-vertical {
@@ -119,8 +139,8 @@
   .slideLeft {
     color: #909c7d;
     position: absolute;
-    top: 4px;
-    right: 4px;
+    top: 2px;
+    right: 2px;
     font-size: 1.4rem;
     cursor: pointer;
   }
