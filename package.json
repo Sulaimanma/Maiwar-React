@@ -9,6 +9,7 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "aws-amplify": "^3.3.27",
+    "axios": "^0.21.1",
     "baseui": "^9.115.3",
     "bootstrap": "^5.0.0",
     "clone-deep": "^4.0.1",

@@ -21,6 +21,7 @@ import {
   clusterCountLayer,
   unclusteredPointLayer,
   mapRasterLayer,
+  PCCCIconsLayer,
 } from "./layer"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Switch from "@material-ui/core/Switch"
@@ -45,6 +46,7 @@ import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker"
 import Storage from "@aws-amplify/storage"
 import HistoricMap from "./HistoricMap"
 import { withStyles } from "@material-ui/core/styles"
+import axios from "axios"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
@@ -103,7 +105,8 @@ export default function Map() {
     pitch: 60,
     bearing: 20,
   })
-
+  //fetched data
+  const [PCCC, setPCCC] = useState()
   const skyLayer = {
     id: "sky",
     type: "sky",
@@ -367,6 +370,35 @@ export default function Map() {
     track: {},
   })(Switch)
 
+  //fetch data with API
+  const fetchData = (url) => {
+    axios
+      .get(url)
+      .then((res) => {
+        const allData = res.data
+        console.log("Get the data", res.data)
+        setPCCC(allData)
+      })
+      .then(console.log("PCCC", PCCC))
+      .catch((error) => console.log(`Error:${error}`))
+  }
+  useEffect(async () => {
+    await fetchData(
+      "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/json/PCCC.geojson"
+    )
+  }, [])
+  useEffect(() => {
+    const map = mapRef.current.getMap()
+    map.loadImage(
+      "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/img/icons/BURIAL.png",
+      function (error, image) {
+        if (error) throw error
+
+        // Add the image to the map style.
+        map.addImage("BURIAL", image)
+      }
+    )
+  }, [mapRef])
   return (
     <div className="body" id="body">
       <Sidebar
@@ -455,7 +487,20 @@ export default function Map() {
               <Layer {...clusterCountLayer} />
               <Layer {...unclusteredPointLayer} />
             </Source>
+          
           )} */}
+          {PCCC && (
+            <Source
+              // id="heritages"
+              type="geojson"
+              data={PCCC}
+              id="PCCC"
+              cluster={true}
+              clusterRadius={50}
+            >
+              <Layer {...PCCCIconsLayer} />
+            </Source>
+          )}
           {historicMap.url.length != 0 && (
             <Source
               // maxzoom={22}

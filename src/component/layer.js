@@ -49,3 +49,26 @@ export const mapRasterLayer = {
 
   paint: { "raster-opacity": 1 },
 }
+
+export const PCCCIconsLayer = {
+  id: "PCCCIconsLayer",
+  type: "symbol",
+  source: "PCCC",
+
+  // minzoom: 6,
+  // maxzoom: 22,
+  layout: {
+    "icon-image": [["get", "attribute"], -15], // reference the image
+    "icon-size": 0.1,
+    "text-field": ["get", "site_name"],
+    "text-variable-anchor": ["top", "bottom", "left", "right"],
+    "text-radial-offset": 0.5,
+    "text-justify": "auto",
+    // "text-field": "{point_count_abbreviated}",
+    "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
+    "text-size": 12,
+  },
+  paint: {
+    "text-color": "#ffffff",
+  },
+}
