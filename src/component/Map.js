@@ -384,20 +384,36 @@ export default function Map() {
   }
   useEffect(async () => {
     await fetchData(
-      "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/json/PCCC.geojson"
+      "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/json/VS_Info.geojson"
     )
   }, [])
   useEffect(() => {
     const map = mapRef.current.getMap()
-    map.loadImage(
-      "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/img/icons/BURIAL.png",
-      function (error, image) {
-        if (error) throw error
+    const VSInfo = [
+      "Burial",
+      "Bora",
+      "Bushfood",
+      "Camp",
+      "Crossing",
+      "Duck",
+      "Fish",
+      "Midden",
+      "Kangaroo",
+      "Medicine",
+      "Possums",
+      "Turtle",
+    ]
+    VSInfo.map((img, id) => {
+      map.loadImage(
+        ` https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/img/icons/${img}.png`,
+        function (error, image) {
+          if (error) throw error
 
-        // Add the image to the map style.
-        map.addImage("BURIAL", image)
-      }
-    )
+          // Add the image to the map style.
+          map.addImage(`${img}`, image)
+        }
+      )
+    })
   }, [mapRef])
   return (
     <div className="body" id="body">
@@ -466,7 +482,7 @@ export default function Map() {
                   }}
                   name="checkedB"
                   color="secondary"
-                  size="large"
+                  // size="large"
                 />
               }
             />

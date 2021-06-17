@@ -54,21 +54,23 @@ export const PCCCIconsLayer = {
   id: "PCCCIconsLayer",
   type: "symbol",
   source: "PCCC",
-
+  minzoom: 0,
+  maxzoom: 22,
   // minzoom: 6,
   // maxzoom: 22,
   layout: {
-    "icon-image": [["get", "attribute"], -15], // reference the image
-    "icon-size": 0.1,
-    "text-field": ["get", "site_name"],
+    "icon-image": ["get", "Icon"], // reference the image
+    "icon-size": 1,
+    "icon-offset": [0, -15],
+    "text-field": ["get", "title"],
     "text-variable-anchor": ["top", "bottom", "left", "right"],
     "text-radial-offset": 0.5,
     "text-justify": "auto",
     // "text-field": "{point_count_abbreviated}",
     "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
-    "text-size": 12,
+    "text-size": 14,
   },
   paint: {
-    "text-color": "#ffffff",
+    "text-color": "white",
   },
 }
