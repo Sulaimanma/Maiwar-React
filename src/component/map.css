@@ -269,10 +269,11 @@ body {
   }
 
   .mapboxgl-ctrl-geocoder {
-    top: -41px;
-    left: -16px;
-
-    width: 122%;
+    top: 6vh;
+    left: 1.5vw !important;
+    right: -4vw !important;
+    min-width: 9vw !important;
+    width: 40vw !important;
     height: 44px;
     font-size: 13px;
   }
