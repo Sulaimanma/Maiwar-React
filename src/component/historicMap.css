@@ -128,9 +128,11 @@
 @media only screen and (max-width: 1400px) {
   .sliderDiv {
     width: 200px;
+    height: 80vh;
   }
   .sliderDivHide {
     width: 200px;
+    height: 80vh;
   }
   .MuiSlider-marked.MuiSlider-vertical {
     margin-top: 40px;
@@ -142,6 +144,14 @@
     top: 2px;
     right: 2px;
     font-size: 1.4rem;
+    cursor: pointer;
+  }
+  .slideRight {
+    color: #909c7d;
+    position: absolute;
+    top: 38vh !important;
+    right: -15px;
+    font-size: 2.6rem;
     cursor: pointer;
   }
 }
