@@ -2,6 +2,7 @@ type Heritages @model {
   id: ID!
   surveyDate: String
   siteNumber: String
+  heritageType: String
   GPSCoordinates: AWSJSON
   routeExaminedOrNot: Boolean
   examinedRouteLocation: String

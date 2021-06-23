@@ -39,6 +39,7 @@ export default function HeritageInput(props) {
     //new scgema
     surveyDate: yup.string().required("Survey date is required"),
     siteNumber: yup.string().required("Site number is required"),
+    heritageType: yup.string().required("Heritage type is required"),
     GPSCoordinates: yup.array().of(
       yup.object().shape({
         datum: yup.string().required("Datum is required"),
@@ -90,6 +91,7 @@ export default function HeritageInput(props) {
   const initialValues = {
     surveyDate: "",
     siteNumber: "",
+    heritageType: "",
     GPSCoordinates: [
       {
         datum: "",
@@ -215,6 +217,7 @@ export default function HeritageInput(props) {
         id: uuid(),
         surveyDate: initialJSON.surveyDate,
         siteNumber: initialJSON.siteNumber,
+        heritageType: initialJSON.heritageType,
         GPSCoordinates: JSON.stringify(initialJSON.GPSCoordinates),
         routeExaminedOrNot: initialJSON.routeExaminedOrNot,
         examinedRouteLocation: initialJSON.examinedRouteLocation,
@@ -323,13 +326,27 @@ export default function HeritageInput(props) {
                   </Col>
                 </Row>
                 <Row className="formRow">
+                  <Col>
+                    <label style={{ fontWeight: "600" }}>Heritage type:</label>
+                  </Col>
+                  <Col>
+                    <Field as="select" name="heritageType">
+                      <option value="Burial">Burial</option>
+                      <option value="Artefact Scatter">Artefact Scatter</option>
+                      <option value="Quary">Quary</option>
+                      <option value="Camp">Camp</option>
+                      <option value="Midden">Midden</option>
+                    </Field>
+                  </Col>
+                </Row>
+                <Row className="formRow">
                   <label style={{ fontWeight: "600" }}>
                     GPS coordinates of Survey Area:
                   </label>
                 </Row>
 
                 <FieldArray
-                  name=" GPSCoordinates"
+                  name="GPSCoordinates"
                   render={(arrayHelpers) => {
                     const GPSCoordinates = values.GPSCoordinates
                     return (
