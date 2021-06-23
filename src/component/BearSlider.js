@@ -50,7 +50,7 @@ const PrettoSlider = withStyles({
   root: {
     color: "rgb(31 40 24)",
     height: 8,
-    width: 500,
+    width: "70vw",
   },
   thumb: {
     height: 24,

@@ -232,7 +232,7 @@ body {
 .bearCtrl {
   position: absolute;
   top: 89vh;
-  left: 29vw;
+  left: 16vw;
   z-index: 1;
 }
 @media only screen and (max-width: 600px) {
@@ -297,7 +297,7 @@ body {
     -webkit-overflow-scrolling: touch !important;
   }
   .bearCtrl {
-    left: 0 !important;
+    left: 15vw !important;
   }
 }
 /* Surgace Pro */
