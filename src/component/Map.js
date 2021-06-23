@@ -47,12 +47,14 @@ import Storage from "@aws-amplify/storage"
 import HistoricMap from "./HistoricMap"
 import { withStyles } from "@material-ui/core/styles"
 import axios from "axios"
+import BearSlider from "./BearSlider"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
 
 export default function Map() {
   const mapRef = useRef()
+
   // popup control variable
   const { heritages, fetchHeritages } = useContext(HeritageContext)
   //set up a enterfield
@@ -153,6 +155,8 @@ export default function Map() {
       window.removeEventListener("resize", resize)
     }
   }, [])
+  // Enable the bear control
+
   const onClick = useCallback(async (event) => {
     // Destructure features from the click event data
     const { features } = await event
@@ -422,6 +426,9 @@ export default function Map() {
         outerContainerId={"body"}
         locateUser={locateUser}
       />
+      <div className="bearCtrl">
+        <BearSlider viewpoint={viewpoint} setViewpoint={setViewpoint} />
+      </div>
 
       <div id="map">
         <ReactMapGl

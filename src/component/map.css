@@ -108,6 +108,8 @@ Burger Menu */
 html,
 body {
   margin: 0;
+  width: 100vw;
+  height: 100vh;
 }
 
 #App {
@@ -227,6 +229,12 @@ body {
   height: 40px !important;
   border: none !important;
 }
+.bearCtrl {
+  position: absolute;
+  top: 89vh;
+  left: 29vw;
+  z-index: 1;
+}
 @media only screen and (max-width: 600px) {
   /* burger menu div */
   .bm-menu-wrap {
@@ -287,6 +295,9 @@ body {
     overflow: auto !important;
     height: 100% !important;
     -webkit-overflow-scrolling: touch !important;
+  }
+  .bearCtrl {
+    left: 0 !important;
   }
 }
 /* Surgace Pro */
