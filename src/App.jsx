@@ -33,11 +33,16 @@ function App() {
       const heritageData = await API.graphql(
         graphqlOperation(listHeritagess, { limit: 500 })
       )
-      const heritageList = heritageData.data.listHeritagess.items.filter(
-        function (place) {
-          return place.GPSCoordinates !== ""
-        }
+      console.log(
+        "heritages on the homepage!!!!!!!!!!!!!!!!!!!!!!!!!",
+        heritageData
       )
+      const heritageList = await heritageData.data.listHeritagess.items
+      //   .filter(
+      //   function (place) {
+      //     return place.heritageType != "Burial"
+      //   }
+      // )
 
       setHeritages(heritageList)
     } catch (error) {
@@ -55,7 +60,7 @@ function App() {
     console.log("user data", user)
   }, [])
 
-  console.log("heritages on the homepage!!!!!!!!!!!!!!!!!!!!!!!!!", heritages)
+  // console.log("heritages on the homepage!!!!!!!!!!!!!!!!!!!!!!!!!", heritages)
 
   // return authState === AuthState.SignedIn && user ? (
   return (

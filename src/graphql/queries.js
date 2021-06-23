@@ -7,6 +7,7 @@ export const getHeritages = /* GraphQL */ `
       id
       surveyDate
       siteNumber
+      heritageType
       GPSCoordinates
       routeExaminedOrNot
       examinedRouteLocation
@@ -42,6 +43,7 @@ export const listHeritagess = /* GraphQL */ `
         id
         surveyDate
         siteNumber
+        heritageType
         GPSCoordinates
         routeExaminedOrNot
         examinedRouteLocation

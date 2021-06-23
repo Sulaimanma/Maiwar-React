@@ -91,7 +91,7 @@ export default function HeritageInput(props) {
   const initialValues = {
     surveyDate: "",
     siteNumber: "",
-    heritageType: "",
+    heritageType: "Burial",
     GPSCoordinates: [
       {
         datum: "",
@@ -142,8 +142,8 @@ export default function HeritageInput(props) {
   const handleSubmitForm = async (json) => {
     setEnter(false)
     // Upload the media and get the key
-    var Photokey
-    imageData.length != 0
+    let Photokey
+    imageData.length != 0 && imageData
       ? (Photokey = await Storage.put(
           `img/${uuid()}${imageData.name}`,
           imageData,
@@ -153,48 +153,58 @@ export default function HeritageInput(props) {
           }
         ))
       : (Photokey = { key: "" })
-    const Videokey = await Storage.put(
-      `video/${uuid()}${videoData.name}`,
-      videoData,
-      {
-        contentType: "video/mp4",
-        level: "public",
-      }
-    )
+    let Videokey
+    videoData.length != 0 && videoData
+      ? (Videokey = await Storage.put(
+          `video/${uuid()}${videoData.name}`,
+          videoData,
+          {
+            contentType: "video/mp4",
+            level: "public",
+          }
+        ))
+      : (Videokey = { key: "" })
     // Upload the signature data and get an Array of keys
     const OfficerArr = officerSignature.map(async (officer) => {
       try {
-        const SignatureImg = await Storage.put(
-          `img/${uuid()}${officer.name}`,
-          officer,
-          {
-            contentType: "image/png,image/jpeg,image/jpg",
-            level: "public",
-          }
-        )
+        let SignatureImg
+        officer.name.length != 0 && officer.name
+          ? (SignatureImg = await Storage.put(
+              `img/${uuid()}${officer.name}`,
+              officer,
+              {
+                contentType: "image/png,image/jpeg,image/jpg",
+                level: "public",
+              }
+            ))
+          : (SignatureImg = { key: "" })
         return SignatureImg
       } catch (error) {
         console.log("error in mapping", error)
       }
     })
-
-    const AdvisorKey = await Storage.put(
-      `img/${uuid()}${advisorSignature.name}`,
-      advisorSignature,
-      {
-        contentType: "image/png,image/jpeg,image/jpg",
-        level: "public",
-      }
-    )
-
-    const coordinatorKey = await Storage.put(
-      `img/${uuid()}${coordinator.name}`,
-      coordinator,
-      {
-        contentType: "image/png,image/jpeg,image/jpg",
-        level: "public",
-      }
-    )
+    let AdvisorKey
+    advisorSignature.name
+      ? (AdvisorKey = await Storage.put(
+          `img/${uuid()}${advisorSignature.name}`,
+          advisorSignature,
+          {
+            contentType: "image/png,image/jpeg,image/jpg",
+            level: "public",
+          }
+        ))
+      : (AdvisorKey = { key: "" })
+    let coordinatorKey
+    coordinator.name
+      ? (coordinatorKey = await Storage.put(
+          `img/${uuid()}${coordinator.name}`,
+          coordinator,
+          {
+            contentType: "image/png,image/jpeg,image/jpg",
+            level: "public",
+          }
+        ))
+      : (coordinatorKey = { key: "" })
     //creating a new json which has the json values, to make an initial version of submit input
     const initialJSON = json
 
@@ -204,10 +214,12 @@ export default function HeritageInput(props) {
     initialJSON.coordinator[0].coordinatorSignature = coordinatorKey
     //wait for iterating signing the signaure image key in the initialJson
     await initialJSON.heritageFieldOfficer.map((officer, index) => {
-      OfficerArr[index].then((result) => {
-        const signatureImg = result.key
-        officer.officerSignature = signatureImg
-      })
+      console.log("OfficeArr", OfficerArr[index])
+      OfficerArr[index] &&
+        OfficerArr[index].then((result) => {
+          const signatureImg = result.key
+          officer.officerSignature = signatureImg
+        })
     })
 
     //Submit

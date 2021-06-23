@@ -10,6 +10,7 @@ export const createHeritages = /* GraphQL */ `
       id
       surveyDate
       siteNumber
+      heritageType
       GPSCoordinates
       routeExaminedOrNot
       examinedRouteLocation
@@ -43,6 +44,7 @@ export const updateHeritages = /* GraphQL */ `
       id
       surveyDate
       siteNumber
+      heritageType
       GPSCoordinates
       routeExaminedOrNot
       examinedRouteLocation
@@ -76,6 +78,7 @@ export const deleteHeritages = /* GraphQL */ `
       id
       surveyDate
       siteNumber
+      heritageType
       GPSCoordinates
       routeExaminedOrNot
       examinedRouteLocation

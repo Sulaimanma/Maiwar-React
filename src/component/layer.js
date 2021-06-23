@@ -31,15 +31,27 @@ export const clusterCountLayer = {
 
 const color = "11b4da"
 export const unclusteredPointLayer = {
-  id: "unclustered-point",
-  type: "circle",
+  id: "unclusteredPointLayer",
+  type: "symbol",
   source: "heritages",
-  filter: ["!", ["has", "point_count"]],
+  minzoom: 0,
+  maxzoom: 22,
+  // minzoom: 6,
+  // maxzoom: 22,
+  layout: {
+    "icon-image": ["get", "heritageType"], // reference the image
+    "icon-size": 1,
+    "icon-offset": [0, -15],
+    "text-field": ["get", "visibility"],
+    "text-variable-anchor": ["top", "bottom", "left", "right"],
+    "text-radial-offset": 0.5,
+    "text-justify": "auto",
+
+    "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
+    "text-size": 14,
+  },
   paint: {
-    "circle-color": "green",
-    "circle-radius": 10,
-    "circle-stroke-width": 4,
-    "circle-stroke-color": "#fff",
+    "text-color": "white",
   },
 }
 export const mapRasterLayer = {

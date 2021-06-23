@@ -297,6 +297,7 @@ export default function Map() {
           // id: "cf5f326a-d297-4064-801d-f642151ac0c4",
           // identifiedOrNot: false,
           // inspectionPerson: "Sulaiman",
+          heritageType: heritage.heritageType,
           photo: heritage.photo,
           photoDescription: heritage.photoDescription,
           // routeExaminedOrNot: false,
@@ -406,6 +407,7 @@ export default function Map() {
       "Medicine",
       "Possums",
       "Turtle",
+      "Artefact Scatter",
     ]
     VSInfo.map((img, id) => {
       map.loadImage(
@@ -497,9 +499,9 @@ export default function Map() {
           </div>
           <Layer {...skyLayer} />
           {/* Load the Layer source data*/}
-          {/* {geoConvertedjson != null && (
+          {geoConvertedjson != null && (
             <Source
-              // id="heritages"
+              id="heritages"
               type="geojson"
               data={geoConvertedjson}
               cluster={true}
@@ -510,11 +512,10 @@ export default function Map() {
               <Layer {...clusterCountLayer} />
               <Layer {...unclusteredPointLayer} />
             </Source>
-          
-          )} */}
+          )}
+          {console.log("geooooooooooooo", geoConvertedjson)}
           {PCCC && (
             <Source
-              // id="heritages"
               type="geojson"
               data={PCCC}
               id="PCCC"
