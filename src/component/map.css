@@ -91,9 +91,9 @@ video {
 }
 
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 10px;
   height: 3px;
-  border-left: 0;
+  border-radius: 10px;
   background: rgba(0, 0, 0, 0.1);
 }
 ::-webkit-scrollbar-track {
@@ -101,7 +101,7 @@ video {
 }
 ::-webkit-scrollbar-thumb {
   background: #00853e;
-  border-radius: 0;
+  border-radius: 10px;
 }
 /* 
 Burger Menu */

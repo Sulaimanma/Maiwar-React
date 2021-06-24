@@ -22,6 +22,7 @@
   opacity: 1;
   position: absolute;
   left: 0px;
+  overflow: scroll;
 }
 .slideLeft {
   color: #909c7d;
