@@ -39,7 +39,26 @@ export default function HistoricMap(props) {
   const [swipe, setSwipe] = useState("swipeLeft")
   const mapData = [
     {
-      state: "Queensland",
+      state: "Rainforest",
+      regionMaps: [
+        {
+          value: 31.1,
+          label: "Bwgcolman 1770",
+          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Palm Island.jpg",
+          coordinates: [
+            [146.5275676, -18.6398716],
+            [146.69722193, -18.63985544],
+            [146.6972289, -18.8091968],
+            [146.527562, -18.8091668],
+          ],
+          zoom: 12.2,
+          pitch: 75,
+          bearing: -40,
+        },
+      ],
+    },
+    {
+      state: "Northeast",
       regionMaps: [
         {
           value: 100,
@@ -113,63 +132,6 @@ export default function HistoricMap(props) {
         },
 
         {
-          value: 68.2,
-          label: "Kurrungul 1816",
-          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Kurrungul 1816.jpg",
-          coordinates: [
-            [153.334676793, -27.92300396],
-            [153.421868742, -27.923004024],
-            [153.421868742, -28.00243441],
-            [153.3346765, -28.00243748],
-          ],
-          zoom: 13,
-          pitch: 60,
-          bearing: 40,
-        },
-        {
-          value: 31.1,
-          label: "Bwgcolman 1770",
-          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Palm Island.jpg",
-          coordinates: [
-            [146.5275676, -18.6398716],
-            [146.69722193, -18.63985544],
-            [146.6972289, -18.8091968],
-            [146.527562, -18.8091668],
-          ],
-          zoom: 12.2,
-          pitch: 75,
-          bearing: -40,
-        },
-
-        {
-          value: 15.2,
-          label: "Toowoomba 1830",
-          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Toowoomba 1830.jpg",
-          coordinates: [
-            [151.8909577, -27.5061305],
-            [152.010741, -27.506273],
-            [152.010706, -27.616335],
-            [151.890993, -27.61635],
-          ],
-          zoom: 13.5,
-          pitch: 45,
-          bearing: 40,
-        },
-        {
-          value: 4.6,
-          label: "Oakey 1830",
-          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Oakey_icons.jpg",
-          coordinates: [
-            [151.705706, -27.432911],
-            [151.7275535, -27.4325134],
-            [151.72756741, -27.45180908],
-            [151.7057197, -27.4518239],
-          ],
-          zoom: 14,
-          pitch: 45,
-          bearing: 40,
-        },
-        {
           value: 20.5,
           label: "Karalee 1826",
           url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Karalee 1770.jpg",
@@ -200,8 +162,70 @@ export default function HistoricMap(props) {
       ],
     },
     {
-      state: "New South Wales",
+      state: "Riverine",
       regionMaps: [
+        {
+          value: 15.2,
+          label: "Toowoomba 1830",
+          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Toowoomba 1830.jpg",
+          coordinates: [
+            [151.8909577, -27.5061305],
+            [152.010741, -27.506273],
+            [152.010706, -27.616335],
+            [151.890993, -27.61635],
+          ],
+          zoom: 13.5,
+          pitch: 45,
+          bearing: 40,
+        },
+
+        {
+          value: 4.6,
+          label: "Oakey 1830",
+          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Oakey_icons.jpg",
+          coordinates: [
+            [151.705706, -27.432911],
+            [151.7275535, -27.4325134],
+            [151.72756741, -27.45180908],
+            [151.7057197, -27.4518239],
+          ],
+          zoom: 14,
+          pitch: 45,
+          bearing: 40,
+        },
+        {
+          value: 0,
+          label: "Brewarrina 1876",
+          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brewarrina.jpg",
+          coordinates: [
+            [146.8355683, -29.9401134],
+            [146.87441244, -29.94009897],
+            [146.874411461, -29.973468028],
+            [146.835553179, -29.973467828],
+          ],
+          zoom: 14,
+          pitch: 45,
+          bearing: 40,
+        },
+      ],
+    },
+    {
+      state: "Sourtheast",
+      regionMaps: [
+        {
+          value: 68.2,
+          label: "Kurrungul 1816",
+          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Kurrungul 1816.jpg",
+          coordinates: [
+            [153.334676793, -27.92300396],
+            [153.421868742, -27.923004024],
+            [153.421868742, -28.00243441],
+            [153.3346765, -28.00243748],
+          ],
+          zoom: 13,
+          pitch: 60,
+          bearing: 40,
+        },
         {
           value: 62.9,
           label: "Warrane 1786",
@@ -244,25 +268,39 @@ export default function HistoricMap(props) {
           pitch: 60,
           bearing: 40,
         },
-
         {
-          value: 0,
-          label: "Brewarrina 1876",
-          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brewarrina.jpg",
+          value: 36.4,
+          label: "Birrarung 1834",
+          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Birrarung+1834.jpg",
           coordinates: [
-            [146.8355683, -29.9401134],
-            [146.87441244, -29.94009897],
-            [146.874411461, -29.973468028],
-            [146.835553179, -29.973467828],
+            [144.88455012, -37.77141853],
+            [145.01453333, -37.77141671],
+            [145.01453428, -37.87208986],
+            [144.884549443, -37.87208482],
           ],
-          zoom: 14,
-          pitch: 45,
+          zoom: 12.5,
+          pitch: 60,
+          bearing: 40,
+        },
+        {
+          value: 25.8,
+          label: "Kambera 1816",
+          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Canberra 1816.jpg",
+          coordinates: [
+            [149.0942832, -35.2591583],
+            [149.1650571, -35.2590921],
+            [149.1650594, -35.3073807],
+            [149.0942855, -35.3074128],
+          ],
+          zoom: 13.5,
+          pitch: 60,
           bearing: 40,
         },
       ],
     },
+
     {
-      state: "Western Australia",
+      state: "Southwest",
       regionMaps: [
         {
           value: 47,
@@ -289,44 +327,6 @@ export default function HistoricMap(props) {
             [115.7469694, -32.037847],
           ],
           zoom: 11.5,
-          pitch: 60,
-          bearing: 40,
-        },
-      ],
-    },
-    {
-      state: "Victoria",
-      regionMaps: [
-        {
-          value: 36.4,
-          label: "Birrarung 1834",
-          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Birrarung+1834.jpg",
-          coordinates: [
-            [144.88455012, -37.77141853],
-            [145.01453333, -37.77141671],
-            [145.01453428, -37.87208986],
-            [144.884549443, -37.87208482],
-          ],
-          zoom: 12.5,
-          pitch: 60,
-          bearing: 40,
-        },
-      ],
-    },
-    {
-      state: "Australian Capital Territory",
-      regionMaps: [
-        {
-          value: 25.8,
-          label: "Kambera 1816",
-          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Canberra 1816.jpg",
-          coordinates: [
-            [149.0942832, -35.2591583],
-            [149.1650571, -35.2590921],
-            [149.1650594, -35.3073807],
-            [149.0942855, -35.3074128],
-          ],
-          zoom: 13.5,
           pitch: 60,
           bearing: 40,
         },

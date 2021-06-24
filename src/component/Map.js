@@ -48,6 +48,7 @@ import HistoricMap from "./HistoricMap"
 import { withStyles } from "@material-ui/core/styles"
 import axios from "axios"
 import BearSlider from "./BearSlider"
+import isMobile from "./isMobile"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
@@ -446,10 +447,11 @@ export default function Map() {
         outerContainerId={"body"}
         locateUser={locateUser}
       />
-      <div className="bearCtrl">
-        <BearSlider viewpoint={viewpoint} setViewpoint={setViewpoint} />
-      </div>
-
+      {isMobile() && (
+        <div className="bearCtrl">
+          <BearSlider viewpoint={viewpoint} setViewpoint={setViewpoint} />
+        </div>
+      )}
       <div id="map">
         <ReactMapGl
           ref={mapRef}
@@ -461,7 +463,7 @@ export default function Map() {
           mapStyle="mapbox://styles/guneriboi/ckp69hfy90ibu18pimha653fd"
           //Define the interactive layer
           // interactiveLayerIds={[unclusteredPointLayer.id]}
-          onClick={onClick}
+          // onClick={onClick}
           // onLoad={onMapLoad}
         >
           {/* <Source
