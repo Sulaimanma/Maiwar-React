@@ -461,7 +461,7 @@ export default function Map() {
           mapStyle="mapbox://styles/guneriboi/ckp69hfy90ibu18pimha653fd"
           //Define the interactive layer
           // interactiveLayerIds={[unclusteredPointLayer.id]}
-          // onClick={onClick}
+          onClick={onClick}
           // onLoad={onMapLoad}
         >
           {/* <Source
