@@ -394,6 +394,18 @@ export default function Map() {
   }, [])
   useEffect(() => {
     const map = mapRef.current.getMap()
+
+    // map.addSource("mapbox-dem", {
+    //   "type": "raster-dem",
+    //   "url": "mapbox://mapbox.terrain-rgb",
+    //   "tileSize": 512,
+    //   "maxzoom": 14,
+    // })
+    // map.setTerrain({
+    //   "source": "mapbox-dem",
+    //   "exaggeration": 1.5,
+    // })
+
     const VSInfo = [
       "Burial",
       "Bora",
@@ -422,6 +434,11 @@ export default function Map() {
       )
     })
   }, [mapRef])
+  //Enable the rgb terrain
+  // const onMapLoad = useCallback((evt) => {
+  //   const map = evt.target
+  //   map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 })
+  // }, [])
   return (
     <div className="body" id="body">
       <Sidebar
@@ -439,11 +456,21 @@ export default function Map() {
           {...viewpoint}
           mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
           onViewportChange={handleViewportChange}
+          // mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
+
           mapStyle="mapbox://styles/guneriboi/ckp69hfy90ibu18pimha653fd"
           //Define the interactive layer
           // interactiveLayerIds={[unclusteredPointLayer.id]}
           // onClick={onClick}
+          // onLoad={onMapLoad}
         >
+          {/* <Source
+            id="mapbox-dem"
+            type="raster-dem"
+            url="mapbox://mapbox.mapbox-terrain-dem-v1"
+            tileSize={512}
+            maxzoom={14}
+          /> */}
           <Geocoder
             mapRef={mapRef}
             marker={false}
@@ -514,7 +541,7 @@ export default function Map() {
               <Layer {...unclusteredPointLayer} />
             </Source>
           )}
-          {console.log("geooooooooooooo", geoConvertedjson)}
+          {/* {console.log("geooooooooooooo", geoConvertedjson)} */}
           {PCCC && (
             <Source
               type="geojson"
