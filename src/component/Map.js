@@ -408,6 +408,7 @@ export default function Map() {
       "Possums",
       "Turtle",
       "Artefact Scatter",
+      "Quarry",
     ]
     VSInfo.map((img, id) => {
       map.loadImage(

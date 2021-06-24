@@ -345,7 +345,7 @@ export default function HeritageInput(props) {
                     <Field as="select" name="heritageType">
                       <option value="Burial">Burial</option>
                       <option value="Artefact Scatter">Artefact Scatter</option>
-                      <option value="Quary">Quary</option>
+                      <option value="Quarry">Quarry</option>
                       <option value="Camp">Camp</option>
                       <option value="Midden">Midden</option>
                     </Field>
