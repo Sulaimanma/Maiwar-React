@@ -36,7 +36,7 @@
       "function": {
         "S3Triggerc40f8517": {
           "deploymentBucketName": "amplify-maiwarreactapp-devsecond-04046-deployment",
-          "s3Key": "amplify-builds/S3Triggerc40f8517-4d4c474e443432633978-build.zip"
+          "s3Key": "amplify-builds/S3Triggerc40f8517-6f644a6a4b7657536176-build.zip"
         }
       }
     }

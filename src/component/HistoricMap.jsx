@@ -39,6 +39,11 @@ export default function HistoricMap(props) {
   const [swipe, setSwipe] = useState("swipeLeft")
   const mapData = [
     {
+      state: "Torres Strait",
+      regionMaps: [],
+    },
+    { state: "East Cape", regionMaps: [] },
+    {
       state: "Rainforest",
       regionMaps: [
         {
@@ -210,7 +215,7 @@ export default function HistoricMap(props) {
       ],
     },
     {
-      state: "Sourtheast",
+      state: "Southeast",
       regionMaps: [
         {
           value: 68.2,
@@ -298,7 +303,17 @@ export default function HistoricMap(props) {
         },
       ],
     },
-
+    { state: "Tasmania", regionMaps: [] },
+    { state: "Eyre", regionMaps: [] },
+    { state: "Gulf", regionMaps: [] },
+    { state: "West Cape", regionMaps: [] },
+    { state: "Desert", regionMaps: [] },
+    { state: "Spencer", regionMaps: [] },
+    { state: "Arnhem", regionMaps: [] },
+    { state: "North", regionMaps: [] },
+    { state: "Fitzmaurice", regionMaps: [] },
+    { state: "Kimberley", regionMaps: [] },
+    { state: "Northwest", regionMaps: [] },
     {
       state: "Southwest",
       regionMaps: [

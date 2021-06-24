@@ -14,7 +14,7 @@
   margin-top: 46px;
 }
 .sliderDiv {
-  height: 910px;
+  height: 100vh;
   color: white;
   background: white;
   width: 320px;
@@ -40,7 +40,7 @@
   cursor: pointer;
 }
 .sliderDivHide {
-  height: 910px;
+  height: 100vh;
   color: white;
   background: white;
   width: 220px;
@@ -128,11 +128,11 @@
 @media only screen and (max-width: 1400px) {
   .sliderDiv {
     width: 200px;
-    height: 80vh;
+    height: 100vh;
   }
   .sliderDivHide {
     width: 200px;
-    height: 80vh;
+    height: 100vh;
   }
   .MuiSlider-marked.MuiSlider-vertical {
     margin-top: 40px;
