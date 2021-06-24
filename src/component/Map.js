@@ -382,7 +382,7 @@ export default function Map() {
       .get(url)
       .then((res) => {
         const allData = res.data
-        console.log("Get the data", res.data)
+        // console.log("Get the data", res.data)
         setPCCC(allData)
       })
       .then(console.log("PCCC", PCCC))
@@ -463,7 +463,7 @@ export default function Map() {
           mapStyle="mapbox://styles/guneriboi/ckp69hfy90ibu18pimha653fd"
           //Define the interactive layer
           // interactiveLayerIds={[unclusteredPointLayer.id]}
-          // onClick={onClick}
+          onClick={onClick}
           // onLoad={onMapLoad}
         >
           {/* <Source
@@ -543,7 +543,7 @@ export default function Map() {
               <Layer {...unclusteredPointLayer} />
             </Source>
           )}
-          {/* {console.log("geooooooooooooo", geoConvertedjson)} */}
+          {/* {console.log("geooooooooooooo", PCCC)} */}
           {PCCC && (
             <Source
               type="geojson"
@@ -612,32 +612,76 @@ export default function Map() {
               />
             </Popup>
           )}
-          {popup && clickInfo != null && (
-            <Popup
-              latitude={clickInfo.geometry.coordinates[1]}
-              longitude={clickInfo.geometry.coordinates[0]}
-              closeButton={true}
-              closeOnClick={false}
-              onClose={() => setPopup(false)}
-              anchor="bottom"
-              dynamicPosition={true}
-              captureScroll={true}
-              captureDrag={false}
-            >
-              {console.log(
-                "VideoURLLLLLLLLLLLLLLLLLL",
-                video(clickInfo.properties.video).then((result) => {
-                  setVideoUrl(result)
-                })
-              )}
 
-              <PopInfo
-                src={videoUrl}
-                description={clickInfo.properties.visibility}
-                title={clickInfo.properties.InspectionCarriedOut}
-              />
-            </Popup>
-          )}
+          {popup &&
+            clickInfo &&
+            clickInfo != null &&
+            clickInfo.source === "heritages" && (
+              <Popup
+                latitude={clickInfo.geometry.coordinates[1]}
+                longitude={clickInfo.geometry.coordinates[0]}
+                closeButton={true}
+                closeOnClick={false}
+                onClose={() => setPopup(false)}
+                anchor="bottom"
+                dynamicPosition={true}
+                captureScroll={true}
+                captureDrag={false}
+              >
+                {console.log(
+                  "VideoURLLLLLLLLLLLLLLLLLL",
+                  video(clickInfo.properties.video).then((result) => {
+                    setVideoUrl(result)
+                  })
+                )}
+                {clickInfo.source === "heritages" ? (
+                  <PopInfo
+                    src={videoUrl}
+                    description={clickInfo.properties.visibility}
+                    title={clickInfo.properties.InspectionCarriedOut}
+                  />
+                ) : (
+                  <PopInfo
+                    src={videoUrl}
+                    description={clickInfo.properties.description}
+                    title={clickInfo.properties.title}
+                  />
+                )}
+              </Popup>
+            )}
+          {popup &&
+            clickInfo &&
+            clickInfo != null &&
+            clickInfo.source === "PCCC" && (
+              <Popup
+                latitude={clickInfo.geometry.coordinates[1]}
+                longitude={clickInfo.geometry.coordinates[0]}
+                closeButton={true}
+                closeOnClick={false}
+                onClose={() => setPopup(false)}
+                anchor="bottom"
+                dynamicPosition={true}
+                captureScroll={true}
+                captureDrag={false}
+              >
+                {console.log(
+                  "VideoURLLLLLLLLLLLLLLLLLL",
+                  video(`video/${clickInfo.properties.VideoName}.mp4`).then(
+                    (result) => {
+                      setVideoUrl(result)
+                    }
+                  )
+                )}
+                {clickInfo.source === "PCCC" &&
+                  clickInfo.properties.VideoName != null && (
+                    <PopInfo
+                      src={videoUrl}
+                      description={clickInfo.properties.description}
+                      title={clickInfo.properties.title}
+                    />
+                  )}
+              </Popup>
+            )}
         </ReactMapGl>
       </div>
     </div>
