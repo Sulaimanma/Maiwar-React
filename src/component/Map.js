@@ -481,16 +481,16 @@ export default function Map() {
             position="top-right"
           />
           <div className="tabs">
-            <StyletronProvider value={engine}>
-              <BaseProvider theme={LightTheme}>
-                <HistoricMap
-                  viewpoint={viewpoint}
-                  setViewpoint={setViewpoint}
-                  historicMap={historicMap}
-                  setHistoricMap={setHistoricMap}
-                />
-              </BaseProvider>
-            </StyletronProvider>
+            {/* <StyletronProvider value={engine}>
+              <BaseProvider theme={LightTheme}> */}
+            <HistoricMap
+              viewpoint={viewpoint}
+              setViewpoint={setViewpoint}
+              historicMap={historicMap}
+              setHistoricMap={setHistoricMap}
+            />
+            {/* </BaseProvider>
+            </StyletronProvider> */}
           </div>
           {/* <div class="toggleWrapper">
             <input
