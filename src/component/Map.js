@@ -22,6 +22,7 @@ import {
   unclusteredPointLayer,
   mapRasterLayer,
   PCCCIconsLayer,
+  ThreeDBuildingLayer,
 } from "./layer"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Switch from "@material-ui/core/Switch"
@@ -92,7 +93,9 @@ export default function Map() {
   //Display  different historic map
 
   //Toggle button of 3d map
-  const [checkboxes, setCheckboxes] = React.useState([false, false])
+  const [checkboxes, setCheckboxes] = useState([false, false])
+  //Toggle 3d building
+  const [building, setBuilding] = useState([false, true])
   //historic map initial value
   const [historicMap, setHistoricMap] = useState({
     url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1798.jpg",
@@ -119,6 +122,7 @@ export default function Map() {
       "sky-atmosphere-sun-intensity": 15,
     },
   }
+
   // Fetch the Layer GeoJson data for display
   // useEffect(() => {
   //   /* global fetch */
@@ -129,19 +133,26 @@ export default function Map() {
   //     .then((json) => setAllData(json))
   // }, [])
 
+  //3D viewpoint
   useEffect(async () => {
     checkboxes[0]
       ? await setViewpoint({
           ...viewpoint,
           pitch: 75,
           bearing: 0,
+          transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
+          transitionDuration: "auto",
         })
       : await setViewpoint({
           ...viewpoint,
           pitch: 0,
           bearing: 0,
+          transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
+          transitionDuration: "auto",
         })
   }, [checkboxes[0]])
+  //3d building
+
   //Resize window function
   const resize = () => {
     setViewpoint({
@@ -393,6 +404,7 @@ export default function Map() {
       "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/json/VS_Info.geojson"
     )
   }, [])
+
   useEffect(() => {
     const map = mapRef.current.getMap()
 
@@ -440,6 +452,7 @@ export default function Map() {
   //   const map = evt.target
   //   map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 })
   // }, [])
+
   return (
     <div className="body" id="body">
       <Sidebar
@@ -464,7 +477,6 @@ export default function Map() {
           //Define the interactive layer
           // interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
-          // onLoad={onMapLoad}
         >
           {/* <Source
             id="mapbox-dem"
@@ -525,9 +537,34 @@ export default function Map() {
                 />
               }
             />
-            <div className="Text3d">3D</div>
+            <div className="Text3d" style={{ left: "3vw" }}>
+              3D
+            </div>
+          </div>
+          {/* 3d buildings */}
+          <div className="Toggle3d" style={{ width: "150px", right: "8vw" }}>
+            <FormControlLabel
+              control={
+                <GreenSwitch
+                  checked={building[0]}
+                  onChange={(e) => {
+                    const nextBuilding = [...building]
+                    nextBuilding[0] = e.currentTarget.checked
+                    setBuilding(nextBuilding)
+                  }}
+                  name="checkedB"
+                  color="secondary"
+                  // size="large"
+                />
+              }
+            />
+            <div className="Text3d" style={{ left: "3vw" }}>
+              Buildings
+            </div>
           </div>
           <Layer {...skyLayer} />
+          {building[0] && <Layer {...ThreeDBuildingLayer} />}
+
           {/* Load the Layer source data*/}
           {geoConvertedjson != null && (
             <Source
@@ -567,6 +604,7 @@ export default function Map() {
               <Layer {...mapRasterLayer}></Layer>
             </Source>
           )}
+
           {/* {geoConvertedjson != null && (
             <Pins data={geoConvertedjson} onClick={onClick} />
           )} */}
