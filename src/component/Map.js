@@ -519,7 +519,6 @@ export default function Map() {
               src="https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/img/logo.svg"
               alt="LOGO"
             />
-            <h1 className="logoText">VIRTUAL SONGLINES</h1>
           </div>
           <div className="Toggle3d" style={{ width: "150px" }}>
             <FormControlLabel
@@ -537,12 +536,12 @@ export default function Map() {
                 />
               }
             />
-            <div className="Text3d" style={{ left: "3vw" }}>
+            <div className="Text3d" style={{ left: "2.6vw" }}>
               3D
             </div>
           </div>
           {/* 3d buildings */}
-          <div className="Toggle3d" style={{ width: "150px", right: "8vw" }}>
+          <div className="Toggle3d" style={{ width: "150px", right: "7.7vw" }}>
             <FormControlLabel
               control={
                 <GreenSwitch
@@ -558,7 +557,7 @@ export default function Map() {
                 />
               }
             />
-            <div className="Text3d" style={{ left: "3vw" }}>
+            <div className="Text3d" style={{ left: "2vw" }}>
               Buildings
             </div>
           </div>

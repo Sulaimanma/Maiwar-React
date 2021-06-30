@@ -26,8 +26,8 @@ video {
 
 #logo {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   position: relative;
   margin: 0px auto;
   width: 100%;
@@ -35,18 +35,21 @@ video {
   padding: 10px 0 10px 0;
   border: none;
   border-radius: 3px;
+
   font-size: 1em;
   text-align: center;
   color: #fff;
-  background: rgb(31 40 24);
+  /* background: rgb(31 40 24); */
   font-family: "Amatic SC", cursive;
   font-weight: bold;
   text-transform: uppercase;
 }
 
 #logo img {
-  width: 5em;
-  padding-right: 2em;
+  width: 4.4em;
+  position: absolute;
+  right: 0.6em;
+  top: 0.6em;
 }
 .mapboxgl-ctrl-attrib,
 .mapboxgl-ctrl-logo {
@@ -142,8 +145,8 @@ body {
   position: fixed;
   width: 46px;
   height: 25px;
-  left: 20px;
-  top: 31px;
+  left: 1em;
+  top: 1.5em;
   cursor: pointer;
 }
 
@@ -195,32 +198,34 @@ body {
 .tabs {
   position: absolute !important;
   z-index: 1 !important;
-  top: 9% !important;
+  top: 9vh !important;
 }
 /* 3d switch */
 .Toggle3d {
   position: absolute;
   z-index: 999;
-  top: 33px;
-  right: 0px;
+  top: 0em;
+  right: 0.5em;
   height: 20px;
+  margin-right: 1vw;
 }
 .Text3d {
   position: absolute;
   font-family: system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
   top: 6px;
-  right: 83px;
+  right: 0.5em;
   height: 20px;
   color: white;
   font-weight: 700;
   font-size: 1rem;
 }
-
+.mapboxgl-ctrl-top-right {
+  position: absolute;
+  top: 2em !important;
+  right: 7.2em !important;
+}
 .mapboxgl-ctrl-geocoder {
-  top: 7vh;
-  left: -16px;
-
-  width: 122%;
+  /* width: 122%; */
   height: 39px;
   font-size: 13px;
   border: none !important;
