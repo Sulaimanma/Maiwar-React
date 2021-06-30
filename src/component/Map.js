@@ -12,6 +12,7 @@ import ReactMapGl, {
   Source,
   Layer,
   FlyToInterpolator,
+  NavigationControl,
 } from "react-map-gl"
 // import "mapbox-gl/dist/mapbox-gl.css"
 import mapboxgl from "mapbox-gl"
@@ -208,6 +209,7 @@ export default function Map() {
     longitude: 138.014308,
   })
   //Initial the events
+
   const [events, logEvents] = useState({})
 
   const onMarkerDragStart = useCallback((event) => {
@@ -478,6 +480,10 @@ export default function Map() {
           // interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
         >
+          <NavigationControl
+            showCompass={true}
+            style={{ bottom: "2px", right: "0px" }}
+          />
           {/* <Source
             id="mapbox-dem"
             type="raster-dem"
