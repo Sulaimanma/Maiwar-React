@@ -10,8 +10,9 @@ import { AiFillDelete } from "react-icons/ai"
 import API, { graphqlOperation } from "@aws-amplify/api"
 import { createHeritages } from "../graphql/mutations"
 import Storage from "@aws-amplify/storage"
-import RingLoader from "react-spinners/RingLoader"
-import { Modal } from "bootstrap"
+// import RingLoader from "react-spinners/RingLoader"
+// import { Modal } from "bootstrap"
+import { IoClose } from "react-icons/io5"
 
 export default function HeritageInput(props) {
   const [videoData, setVideoData] = useState("")
@@ -276,7 +277,7 @@ export default function HeritageInput(props) {
     <Container>
       <div
         style={{
-          height: "1024px",
+          height: "768px",
           width: "768px",
           overflowY: "scroll",
           overflowX: "hidden",
@@ -294,6 +295,24 @@ export default function HeritageInput(props) {
             <h4 style={{ fontWeight: "600" }}>
               Cultural Heritage Inspection Form
             </h4>
+          </div>
+          <div
+            style={{
+              textAlign: "left",
+              marginBottom: "1px",
+              // paddingRight: "35px",
+              fontWeight: "40px",
+              fontSize: "25px",
+              position: "absolute",
+              top: "1px",
+              right: "0px",
+              cursor: "pointer",
+              width: "maxContent",
+              height: "maxContent",
+            }}
+            onClick={() => setEnter(false)}
+          >
+            <IoClose />
           </div>
 
           <Formik

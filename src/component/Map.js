@@ -661,8 +661,8 @@ export default function Map() {
             <Popup
               latitude={marker.latitude}
               longitude={marker.longitude}
-              closeButton={!loading}
-              closeOnClick={false}
+              closeButton={false}
+              closeOnClick={true}
               onClose={() => setEnter(false)}
               anchor="right"
               color="black"
@@ -670,6 +670,8 @@ export default function Map() {
               dynamicPosition={false}
               captureScroll={true}
               captureDrag={false}
+              captureClick={true}
+              capturePointerMove={true}
             >
               <HeritageInput
                 longitude={marker.longitude}
