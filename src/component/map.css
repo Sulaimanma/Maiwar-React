@@ -190,10 +190,7 @@ body {
   background: rgb(31, 40, 24, 0.3);
 }
 /* Searchbar  */
-.mapboxgl-ctrl-top-right {
-  position: absolute;
-  top: 88px;
-}
+
 /* tabs */
 .tabs {
   position: absolute !important;
@@ -241,6 +238,7 @@ body {
   position: absolute;
   top: 2em !important;
   right: 7.2em !important;
+  z-index: 99999999999999 !important;
 }
 .mapboxgl-ctrl-geocoder {
   /* width: 122%; */
@@ -249,7 +247,8 @@ body {
   border: none !important;
 }
 .mapboxgl-ctrl-geocoder--input {
-  height: 40px !important;
+  height: 111% !important;
+  width: 111% !important;
   border: none !important;
 }
 .bearCtrl {
@@ -258,6 +257,7 @@ body {
   left: 16vw;
   z-index: 1;
 }
+
 @media only screen and (max-width: 600px) {
   /* burger menu div */
   .bm-menu-wrap {
