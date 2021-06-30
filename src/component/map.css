@@ -219,6 +219,24 @@ body {
   font-weight: 700;
   font-size: 1rem;
 }
+.Toggle3d2 {
+  position: absolute;
+  z-index: 999;
+  top: 0em;
+  right: 0.5em;
+  height: 20px;
+  margin-right: 1vw;
+}
+.Text3d2 {
+  position: absolute;
+  font-family: system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  top: 6px;
+  right: 0.5em;
+  height: 20px;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+}
 .mapboxgl-ctrl-top-right {
   position: absolute;
   top: 2em !important;
@@ -314,14 +332,29 @@ body {
     top: 15px;
   }
   .Toggle3d {
-    top: 10px;
+    top: 0px;
+    right: 0em !important;
+    padding-right: 2vw;
+  }
+  .Text3d {
+    margin-left: 1vw;
+  }
+  .Toggle3d2 {
+    top: 0px;
+    right: 10.8em !important;
+
+    padding-right: 2vw;
+  }
+  .Text3d2 {
+    margin-left: 1vw;
   }
   .logoText {
     font-family: ui sans-serif;
     font-size: 2rem;
   }
   .slideRight {
-    top: 320px !important;
-    right: -16px !important;
+    top: 380px !important;
+
+    right: -13px !important;
   }
 }

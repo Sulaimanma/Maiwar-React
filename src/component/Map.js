@@ -541,7 +541,7 @@ export default function Map() {
             </div>
           </div>
           {/* 3d buildings */}
-          <div className="Toggle3d" style={{ width: "150px", right: "7.7vw" }}>
+          <div className="Toggle3d2" style={{ width: "150px", right: "7.7vw" }}>
             <FormControlLabel
               control={
                 <GreenSwitch
@@ -557,7 +557,7 @@ export default function Map() {
                 />
               }
             />
-            <div className="Text3d" style={{ left: "2vw" }}>
+            <div className="Text3d2" style={{ left: "2vw" }}>
               Buildings
             </div>
           </div>
