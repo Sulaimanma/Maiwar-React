@@ -13,6 +13,8 @@ import ReactMapGl, {
   Layer,
   FlyToInterpolator,
   NavigationControl,
+  ScaleControl,
+  GeolocateControl,
 } from "react-map-gl"
 // import "mapbox-gl/dist/mapbox-gl.css"
 import mapboxgl from "mapbox-gl"
@@ -96,7 +98,7 @@ export default function Map() {
   //Toggle button of 3d map
   const [checkboxes, setCheckboxes] = useState([false, false])
   //Toggle 3d building
-  const [building, setBuilding] = useState([false, true])
+  const [building, setBuilding] = useState([true, false])
   //historic map initial value
   const [historicMap, setHistoricMap] = useState({
     url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1798.jpg",
@@ -480,6 +482,23 @@ export default function Map() {
           // interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
         >
+          <GeolocateControl
+            style={{
+              bottom: "11vh",
+              right: "0",
+              padding: "0",
+            }}
+            showUserLocation={true}
+            trackUserLocation={false}
+            showAccuracyCircle={false}
+          />
+          <ScaleControl
+            style={{
+              bottom: "0",
+              left: "0",
+              padding: "2px",
+            }}
+          />
           <NavigationControl
             showCompass={true}
             style={{ bottom: "2px", right: "0px" }}
