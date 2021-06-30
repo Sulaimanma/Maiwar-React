@@ -356,6 +356,10 @@ export default function Map() {
 
   const handleViewportChange = useCallback((viewpoint) => {
     setViewpoint(viewpoint)
+    setMarker({
+      longitude: viewpoint.longitude,
+      latitude: viewpoint.latitude,
+    })
   }, [])
 
   const handleGeocoderViewportChange = useCallback(
@@ -491,6 +495,7 @@ export default function Map() {
             showUserLocation={true}
             trackUserLocation={false}
             showAccuracyCircle={false}
+            onViewportChange={locateUser}
           />
           <ScaleControl
             style={{
@@ -516,6 +521,7 @@ export default function Map() {
             onViewportChange={handleGeocoderViewportChange}
             mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
             position="top-right"
+            positionOptions={{ enableHighAccuracy: true, timeout: 6000 }}
           />
           <div className="tabs">
             {/* <StyletronProvider value={engine}>
@@ -525,6 +531,7 @@ export default function Map() {
               setViewpoint={setViewpoint}
               historicMap={historicMap}
               setHistoricMap={setHistoricMap}
+              setMarker={setMarker}
             />
             {/* </BaseProvider>
             </StyletronProvider> */}
@@ -644,7 +651,7 @@ export default function Map() {
             onDragEnd={onMarkerDragEnd}
           >
             <DragPin
-              size={20}
+              size={30}
               clickFunction={() => {
                 setEnter(true)
               }}

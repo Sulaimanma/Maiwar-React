@@ -15,9 +15,19 @@ function Pin(props) {
 
   return (
     <>
-      <svg height={size} viewBox="0 0 24 24" style={pinStyle}>
+      {/* <svg height={size} viewBox="0 0 24 24" style={pinStyle}>
         <path d={ICON} />
-      </svg>
+      </svg> */}
+      <div style={{ position: "relative", right: "56px", top: "7px" }}>
+        {" "}
+        <img
+          width={23}
+          height={23}
+          src="https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/img/logo.svg"
+          alt="LOGO"
+        />
+      </div>
+
       <TiPlus
         onClick={props.clickFunction}
         style={{

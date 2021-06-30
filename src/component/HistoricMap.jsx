@@ -16,7 +16,8 @@ import Typography from "@material-ui/core/Typography"
 import { MdExpandMore } from "react-icons/md"
 
 export default function HistoricMap(props) {
-  const { viewpoint, setViewpoint, historicMap, setHistoricMap } = props
+  const { viewpoint, setViewpoint, historicMap, setHistoricMap, setMarker } =
+    props
   //Tabs Control
   // const [activeKey, setActiveKey] = useState("0")
 
@@ -372,6 +373,10 @@ export default function HistoricMap(props) {
         speed: 1.7,
       }),
       transitionDuration: "auto",
+    })
+    setMarker({
+      latitude: lati,
+      longitude: longi,
     })
   }, [mapValue])
 
