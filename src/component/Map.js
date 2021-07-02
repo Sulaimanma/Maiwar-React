@@ -16,7 +16,7 @@ import ReactMapGl, {
   ScaleControl,
   GeolocateControl,
 } from "react-map-gl"
-// import "mapbox-gl/dist/mapbox-gl.css"
+import "mapbox-gl/dist/mapbox-gl.css"
 import mapboxgl from "mapbox-gl"
 import "./map.css"
 import {
@@ -40,10 +40,10 @@ import { HeritageContext } from "./Helpers/Context"
 import HeritageInput from "./HeritageInput"
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css"
 import { Client as Styletron } from "styletron-engine-atomic"
-import { Provider as StyletronProvider } from "styletron-react"
-import { LightTheme, BaseProvider, styled } from "baseui"
-import { Tabs, Tab, ORIENTATION, FILL } from "baseui/tabs-motion"
-import { Checkbox, STYLE_TYPE } from "baseui/checkbox"
+// import { Provider as StyletronProvider } from "styletron-react"
+// import { LightTheme, BaseProvider, styled } from "baseui"
+// import { Tabs, Tab, ORIENTATION, FILL } from "baseui/tabs-motion"
+// import { Checkbox, STYLE_TYPE } from "baseui/checkbox"
 import Geocoder from "react-map-gl-geocoder"
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker"
@@ -53,9 +53,22 @@ import { withStyles } from "@material-ui/core/styles"
 import axios from "axios"
 import BearSlider from "./BearSlider"
 import isMobile from "./isMobile"
+import {
+  Deck,
+  _GlobeView as GlobeView,
+  LightingEffect,
+  AmbientLight,
+  _SunLight as SunLight,
+} from "@deck.gl/core"
+import { SolidPolygonLayer, GeoJsonLayer, ArcLayer } from "@deck.gl/layers"
+import { DeckGL } from "deck.gl"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
+
+// source: Natural Earth http://www.naturalearthdata.com/ via geojson.xyz
+const COUNTRIES =
+  "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_scale_rank.geojson" //eslint-disable-line
 
 export default function Map() {
   const mapRef = useRef()
@@ -75,7 +88,7 @@ export default function Map() {
     longitude: 138.014308,
     width: window.innerWidth,
     height: window.innerHeight,
-    zoom: 4.5,
+    zoom: 1,
     bearing: 0,
     pitch: 0,
   })
@@ -125,6 +138,9 @@ export default function Map() {
       "sky-atmosphere-sun-intensity": 15,
     },
   }
+  //Globe view properties
+  const [display, setDisplay] = useState("flex")
+  const [nondisplay, setNondisplay] = useState("none")
 
   // Fetch the Layer GeoJson data for display
   // useEffect(() => {
@@ -353,15 +369,30 @@ export default function Map() {
   }, [heritages])
   var geoConvertedjson = null
   geojson && (geoConvertedjson = geojson)
-
+  //map view change
   const handleViewportChange = useCallback((viewpoint) => {
     setViewpoint(viewpoint)
     setMarker({
       longitude: viewpoint.longitude,
       latitude: viewpoint.latitude,
     })
+    if (viewpoint.zoom <= 4) {
+      setNondisplay("none")
+      setDisplay("inherit")
+    }
+  }, [])
+  //Globe view change
+  const handleViewStateChange = useCallback((viewpoint) => {
+    setViewpoint(viewpoint.viewState)
+
+    if (viewpoint.viewState.zoom > 4) {
+      setDisplay("none")
+      setNondisplay("inherit")
+    }
+    // console.log('viewpoint', viewpoint.viewState);
   }, [])
 
+  //Fly to different project on map
   const handleGeocoderViewportChange = useCallback(
     (newViewport) => {
       setMarker({
@@ -461,8 +492,28 @@ export default function Map() {
   //   map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 })
   // }, [])
 
+  //Globe light effect
+  const ambientLight = new AmbientLight({
+    color: [255, 255, 255],
+    intensity: 0.5,
+  })
+  const sunLight = new SunLight({
+    color: [255, 255, 255],
+    intensity: 2.0,
+    timestamp: 0,
+  })
+  // create lighting effect with light sources
+  const lightingEffect = new LightingEffect({ ambientLight, sunLight })
+
   return (
     <div className="body" id="body">
+      {/* <div style={{ width: "100vw", height: "100vh", display: `${display}` }}>
+        <img
+          width="100%"
+          height="100%"
+          src="https://images.unsplash.com/photo-1528819027803-5473f2bf7633?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1189&q=80"
+        />
+      </div> */}
       <Sidebar
         pageWrapId={"map"}
         outerContainerId={"body"}
@@ -473,7 +524,10 @@ export default function Map() {
           <BearSlider viewpoint={viewpoint} setViewpoint={setViewpoint} />
         </div>
       )}
-      <div id="map">
+      <div
+        id="map"
+        style={{ display: `${nondisplay}`, width: "100vw", height: "100vh" }}
+      >
         <ReactMapGl
           ref={mapRef}
           {...viewpoint}
@@ -754,6 +808,87 @@ export default function Map() {
               </Popup>
             )}
         </ReactMapGl>
+      </div>
+
+      <div className="globe" style={{ display: `${display}` }}>
+        <DeckGL
+          {...viewpoint}
+          // zoom={viewpoint.zoom}
+          views={
+            new GlobeView({
+              resolution: 10,
+              // longitude: viewpoint.longitude,
+              // latitude: viewpoint.latitude
+            })
+          }
+          initialViewState={{
+            latitude: -27.477173,
+            longitude: 138.014308,
+            zoom: 1,
+          }}
+          controller={true}
+          onViewStateChange={handleViewStateChange}
+          layers={[
+            // A GeoJSON polygon that covers the entire earth
+            // See /docs/api-reference/globe-view.md#remarks
+            new SolidPolygonLayer({
+              id: "background",
+              data: [
+                // prettier-ignore
+                [[-180, 90], [0, 90], [180, 90], [180, -90], [0, -90], [-180, -90]],
+              ],
+              opacity: 0.5,
+              getPolygon: (d) => d,
+              stroked: false,
+              filled: true,
+              getFillColor: [32, 201, 218],
+            }),
+            new GeoJsonLayer({
+              id: "base-map",
+              data: COUNTRIES,
+              // Styles
+              stroked: true,
+              filled: true,
+              lineWidthMinPixels: 2,
+              getLineColor: [35, 107, 19],
+              getFillColor: [41, 156, 22],
+            }),
+            // new GeoJsonLayer({
+            //   id: 'airports',
+            //   data: AIR_PORTS,
+            //   // Styles
+            //   filled: true,
+            //   pointRadiusMinPixels: 2,
+            //   pointRadiusScale: 2000,
+            //   getRadius: f => 11 - f.properties.scalerank,
+            //   getFillColor: [200, 0, 80, 180],
+            //   // Interactive props
+            //   pickable: true,
+            //   autoHighlight: true,
+            //   onClick: info =>
+            //     // eslint-disable-next-line
+            //     info.object &&
+            //     alert(
+            //       `${info.object.properties.name} (${
+            //         info.object.properties.abbrev
+            //       })`
+            //     )
+            // }),
+            // new ArcLayer({
+            //   id: 'arcs',
+            //   data: AIR_PORTS,
+            //   dataTransform: d =>
+            //     d.features.filter(f => f.properties.scalerank < 4),
+            //   // Styles
+            //   getSourcePosition: f => [-0.4531566, 51.4709959], // London
+            //   getTargetPosition: f => f.geometry.coordinates,
+            //   getSourceColor: [0, 128, 200],
+            //   getTargetColor: [200, 0, 80],
+            //   getWidth: 1
+            // })
+          ]}
+          effects={[lightingEffect]}
+        />
       </div>
     </div>
   )

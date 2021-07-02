@@ -2,7 +2,23 @@
   margin: 0;
   padding: 0;
 }
-
+/* Globe view */
+.globe {
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-image: url("https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/galaxy_background.jpg");
+}
+.mapboxgl-canvas {
+  width: 100vw !important;
+  height: 100vh !important;
+}
+#deckgl-wrapper {
+  width: 100vw !important;
+  height: 100vh !important;
+  position: absolute !important;
+  z-index: 0 !important;
+}
 #map {
   position: absolute;
   top: 0;
@@ -114,7 +130,11 @@ body {
   width: 100vw;
   height: 100vh;
 }
-
+#map > div {
+  position: absolute !important;
+  width: 100vw !important;
+  height: 100vh !important;
+}
 #App {
   font-family: sans-serif;
   height: 100vh;
@@ -308,15 +328,17 @@ body {
     height: 44px;
     font-size: 13px;
   }
-  html {
+  .html {
     margin: 0 !important;
     overflow: hidden !important;
     height: 100% !important;
   }
-  body {
+  .body {
     margin: 0 !important;
     overflow: auto !important;
-    height: 100% !important;
+    height: 100vh !important;
+    width: 100vw !important;
+
     -webkit-overflow-scrolling: touch !important;
   }
   .bearCtrl {

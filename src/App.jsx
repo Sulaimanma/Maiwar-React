@@ -64,7 +64,15 @@ function App() {
 
   // return authState === AuthState.SignedIn && user ? (
   return (
-    <div className="App" id="App">
+    <div
+      className="App"
+      id="App"
+      style={{
+        position: "absoluet !important",
+        width: "100vw !important",
+        height: "100vh !important",
+      }}
+    >
       <HeritageContext.Provider value={{ heritages, fetchHeritages }}>
         {/* <div className="signOut">
           <div className="greeting">Hello, {user.attributes.email}</div>
