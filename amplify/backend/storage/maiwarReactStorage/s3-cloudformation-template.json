@@ -460,6 +460,11 @@
 			}
 		},
 		"S3AuthPrivatePolicy": {
+
+
+
+
+			
 			"DependsOn": [
 				"S3Bucket"
 			],
