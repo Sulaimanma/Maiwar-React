@@ -7,7 +7,8 @@
   width: 100vw;
   height: 100vh;
   background-size: cover;
-  background-image: url("https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/galaxy_background.jpg");
+  /* background-image: url("https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/galaxy_background.jpg"); */
+  background-color: black;
 }
 .mapboxgl-canvas {
   width: 100vw !important;

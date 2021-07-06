@@ -370,24 +370,39 @@ export default function Map() {
   var geoConvertedjson = null
   geojson && (geoConvertedjson = geojson)
   //map view change
-  const handleViewportChange = useCallback((viewpoint) => {
-    setViewpoint(viewpoint)
-    setMarker({
-      longitude: viewpoint.longitude,
-      latitude: viewpoint.latitude,
-    })
-    if (viewpoint.zoom <= 4) {
+
+  // Use i and g to fix the zoom identified accuracy issues
+  let i = 1
+  let g = 1
+  const handleViewportChange = useCallback((view) => {
+    if (view.zoom <= 4.13) {
+      i = i + 1
+    }
+    if (i >= 12) {
+      console.log("iiiiiiiii", i)
       setNondisplay("none")
       setDisplay("inherit")
+      i = 1
+    } else {
+      setViewpoint(view)
+      setMarker({
+        longitude: view.longitude,
+        latitude: view.latitude,
+      })
     }
   }, [])
   //Globe view change
-  const handleViewStateChange = useCallback((viewpoint) => {
-    setViewpoint(viewpoint.viewState)
-
-    if (viewpoint.viewState.zoom > 4) {
+  const handleViewStateChange = useCallback((view) => {
+    if (view.viewState.zoom > 4.144) {
+      g = g + 1
+    }
+    if (g >= 16) {
+      console.log("ggggg", g)
       setDisplay("none")
       setNondisplay("inherit")
+      g = 1
+    } else {
+      setViewpoint(view.viewState)
     }
     // console.log('viewpoint', viewpoint.viewState);
   }, [])
@@ -797,6 +812,7 @@ export default function Map() {
                     }
                   )
                 )}
+
                 {clickInfo.source === "PCCC" &&
                   clickInfo.properties.VideoName != null && (
                     <PopInfo
@@ -812,11 +828,12 @@ export default function Map() {
 
       <div className="globe" style={{ display: `${display}` }}>
         <DeckGL
-          {...viewpoint}
-          // zoom={viewpoint.zoom}
+          // {...viewpoint}
+
           views={
             new GlobeView({
               resolution: 10,
+
               // longitude: viewpoint.longitude,
               // latitude: viewpoint.latitude
             })
@@ -841,7 +858,8 @@ export default function Map() {
               getPolygon: (d) => d,
               stroked: false,
               filled: true,
-              getFillColor: [32, 201, 218],
+              // getFillColor: [32, 201, 218],
+              getFillColor: [15, 116, 230, 255],
             }),
             new GeoJsonLayer({
               id: "base-map",
@@ -849,9 +867,9 @@ export default function Map() {
               // Styles
               stroked: true,
               filled: true,
-              lineWidthMinPixels: 2,
-              getLineColor: [35, 107, 19],
-              getFillColor: [41, 156, 22],
+              lineWidthMinPixels: 1,
+              getLineColor: [105, 156, 128, 255],
+              getFillColor: [182, 218, 92, 255],
             }),
             // new GeoJsonLayer({
             //   id: 'airports',
