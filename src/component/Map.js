@@ -60,6 +60,7 @@ import {
   AmbientLight,
   _SunLight as SunLight,
 } from "@deck.gl/core"
+import ReactPlayer from "react-player"
 import { SolidPolygonLayer, GeoJsonLayer, ArcLayer } from "@deck.gl/layers"
 import { DeckGL } from "deck.gl"
 
@@ -72,7 +73,7 @@ const COUNTRIES =
 
 export default function Map() {
   const mapRef = useRef()
-
+  const videoRef = useRef()
   // popup control variable
   const { heritages, fetchHeritages } = useContext(HeritageContext)
   //set up a enterfield
@@ -375,10 +376,10 @@ export default function Map() {
   let i = 1
   let g = 1
   const handleViewportChange = useCallback((view) => {
-    if (view.zoom <= 4.13) {
+    if (view.zoom <= 5.13) {
       i = i + 1
     }
-    if (i >= 12) {
+    if (i >= 16) {
       console.log("iiiiiiiii", i)
       setNondisplay("none")
       setDisplay("inherit")
@@ -396,7 +397,7 @@ export default function Map() {
     if (view.viewState.zoom > 4.144) {
       g = g + 1
     }
-    if (g >= 16) {
+    if (g >= 12) {
       console.log("ggggg", g)
       setDisplay("none")
       setNondisplay("inherit")
@@ -458,7 +459,11 @@ export default function Map() {
       "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/json/VS_Info.geojson"
     )
   }, [])
-
+  // Modify the video speed
+  useEffect(() => {
+    console.log("videoReference", videoRef.current)
+    videoRef.current.playbackRate = 0.7
+  }, [])
   useEffect(() => {
     const map = mapRef.current.getMap()
 
@@ -827,6 +832,13 @@ export default function Map() {
       </div>
 
       <div className="globe" style={{ display: `${display}` }}>
+        <video ref={videoRef} className="videoTag" autoPlay loop muted>
+          <source
+            src="https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/galaxy.mp4"
+            type="video/mp4"
+          />
+        </video>
+
         <DeckGL
           // {...viewpoint}
 

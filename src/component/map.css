@@ -8,7 +8,15 @@
   height: 100vh;
   background-size: cover;
   /* background-image: url("https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/galaxy_background.jpg"); */
+  /* background-image: url("https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/earth_basic_modified.jpg"); */
   background-color: black;
+}
+.videoTag {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
 }
 .mapboxgl-canvas {
   width: 100vw !important;

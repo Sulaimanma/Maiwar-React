@@ -28,6 +28,7 @@
     "react-map-gl": "^6.1.16",
     "react-map-gl-geocoder": "^2.1.6",
     "react-overlays": "^5.0.1",
+    "react-player": "^2.9.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-spinners": "^0.10.6",
