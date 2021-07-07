@@ -113,6 +113,8 @@ export default function Map() {
   const [checkboxes, setCheckboxes] = useState([false, false])
   //Toggle 3d building
   const [building, setBuilding] = useState([true, false])
+  //Toggle layer
+  const [mapLayer, setMapLayer] = useState([true, false])
   //historic map initial value
   const [historicMap, setHistoricMap] = useState({
     url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1798.jpg",
@@ -376,16 +378,16 @@ export default function Map() {
   let i = 1
   let g = 1
   const handleViewportChange = useCallback((view) => {
-    console.log("zoommmmm", view.zoom)
-    console.log("iiiiiiiii", i)
+    // console.log("zoommmmm", view.zoom)
+    // console.log("iiiiiiiii", i)
     if (view.zoom <= 5.13) {
       i = i + 1
     }
-    if (i >= 14) {
+    if (i >= 6) {
       setNondisplay("none")
       setDisplay("inherit")
       i = 1
-    } else {
+    } else if (i === 1) {
       setViewpoint(view)
       setMarker({
         longitude: view.longitude,
@@ -395,18 +397,21 @@ export default function Map() {
   }, [])
   //Globe view change
   const handleViewStateChange = useCallback((view) => {
-    console.log("zoomggggg", view.viewState.zoom)
-    console.log("ggggg", g)
+    // console.log("zoomggggg", view.viewState.zoom)
+    // console.log("ggggg", g)
     if (view.viewState.zoom > 6.644) {
       g = g + 1
     }
     if (g >= 16) {
       setDisplay("none")
       setNondisplay("inherit")
-      g = 1
-    } else {
       setViewpoint(view.viewState)
+      g = 1
     }
+    // else if (i === 1) {
+    //   setViewpoint(view.viewState)
+    // }
+
     // console.log('viewpoint', viewpoint.viewState);
   }, [])
 
@@ -557,7 +562,7 @@ export default function Map() {
           onViewportChange={handleViewportChange}
           // mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
 
-          mapStyle="mapbox://styles/guneriboi/cko26dcwb028v17qgn1swhijn"
+          mapStyle="mapbox://styles/guneriboi/ckliz10u80f7817mtlpnik90t"
           //Define the interactive layer
           // interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
@@ -669,6 +674,27 @@ export default function Map() {
               Buildings
             </div>
           </div>
+          {/* layers switch */}
+          <div className="Toggle3d3" style={{ width: "150px", right: "9.7vw" }}>
+            <FormControlLabel
+              control={
+                <GreenSwitch
+                  checked={mapLayer[0]}
+                  onChange={(e) => {
+                    const nextMapLayer = [...mapLayer]
+                    nextMapLayer[0] = e.currentTarget.checked
+                    setMapLayer(nextMapLayer)
+                  }}
+                  name="checkedB"
+                  color="secondary"
+                  // size="large"
+                />
+              }
+            />
+            <div className="Text3d3" style={{ left: "2vw" }}>
+              Layers
+            </div>
+          </div>
           <Layer {...skyLayer} />
           {building[0] && <Layer {...ThreeDBuildingLayer} />}
 
@@ -699,7 +725,7 @@ export default function Map() {
               <Layer {...PCCCIconsLayer} />
             </Source>
           )}
-          {historicMap.url.length != 0 && (
+          {historicMap.url.length != 0 && mapLayer[0] && (
             <Source
               // maxzoom={22}
               // minzoom={9}

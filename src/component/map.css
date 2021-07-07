@@ -263,6 +263,24 @@ body {
   font-weight: 700;
   font-size: 1rem;
 }
+.Toggle3d3 {
+  position: absolute;
+  z-index: 1099;
+  top: 0em;
+  right: 0.5em;
+  height: 20px;
+  margin-right: 11vw;
+}
+.Text3d3 {
+  position: absolute;
+  font-family: system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  top: 6px;
+  right: 0.5em;
+  height: 20px;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+}
 .mapboxgl-ctrl-top-right {
   position: absolute;
   top: 2em !important;
