@@ -377,18 +377,24 @@ export default function Map() {
   // Use i and g to fix the zoom identified accuracy issues
   let i = 1
   let g = 1
+  let preZoomG = 1
+  let preZoomM = 22
   const handleViewportChange = useCallback((view) => {
     console.log("zoommmmm", view.zoom)
     console.log("iiiiiiiii", i)
-    if (view.zoom <= 5.13) {
+    setViewpoint(view)
+    if ((view.zoom <= 3.15 && view.zoom < preZoomM) || view.zoom < 1.35) {
       i = i + 1
+      preZoomM = view.zoom
+      console.log("iiiiiiiii", i)
     }
-    if (i >= 6) {
+    if (i >= 4) {
+      preZoomM = 22
+      i = 1
+      g = 1
       setNondisplay("none")
       setDisplay("inherit")
-      i = 1
     } else if (i === 1) {
-      setViewpoint(view)
       setMarker({
         longitude: view.longitude,
         latitude: view.latitude,
@@ -398,16 +404,19 @@ export default function Map() {
   //Globe view change
   const handleViewStateChange = useCallback((view) => {
     console.log("zoomggggg", view.viewState.zoom)
-    console.log("ggggg", g)
-    if (view.viewState.zoom > 6.644) {
+    console.log("pre", preZoomG)
+
+    if (view.viewState.zoom > 2.7 && view.viewState.zoom > preZoomG) {
       g = g + 1
+      preZoomG = view.viewState.zoom
+      console.log("ggggg", g)
     }
-    if (g >= 16) {
+    if (g >= 4) {
+      preZoomG = 1
+      g = 1
       setViewpoint(view.viewState)
       setDisplay("none")
       setNondisplay("inherit")
-
-      g = 1
     }
     // else if (i === 1) {
     //   setViewpoint(view.viewState)
@@ -869,8 +878,7 @@ export default function Map() {
         </video>
 
         <DeckGL
-          // {...viewpoint}
-
+          {...viewpoint}
           views={
             new GlobeView({
               resolution: 10,
