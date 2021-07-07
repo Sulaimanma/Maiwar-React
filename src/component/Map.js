@@ -378,8 +378,8 @@ export default function Map() {
   let i = 1
   let g = 1
   const handleViewportChange = useCallback((view) => {
-    // console.log("zoommmmm", view.zoom)
-    // console.log("iiiiiiiii", i)
+    console.log("zoommmmm", view.zoom)
+    console.log("iiiiiiiii", i)
     if (view.zoom <= 5.13) {
       i = i + 1
     }
@@ -397,15 +397,16 @@ export default function Map() {
   }, [])
   //Globe view change
   const handleViewStateChange = useCallback((view) => {
-    // console.log("zoomggggg", view.viewState.zoom)
-    // console.log("ggggg", g)
+    console.log("zoomggggg", view.viewState.zoom)
+    console.log("ggggg", g)
     if (view.viewState.zoom > 6.644) {
       g = g + 1
     }
     if (g >= 16) {
+      setViewpoint(view.viewState)
       setDisplay("none")
       setNondisplay("inherit")
-      setViewpoint(view.viewState)
+
       g = 1
     }
     // else if (i === 1) {
