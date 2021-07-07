@@ -376,11 +376,12 @@ export default function Map() {
   let i = 1
   let g = 1
   const handleViewportChange = useCallback((view) => {
+    console.log("zoommmmm", view.zoom)
+    console.log("iiiiiiiii", i)
     if (view.zoom <= 5.13) {
       i = i + 1
     }
-    if (i >= 16) {
-      console.log("iiiiiiiii", i)
+    if (i >= 14) {
       setNondisplay("none")
       setDisplay("inherit")
       i = 1
@@ -394,11 +395,12 @@ export default function Map() {
   }, [])
   //Globe view change
   const handleViewStateChange = useCallback((view) => {
-    if (view.viewState.zoom > 4.144) {
+    console.log("zoomggggg", view.viewState.zoom)
+    console.log("ggggg", g)
+    if (view.viewState.zoom > 6.644) {
       g = g + 1
     }
-    if (g >= 12) {
-      console.log("ggggg", g)
+    if (g >= 16) {
       setDisplay("none")
       setNondisplay("inherit")
       g = 1
@@ -555,7 +557,7 @@ export default function Map() {
           onViewportChange={handleViewportChange}
           // mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
 
-          mapStyle="mapbox://styles/guneriboi/ckp69hfy90ibu18pimha653fd"
+          mapStyle="mapbox://styles/guneriboi/cko26dcwb028v17qgn1swhijn"
           //Define the interactive layer
           // interactiveLayerIds={[unclusteredPointLayer.id]}
           onClick={onClick}
@@ -871,7 +873,7 @@ export default function Map() {
               stroked: false,
               filled: true,
               // getFillColor: [32, 201, 218],
-              getFillColor: [15, 116, 230, 255],
+              getFillColor: [25, 119, 154, 255],
             }),
             new GeoJsonLayer({
               id: "base-map",
@@ -880,8 +882,8 @@ export default function Map() {
               stroked: true,
               filled: true,
               lineWidthMinPixels: 1,
-              getLineColor: [105, 156, 128, 255],
-              getFillColor: [182, 218, 92, 255],
+              getLineColor: [95, 159, 140, 255],
+              getFillColor: [157, 192, 98, 255],
             }),
             // new GeoJsonLayer({
             //   id: 'airports',
