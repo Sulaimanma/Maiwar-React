@@ -26,6 +26,8 @@ export default function HistoricMap(props) {
     setMarker,
     setDisplay,
     setNondisplay,
+    checkboxes,
+    setCheckboxes,
   } = props
   //Tabs Control
   // const [activeKey, setActiveKey] = useState("0")
@@ -40,7 +42,7 @@ export default function HistoricMap(props) {
       [153.114334004, -27.547],
       [152.962180049, -27.547],
     ],
-    zoom: 11.8,
+    zoom: 1,
     pitch: 60,
     bearing: 20,
   })
@@ -362,7 +364,7 @@ export default function HistoricMap(props) {
     item.value = 100 - id * 5.26315789
     return item
   })
-
+  //First render custom hook
   function useFirstRender() {
     const firstRender = useRef(1)
 
@@ -373,11 +375,14 @@ export default function HistoricMap(props) {
     return firstRender.current
   }
   const firstRender = useFirstRender()
+
   useEffect(() => {
-    if (firstRender >= 3) {
-      setDisplay("none")
-      setNondisplay("inherit")
-    }
+    // if (firstRender >= 3) {
+    //   setDisplay("none")
+    //   setNondisplay("inherit")
+    // }
+    setDisplay("none")
+    setNondisplay("inherit")
     const longi = (mapValue.coordinates[0][0] + mapValue.coordinates[1][0]) / 2
     const lati =
       (mapValue.coordinates[0][1] + mapValue.coordinates[1][1]) / 2 - 0.034

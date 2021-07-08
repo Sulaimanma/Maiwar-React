@@ -73,6 +73,7 @@ const COUNTRIES =
 
 export default function Map() {
   const mapRef = useRef()
+  const geocoderContainerRef = useRef()
   const videoRef = useRef()
   // popup control variable
   const { heritages, fetchHeritages } = useContext(HeritageContext)
@@ -126,7 +127,7 @@ export default function Map() {
     ],
     longitude: 152.962180049,
     latitude: -27.547,
-    zoom: 11.8,
+    zoom: 1,
     pitch: 60,
     bearing: 20,
   })
@@ -380,10 +381,10 @@ export default function Map() {
   let preZoomG = 1
   let preZoomM = 22
   const handleViewportChange = useCallback((view) => {
-    console.log("zoommmmm", view.zoom)
-    console.log("iiiiiiiii", i)
+    console.log("zoommmmm", view)
+    // console.log("iiiiiiiii", i)
     setViewpoint(view)
-    if ((view.zoom <= 3.15 && view.zoom < preZoomM) || view.zoom < 1.35) {
+    if ((view.zoom <= 4.15 && view.zoom < preZoomM) || view.zoom < 1.35) {
       i = i + 1
       preZoomM = view.zoom
       console.log("iiiiiiiii", i)
@@ -394,7 +395,7 @@ export default function Map() {
       g = 1
       setNondisplay("none")
       setDisplay("inherit")
-    } else if (i === 1) {
+    } else {
       setMarker({
         longitude: view.longitude,
         latitude: view.latitude,
@@ -403,7 +404,7 @@ export default function Map() {
   }, [])
   //Globe view change
   const handleViewStateChange = useCallback((view) => {
-    console.log("zoomggggg", view.viewState.zoom)
+    console.log("zoomggggg", view.viewState)
     console.log("pre", preZoomG)
 
     if (view.viewState.zoom > 2.7 && view.viewState.zoom > preZoomG) {
@@ -414,9 +415,10 @@ export default function Map() {
     if (g >= 4) {
       preZoomG = 1
       g = 1
-      setViewpoint(view.viewState)
+
       setDisplay("none")
       setNondisplay("inherit")
+      setViewpoint(view.viewState)
     }
     // else if (i === 1) {
     //   setViewpoint(view.viewState)
@@ -573,6 +575,8 @@ export default function Map() {
           setMarker={setMarker}
           setDisplay={setDisplay}
           setNondisplay={setNondisplay}
+          setCheckboxes={setCheckboxes}
+          checkboxes={checkboxes}
         />
         {/* </BaseProvider>
             </StyletronProvider> */}
@@ -586,57 +590,60 @@ export default function Map() {
         id="map"
         style={{ display: `${nondisplay}`, width: "100vw", height: "100vh" }}
       >
-        <ReactMapGl
-          ref={mapRef}
-          {...viewpoint}
-          mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
-          onViewportChange={handleViewportChange}
-          // mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
+        <div ref={geocoderContainerRef}>
+          <ReactMapGl
+            ref={mapRef}
+            {...viewpoint}
+            mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
+            onViewportChange={handleViewportChange}
+            // mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
 
-          mapStyle="mapbox://styles/guneriboi/ckliz10u80f7817mtlpnik90t"
-          //Define the interactive layer
-          // interactiveLayerIds={[unclusteredPointLayer.id]}
-          onClick={onClick}
-        >
-          <GeolocateControl
-            style={{
-              bottom: "11vh",
-              right: "0",
-              padding: "0",
-            }}
-            showUserLocation={true}
-            trackUserLocation={false}
-            showAccuracyCircle={false}
-            onViewportChange={locateUser}
-          />
-          <ScaleControl
-            style={{
-              bottom: "0",
-              left: "0",
-              padding: "2px",
-            }}
-          />
-          <NavigationControl
-            showCompass={true}
-            style={{ bottom: "2px", right: "0px" }}
-          />
-          {/* <Source
+            mapStyle="mapbox://styles/guneriboi/ckliz10u80f7817mtlpnik90t"
+            //Define the interactive layer
+            // interactiveLayerIds={[unclusteredPointLayer.id]}
+            onClick={onClick}
+          >
+            <GeolocateControl
+              style={{
+                bottom: "11vh",
+                right: "0",
+                padding: "0",
+              }}
+              showUserLocation={true}
+              trackUserLocation={false}
+              showAccuracyCircle={false}
+              onViewportChange={locateUser}
+            />
+            <ScaleControl
+              style={{
+                bottom: "0",
+                left: "0",
+                padding: "2px",
+              }}
+            />
+            <NavigationControl
+              showCompass={true}
+              style={{ bottom: "2px", right: "0px" }}
+            />
+            {/* <Source
             id="mapbox-dem"
             type="raster-dem"
             url="mapbox://mapbox.mapbox-terrain-dem-v1"
             tileSize={512}
             maxzoom={14}
           /> */}
-          <Geocoder
-            mapRef={mapRef}
-            marker={false}
-            onViewportChange={handleGeocoderViewportChange}
-            mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
-            position="top-right"
-            positionOptions={{ enableHighAccuracy: true, timeout: 6000 }}
-          />
 
-          {/* <div class="toggleWrapper">
+            <Geocoder
+              mapRef={mapRef}
+              containerRef={geocoderContainerRef}
+              marker={false}
+              onViewportChange={handleGeocoderViewportChange}
+              mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
+              position="top-right"
+              positionOptions={{ enableHighAccuracy: true, timeout: 6000 }}
+            />
+
+            {/* <div class="toggleWrapper">
             <input
               type="checkbox"
               name="toggle1"
@@ -647,230 +654,237 @@ export default function Map() {
             <label for="toggle1"></label>
           </div> */}
 
-          <div className="Toggle3d" style={{ width: "150px" }}>
-            <FormControlLabel
-              control={
-                <GreenSwitch
-                  checked={checkboxes[0]}
-                  onChange={(e) => {
-                    const nextCheckboxes = [...checkboxes]
-                    nextCheckboxes[0] = e.currentTarget.checked
-                    setCheckboxes(nextCheckboxes)
-                  }}
-                  name="checkedB"
-                  color="secondary"
-                  // size="large"
-                />
-              }
-            />
-            <div className="Text3d" style={{ left: "2.6vw" }}>
-              3D
+            <div className="Toggle3d" style={{ width: "150px" }}>
+              <FormControlLabel
+                control={
+                  <GreenSwitch
+                    checked={checkboxes[0]}
+                    onChange={(e) => {
+                      const nextCheckboxes = [...checkboxes]
+                      nextCheckboxes[0] = e.currentTarget.checked
+                      setCheckboxes(nextCheckboxes)
+                    }}
+                    name="checkedB"
+                    color="secondary"
+                    // size="large"
+                  />
+                }
+              />
+              <div className="Text3d" style={{ left: "2.6vw" }}>
+                3D
+              </div>
             </div>
-          </div>
-          {/* 3d buildings */}
-          <div className="Toggle3d2" style={{ width: "150px", right: "7.7vw" }}>
-            <FormControlLabel
-              control={
-                <GreenSwitch
-                  checked={building[0]}
-                  onChange={(e) => {
-                    const nextBuilding = [...building]
-                    nextBuilding[0] = e.currentTarget.checked
-                    setBuilding(nextBuilding)
-                  }}
-                  name="checkedB"
-                  color="secondary"
-                  // size="large"
-                />
-              }
-            />
-            <div className="Text3d2" style={{ left: "2vw" }}>
-              Buildings
+            {/* 3d buildings */}
+            <div
+              className="Toggle3d2"
+              style={{ width: "150px", right: "7.7vw" }}
+            >
+              <FormControlLabel
+                control={
+                  <GreenSwitch
+                    checked={building[0]}
+                    onChange={(e) => {
+                      const nextBuilding = [...building]
+                      nextBuilding[0] = e.currentTarget.checked
+                      setBuilding(nextBuilding)
+                    }}
+                    name="checkedB"
+                    color="secondary"
+                    // size="large"
+                  />
+                }
+              />
+              <div className="Text3d2" style={{ left: "2vw" }}>
+                Buildings
+              </div>
             </div>
-          </div>
-          {/* layers switch */}
-          <div className="Toggle3d3" style={{ width: "150px", right: "9.7vw" }}>
-            <FormControlLabel
-              control={
-                <GreenSwitch
-                  checked={mapLayer[0]}
-                  onChange={(e) => {
-                    const nextMapLayer = [...mapLayer]
-                    nextMapLayer[0] = e.currentTarget.checked
-                    setMapLayer(nextMapLayer)
-                  }}
-                  name="checkedB"
-                  color="secondary"
-                  // size="large"
-                />
-              }
-            />
-            <div className="Text3d3" style={{ left: "2vw" }}>
-              Layers
+            {/* layers switch */}
+            <div
+              className="Toggle3d3"
+              style={{ width: "150px", right: "9.7vw" }}
+            >
+              <FormControlLabel
+                control={
+                  <GreenSwitch
+                    checked={mapLayer[0]}
+                    onChange={(e) => {
+                      const nextMapLayer = [...mapLayer]
+                      nextMapLayer[0] = e.currentTarget.checked
+                      setMapLayer(nextMapLayer)
+                    }}
+                    name="checkedB"
+                    color="secondary"
+                    // size="large"
+                  />
+                }
+              />
+              <div className="Text3d3" style={{ left: "2vw" }}>
+                Layers
+              </div>
             </div>
-          </div>
-          <Layer {...skyLayer} />
-          {building[0] && <Layer {...ThreeDBuildingLayer} />}
+            <Layer {...skyLayer} />
+            {building[0] && <Layer {...ThreeDBuildingLayer} />}
 
-          {/* Load the Layer source data*/}
-          {geoConvertedjson != null && (
-            <Source
-              id="heritages"
-              type="geojson"
-              data={geoConvertedjson}
-              cluster={true}
-              clusterMaxZoom={14}
-              clusterRadius={50}
-            >
-              <Layer {...clusterLayer} />
-              <Layer {...clusterCountLayer} />
-              <Layer {...unclusteredPointLayer} />
-            </Source>
-          )}
-          {/* {console.log("geooooooooooooo", PCCC)} */}
-          {PCCC && (
-            <Source
-              type="geojson"
-              data={PCCC}
-              id="PCCC"
-              cluster={true}
-              clusterRadius={50}
-            >
-              <Layer {...PCCCIconsLayer} />
-            </Source>
-          )}
-          {historicMap.url.length != 0 && mapLayer[0] && (
-            <Source
-              // maxzoom={22}
-              // minzoom={9}
-              id="mapRaster"
-              type="image"
-              url={historicMap.url}
-              coordinates={historicMap.coordinates}
-            >
-              <Layer {...mapRasterLayer}></Layer>
-            </Source>
-          )}
+            {/* Load the Layer source data*/}
+            {geoConvertedjson != null && (
+              <Source
+                id="heritages"
+                type="geojson"
+                data={geoConvertedjson}
+                cluster={true}
+                clusterMaxZoom={14}
+                clusterRadius={50}
+              >
+                <Layer {...clusterLayer} />
+                <Layer {...clusterCountLayer} />
+                <Layer {...unclusteredPointLayer} />
+              </Source>
+            )}
+            {/* {console.log("geooooooooooooo", PCCC)} */}
+            {PCCC && (
+              <Source
+                type="geojson"
+                data={PCCC}
+                id="PCCC"
+                cluster={true}
+                clusterRadius={50}
+              >
+                <Layer {...PCCCIconsLayer} />
+              </Source>
+            )}
+            {historicMap.url.length != 0 && mapLayer[0] && (
+              <Source
+                // maxzoom={22}
+                // minzoom={9}
+                id="mapRaster"
+                type="image"
+                url={historicMap.url}
+                coordinates={historicMap.coordinates}
+              >
+                <Layer {...mapRasterLayer}></Layer>
+              </Source>
+            )}
 
-          {/* {geoConvertedjson != null && (
+            {/* {geoConvertedjson != null && (
             <Pins data={geoConvertedjson} onClick={onClick} />
           )} */}
-          {/* Locate the user marker label */}
-          <Marker
-            longitude={marker.longitude}
-            latitude={marker.latitude}
-            offsetTop={-20}
-            offsetLeft={-10}
-            draggable
-            onDragStart={onMarkerDragStart}
-            onDrag={onMarkerDrag}
-            onDragEnd={onMarkerDragEnd}
-          >
-            <DragPin
-              size={30}
-              clickFunction={() => {
-                setEnter(true)
-              }}
-            />
-          </Marker>
-          {enter && (
-            <Popup
-              latitude={marker.latitude}
+            {/* Locate the user marker label */}
+            <Marker
               longitude={marker.longitude}
-              closeButton={false}
-              closeOnClick={true}
-              onClose={() => setEnter(false)}
-              anchor="right"
-              color="black"
-              captureScroll={true}
-              dynamicPosition={false}
-              captureScroll={true}
-              captureDrag={false}
-              captureClick={true}
-              capturePointerMove={true}
+              latitude={marker.latitude}
+              offsetTop={-20}
+              offsetLeft={-10}
+              draggable
+              onDragStart={onMarkerDragStart}
+              onDrag={onMarkerDrag}
+              onDragEnd={onMarkerDragEnd}
             >
-              <HeritageInput
-                longitude={marker.longitude}
-                latitude={marker.latitude}
-                fetchHeritages={fetchHeritages}
-                setEnter={setEnter}
-                loading={loading}
-                setLoading={setLoading}
+              <DragPin
+                size={30}
+                clickFunction={() => {
+                  setEnter(true)
+                }}
               />
-            </Popup>
-          )}
-
-          {popup &&
-            clickInfo &&
-            clickInfo != null &&
-            clickInfo.source === "heritages" && (
+            </Marker>
+            {enter && (
               <Popup
-                latitude={clickInfo.geometry.coordinates[1]}
-                longitude={clickInfo.geometry.coordinates[0]}
-                closeButton={true}
-                closeOnClick={false}
-                onClose={() => setPopup(false)}
-                anchor="bottom"
-                dynamicPosition={true}
+                latitude={marker.latitude}
+                longitude={marker.longitude}
+                closeButton={false}
+                closeOnClick={true}
+                onClose={() => setEnter(false)}
+                anchor="right"
+                color="black"
+                captureScroll={true}
+                dynamicPosition={false}
                 captureScroll={true}
                 captureDrag={false}
+                captureClick={true}
+                capturePointerMove={true}
               >
-                {console.log(
-                  "VideoURLLLLLLLLLLLLLLLLLL",
-                  video(clickInfo.properties.video).then((result) => {
-                    setVideoUrl(result)
-                  })
-                )}
-                {clickInfo.source === "heritages" ? (
-                  <PopInfo
-                    src={videoUrl}
-                    description={clickInfo.properties.visibility}
-                    title={clickInfo.properties.InspectionCarriedOut}
-                  />
-                ) : (
-                  <PopInfo
-                    src={videoUrl}
-                    description={clickInfo.properties.description}
-                    title={clickInfo.properties.title}
-                  />
-                )}
+                <HeritageInput
+                  longitude={marker.longitude}
+                  latitude={marker.latitude}
+                  fetchHeritages={fetchHeritages}
+                  setEnter={setEnter}
+                  loading={loading}
+                  setLoading={setLoading}
+                />
               </Popup>
             )}
-          {popup &&
-            clickInfo &&
-            clickInfo != null &&
-            clickInfo.source === "PCCC" && (
-              <Popup
-                latitude={clickInfo.geometry.coordinates[1]}
-                longitude={clickInfo.geometry.coordinates[0]}
-                closeButton={true}
-                closeOnClick={false}
-                onClose={() => setPopup(false)}
-                anchor="bottom"
-                dynamicPosition={true}
-                captureScroll={true}
-                captureDrag={false}
-              >
-                {console.log(
-                  "VideoURLLLLLLLLLLLLLLLLLL",
-                  video(`video/${clickInfo.properties.VideoName}.mp4`).then(
-                    (result) => {
-                      setVideoUrl(result)
-                    }
-                  )
-                )}
 
-                {clickInfo.source === "PCCC" &&
-                  clickInfo.properties.VideoName != null && (
+            {popup &&
+              clickInfo &&
+              clickInfo != null &&
+              clickInfo.source === "heritages" && (
+                <Popup
+                  latitude={clickInfo.geometry.coordinates[1]}
+                  longitude={clickInfo.geometry.coordinates[0]}
+                  closeButton={true}
+                  closeOnClick={false}
+                  onClose={() => setPopup(false)}
+                  anchor="bottom"
+                  dynamicPosition={true}
+                  captureScroll={true}
+                  captureDrag={false}
+                >
+                  {console.log(
+                    "VideoURLLLLLLLLLLLLLLLLLL",
+                    video(clickInfo.properties.video).then((result) => {
+                      setVideoUrl(result)
+                    })
+                  )}
+                  {clickInfo.source === "heritages" ? (
+                    <PopInfo
+                      src={videoUrl}
+                      description={clickInfo.properties.visibility}
+                      title={clickInfo.properties.InspectionCarriedOut}
+                    />
+                  ) : (
                     <PopInfo
                       src={videoUrl}
                       description={clickInfo.properties.description}
                       title={clickInfo.properties.title}
                     />
                   )}
-              </Popup>
-            )}
-        </ReactMapGl>
+                </Popup>
+              )}
+            {popup &&
+              clickInfo &&
+              clickInfo != null &&
+              clickInfo.source === "PCCC" && (
+                <Popup
+                  latitude={clickInfo.geometry.coordinates[1]}
+                  longitude={clickInfo.geometry.coordinates[0]}
+                  closeButton={true}
+                  closeOnClick={false}
+                  onClose={() => setPopup(false)}
+                  anchor="bottom"
+                  dynamicPosition={true}
+                  captureScroll={true}
+                  captureDrag={false}
+                >
+                  {console.log(
+                    "VideoURLLLLLLLLLLLLLLLLLL",
+                    video(`video/${clickInfo.properties.VideoName}.mp4`).then(
+                      (result) => {
+                        setVideoUrl(result)
+                      }
+                    )
+                  )}
+
+                  {clickInfo.source === "PCCC" &&
+                    clickInfo.properties.VideoName != null && (
+                      <PopInfo
+                        src={videoUrl}
+                        description={clickInfo.properties.description}
+                        title={clickInfo.properties.title}
+                      />
+                    )}
+                </Popup>
+              )}
+          </ReactMapGl>
+        </div>
       </div>
 
       <div className="globe" style={{ display: `${display}` }}>
@@ -880,6 +894,7 @@ export default function Map() {
             type="video/mp4"
           />
         </video>
+        {console.log("viewpoint zoom", viewpoint.zoom)}
 
         <DeckGL
           {...viewpoint}

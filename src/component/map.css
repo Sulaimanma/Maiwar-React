@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
 }
+
 /* Globe view */
 .globe {
   width: 100vw;
@@ -139,11 +140,11 @@ body {
   width: 100vw;
   height: 100vh;
 }
-#map > div {
+/* #map > div {
   position: absolute !important;
   width: 100vw !important;
   height: 100vh !important;
-}
+} */
 #App {
   font-family: sans-serif;
   height: 100vh;
@@ -218,7 +219,6 @@ body {
 .bm-overlay {
   background: rgb(31, 40, 24, 0.3);
 }
-/* Searchbar  */
 
 /* tabs */
 .tabs {
@@ -269,7 +269,7 @@ body {
   top: 0em;
   right: 0.5em;
   height: 20px;
-  margin-right: 11vw;
+  margin-right: 6vw;
 }
 .Text3d3 {
   position: absolute;
@@ -288,14 +288,16 @@ body {
   z-index: 99999999999999 !important;
 }
 .mapboxgl-ctrl-geocoder {
-  /* width: 122%; */
-  height: 39px;
-  font-size: 13px;
-  border: none !important;
+  width: 10.8vw !important;
+  position: absolute !important;
+  right: 3.7vw !important;
+  top: 3vh !important;
+  height: 3vh !important;
+  z-index: 9999999999999999 !important;
 }
 .mapboxgl-ctrl-geocoder--input {
-  height: 111% !important;
-  width: 111% !important;
+  height: 3vh !important;
+  width: 100% !important;
   border: none !important;
 }
 .bearCtrl {
