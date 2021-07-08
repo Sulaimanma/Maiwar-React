@@ -15,9 +15,18 @@ import Typography from "@material-ui/core/Typography"
 
 import { MdExpandMore } from "react-icons/md"
 
+import { useRef } from "react"
+
 export default function HistoricMap(props) {
-  const { viewpoint, setViewpoint, historicMap, setHistoricMap, setMarker } =
-    props
+  const {
+    viewpoint,
+    setViewpoint,
+    historicMap,
+    setHistoricMap,
+    setMarker,
+    setDisplay,
+    setNondisplay,
+  } = props
   //Tabs Control
   // const [activeKey, setActiveKey] = useState("0")
 
@@ -354,7 +363,21 @@ export default function HistoricMap(props) {
     return item
   })
 
+  function useFirstRender() {
+    const firstRender = useRef(1)
+
+    useEffect(() => {
+      firstRender.current = firstRender.current + 1
+    }, [mapValue])
+
+    return firstRender.current
+  }
+  const firstRender = useFirstRender()
   useEffect(() => {
+    if (firstRender >= 3) {
+      setDisplay("none")
+      setNondisplay("inherit")
+    }
     const longi = (mapValue.coordinates[0][0] + mapValue.coordinates[1][0]) / 2
     const lati =
       (mapValue.coordinates[0][1] + mapValue.coordinates[1][1]) / 2 - 0.034
@@ -378,7 +401,8 @@ export default function HistoricMap(props) {
       latitude: lati,
       longitude: longi,
     })
-  }, [mapValue])
+    console.log(firstRender)
+  }, [mapValue, firstRender])
 
   const PrettoSlider = withStyles({
     root: {

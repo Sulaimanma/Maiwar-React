@@ -556,6 +556,27 @@ export default function Map() {
         outerContainerId={"body"}
         locateUser={locateUser}
       />
+      <div id="logo">
+        <img
+          src="https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/img/logo.svg"
+          alt="LOGO"
+        />
+      </div>
+      <div className="tabs">
+        {/* <StyletronProvider value={engine}>
+              <BaseProvider theme={LightTheme}> */}
+        <HistoricMap
+          viewpoint={viewpoint}
+          setViewpoint={setViewpoint}
+          historicMap={historicMap}
+          setHistoricMap={setHistoricMap}
+          setMarker={setMarker}
+          setDisplay={setDisplay}
+          setNondisplay={setNondisplay}
+        />
+        {/* </BaseProvider>
+            </StyletronProvider> */}
+      </div>
       {isMobile() && (
         <div className="bearCtrl">
           <BearSlider viewpoint={viewpoint} setViewpoint={setViewpoint} />
@@ -614,19 +635,7 @@ export default function Map() {
             position="top-right"
             positionOptions={{ enableHighAccuracy: true, timeout: 6000 }}
           />
-          <div className="tabs">
-            {/* <StyletronProvider value={engine}>
-              <BaseProvider theme={LightTheme}> */}
-            <HistoricMap
-              viewpoint={viewpoint}
-              setViewpoint={setViewpoint}
-              historicMap={historicMap}
-              setHistoricMap={setHistoricMap}
-              setMarker={setMarker}
-            />
-            {/* </BaseProvider>
-            </StyletronProvider> */}
-          </div>
+
           {/* <div class="toggleWrapper">
             <input
               type="checkbox"
@@ -637,12 +646,7 @@ export default function Map() {
             ></input>
             <label for="toggle1"></label>
           </div> */}
-          <div id="logo">
-            <img
-              src="https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/img/logo.svg"
-              alt="LOGO"
-            />
-          </div>
+
           <div className="Toggle3d" style={{ width: "150px" }}>
             <FormControlLabel
               control={
