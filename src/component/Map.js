@@ -60,7 +60,7 @@ import {
   AmbientLight,
   _SunLight as SunLight,
 } from "@deck.gl/core"
-import ReactPlayer from "react-player"
+// import ReactPlayer from "react-player"
 import { SolidPolygonLayer, GeoJsonLayer, ArcLayer } from "@deck.gl/layers"
 import { DeckGL } from "deck.gl"
 

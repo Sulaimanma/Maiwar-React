@@ -129,7 +129,7 @@
 @media only screen and (max-width: 1400px) {
   .sliderDiv {
     width: 200px;
-    height: 100vh;
+    height: 80vh;
   }
   .sliderDivHide {
     width: 200px;

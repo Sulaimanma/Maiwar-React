@@ -140,11 +140,11 @@ body {
   width: 100vw;
   height: 100vh;
 }
-/* #map > div {
+#map > div {
   position: absolute !important;
   width: 100vw !important;
   height: 100vh !important;
-} */
+}
 #App {
   font-family: sans-serif;
   height: 100vh;
