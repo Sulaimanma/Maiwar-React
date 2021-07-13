@@ -34,10 +34,9 @@ export const unclusteredPointLayer = {
   id: "unclusteredPointLayer",
   type: "symbol",
   source: "heritages",
-  minzoom: 0,
+
+  minzoom: 6,
   maxzoom: 22,
-  // minzoom: 6,
-  // maxzoom: 22,
   layout: {
     "icon-image": ["get", "heritageType"], // reference the image
     "icon-size": 1,
@@ -58,7 +57,8 @@ export const mapRasterLayer = {
   id: "mapRaster",
   type: "raster",
   source: "mapRaster",
-
+  minzoom: 6,
+  maxzoom: 22,
   paint: { "raster-opacity": 1 },
 }
 
@@ -66,7 +66,7 @@ export const PCCCIconsLayer = {
   id: "PCCCIconsLayer",
   type: "symbol",
   source: "PCCC",
-  minzoom: 0,
+  minzoom: 7,
   maxzoom: 22,
   // minzoom: 6,
   // maxzoom: 22,
