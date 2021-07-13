@@ -381,7 +381,7 @@ export default function Map() {
   let preZoomG = 1
   let preZoomM = 22
   const handleViewportChange = useCallback((view) => {
-    console.log("zoommmmm", view)
+    // console.log("zoommmmm", view)
     // console.log("iiiiiiiii", i)
     setViewpoint(view)
     if ((view.zoom <= 4.15 && view.zoom < preZoomM) || view.zoom < 1.35) {
@@ -791,7 +791,7 @@ export default function Map() {
                 latitude={marker.latitude}
                 longitude={marker.longitude}
                 closeButton={false}
-                closeOnClick={true}
+                closeOnClick={false}
                 onClose={() => setEnter(false)}
                 anchor="right"
                 color="black"
@@ -894,7 +894,6 @@ export default function Map() {
             type="video/mp4"
           />
         </video>
-        {console.log("viewpoint zoom", viewpoint.zoom)}
 
         <DeckGL
           {...viewpoint}
