@@ -662,7 +662,7 @@ export default function Map() {
               latitude={marker.latitude}
               longitude={marker.longitude}
               closeButton={false}
-              closeOnClick={true}
+              closeOnClick={false}
               onClose={() => setEnter(false)}
               anchor="right"
               color="black"
