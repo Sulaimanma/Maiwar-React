@@ -64,6 +64,7 @@ import {
 import { SolidPolygonLayer, GeoJsonLayer, ArcLayer } from "@deck.gl/layers"
 import { DeckGL } from "deck.gl"
 import Weather from "./Weather"
+import { weatherData } from "./Helpers/DataBank"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
@@ -765,13 +766,17 @@ export default function Map() {
                 <Layer {...mapRasterLayer}></Layer>
               </Source>
             )}
-            {viewpoint.zoom > 3.1 && viewpoint.zoom < 12 && (
-              <Weather
-                zipCode="4000"
-                location={[-27.470125, 153.021072]}
-                city="Brisbane"
-              />
-            )}
+            {viewpoint.zoom > 3.1 &&
+              viewpoint.zoom < 10 &&
+              weatherData.map((place) => {
+                return (
+                  <Weather
+                    zipCode={place.zipCode}
+                    location={place.location}
+                    city={place.city}
+                  />
+                )
+              })}
 
             {/* {geoConvertedjson != null && (
             <Pins data={geoConvertedjson} onClick={onClick} />
