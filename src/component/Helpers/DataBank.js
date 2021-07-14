@@ -7,11 +7,11 @@ export const weatherData = [
   { city: "Melbourne", zipCode: "3000", location: [-37.840935, 144.946457] },
   { city: "Hobart", zipCode: "7000", location: [-42.880554, 147.324997] },
   { city: "Adelaide", zipCode: "5000", location: [-34.846111, 138.503052] },
-  {
-    city: "Alice Springs",
-    zipCode: "0870",
-    location: [-23.700552, 133.882675],
-  },
+  //   {
+  //     city: "Alice Springs",
+  //     zipCode: "0870",
+  //     location: [-23.700552, 133.882675],
+  //   },
   { city: "Darwin", zipCode: "0810", location: [-12.462827, 130.841782] },
   { city: "Broome", zipCode: "6725", location: [-17.961434, 122.235852] },
   { city: "Perth", zipCode: "6000", location: [-31.953512, 115.857048] },
