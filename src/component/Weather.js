@@ -50,6 +50,7 @@ export default function Weather(props) {
       latitude={location[0]}
       offsetTop={-20}
       offsetLeft={-10}
+
       //   draggable
       //   onDragStart={onMarkerDragStart}
       //   onDrag={onMarkerDrag}

@@ -765,12 +765,14 @@ export default function Map() {
                 <Layer {...mapRasterLayer}></Layer>
               </Source>
             )}
+            {viewpoint.zoom > 3.1 && viewpoint.zoom < 12 && (
+              <Weather
+                zipCode="4000"
+                location={[-27.470125, 153.021072]}
+                city="Brisbane"
+              />
+            )}
 
-            <Weather
-              zipCode="4000"
-              location={[-27.470125, 153.021072]}
-              city="Brisbane"
-            />
             {/* {geoConvertedjson != null && (
             <Pins data={geoConvertedjson} onClick={onClick} />
           )} */}
