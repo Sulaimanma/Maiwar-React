@@ -63,6 +63,7 @@ import {
 // import ReactPlayer from "react-player"
 import { SolidPolygonLayer, GeoJsonLayer, ArcLayer } from "@deck.gl/layers"
 import { DeckGL } from "deck.gl"
+import Weather from "./Weather"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
@@ -765,6 +766,11 @@ export default function Map() {
               </Source>
             )}
 
+            <Weather
+              zipCode="4000"
+              location={[-27.470125, 153.021072]}
+              city="Brisbane"
+            />
             {/* {geoConvertedjson != null && (
             <Pins data={geoConvertedjson} onClick={onClick} />
           )} */}
