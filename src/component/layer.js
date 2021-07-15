@@ -120,3 +120,17 @@ export const ThreeDBuildingLayer = {
     "fill-extrusion-opacity": 1,
   },
 }
+
+export const boundriesLayer = {
+  id: "route",
+  type: "line",
+  source: "boundtries",
+  layout: {
+    "line-join": "round",
+    "line-cap": "round",
+  },
+  paint: {
+    "line-color": "#e8ebbd",
+    "line-width": 2,
+  },
+}

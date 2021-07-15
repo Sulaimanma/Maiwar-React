@@ -26,6 +26,7 @@ import {
   mapRasterLayer,
   PCCCIconsLayer,
   ThreeDBuildingLayer,
+  boundriesLayer,
 } from "./layer"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Switch from "@material-ui/core/Switch"
@@ -64,7 +65,7 @@ import {
 import { SolidPolygonLayer, GeoJsonLayer, ArcLayer } from "@deck.gl/layers"
 import { DeckGL } from "deck.gl"
 import Weather from "./Weather"
-import { weatherData } from "./Helpers/DataBank"
+import { boundtries, weatherData } from "./Helpers/DataBank"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
@@ -515,6 +516,7 @@ export default function Map() {
       "Artefact Scatter",
       "Quarry",
     ]
+
     VSInfo.map((img, id) => {
       map.loadImage(
         ` https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/img/icons/${img}.png`,
@@ -727,6 +729,12 @@ export default function Map() {
             <Layer {...skyLayer} />
             {building[0] && <Layer {...ThreeDBuildingLayer} />}
 
+            {/* boundtries */}
+            {boundtries && (
+              <Source id="boundtries" type="geojson" data={boundtries}>
+                <Layer {...boundriesLayer} />
+              </Source>
+            )}
             {/* Load the Layer source data*/}
             {geoConvertedjson != null && (
               <Source
