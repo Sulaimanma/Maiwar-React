@@ -27,6 +27,7 @@ import {
   PCCCIconsLayer,
   ThreeDBuildingLayer,
   boundriesLayer,
+  regionName,
 } from "./layer"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Switch from "@material-ui/core/Switch"
@@ -65,7 +66,7 @@ import {
 import { SolidPolygonLayer, GeoJsonLayer, ArcLayer } from "@deck.gl/layers"
 import { DeckGL } from "deck.gl"
 import Weather from "./Weather"
-import { boundtries, weatherData } from "./Helpers/DataBank"
+import { boundtries, regionsText, weatherData } from "./Helpers/DataBank"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
@@ -253,6 +254,7 @@ export default function Map() {
     })
   }, [])
   // locate the user location label on the map
+
   const locateUser = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       setMarker({
@@ -733,6 +735,12 @@ export default function Map() {
             {boundtries && (
               <Source id="boundtries" type="geojson" data={boundtries}>
                 <Layer {...boundriesLayer} />
+              </Source>
+            )}
+            {/* region text */}
+            {regionsText && (
+              <Source id="regions" type="geojson" data={regionsText}>
+                <Layer {...regionName} />
               </Source>
             )}
             {/* Load the Layer source data*/}

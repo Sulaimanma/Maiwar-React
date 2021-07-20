@@ -134,3 +134,24 @@ export const boundriesLayer = {
     "line-width": 2,
   },
 }
+
+export const regionName = {
+  id: "regionName",
+  type: "symbol",
+  source: "regions",
+  minzoom: 3,
+  maxzoom: 14,
+  layout: {
+    // "icon-offset": [0, -15],
+    "text-field": ["get", "name"],
+    "text-variable-anchor": ["top", "bottom", "left", "right"],
+    "text-radial-offset": 0.5,
+    "text-justify": "auto",
+
+    "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+    "text-size": 17,
+  },
+  paint: {
+    "text-color": "white",
+  },
+}

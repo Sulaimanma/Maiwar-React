@@ -1921,3 +1921,189 @@ export const boundtries = {
     },
   ],
 }
+
+export const regionsText = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Torres Strait",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [144.8, -10.763],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "East Cape",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [144.944, -14.023],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rainforest",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [147.462, -17.0],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Northeast",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [149.869, -21.478],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Southeast",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [151.556, -35.408],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Riverine",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [145.45, -31.226],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Eyre",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [140.65, -25.5],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Gulf",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [141.065, -18.712],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "West Cape",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [141.2, -14.158],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tasmania",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [148.84, -42.121],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Spencer",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [135.298, -32.322],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Desert",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [128.956, -23.603],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Fitzmaurice",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [131.79, -14.866],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Arnhem",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [135.669, -12.708],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "North",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-10.9494, 130.2927],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kimberley",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [126.11, -16.055],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Northwest",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [116.463, -24.319],
+      },
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Southwest",
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [119.904, -32.482],
+      },
+    },
+  ],
+}
