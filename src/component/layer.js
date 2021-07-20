@@ -130,6 +130,7 @@ export const boundriesLayer = {
     "line-cap": "round",
   },
   paint: {
+    // "line-color": " #5F9F8C",
     "line-color": "#e8ebbd",
     "line-width": 2,
   },

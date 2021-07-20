@@ -120,9 +120,10 @@ video {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  margin-top: 15px;
+  width: 6px;
   height: 3px;
-  border-radius: 10px;
+  border-radius: 40px;
   background: rgba(0, 0, 0, 0.1);
 }
 ::-webkit-scrollbar-track {

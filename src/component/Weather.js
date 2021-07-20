@@ -43,7 +43,7 @@ export default function Weather(props) {
     iconCode = "21"
   }
   const iconUrl = `https://digital.wsi.com/products/icons/${iconCode}.png`
-  console.log("fetch", temperature, weatherType, iconCode)
+  // console.log("fetch", temperature, weatherType, iconCode)
   return (
     <Marker
       longitude={location[1]}

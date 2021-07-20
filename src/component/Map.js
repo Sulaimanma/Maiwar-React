@@ -73,8 +73,11 @@ const engine = new Styletron()
 
 // source: Natural Earth http://www.naturalearthdata.com/ via geojson.xyz
 const COUNTRIES =
-  "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_scale_rank.geojson" //eslint-disable-line
+  "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/GlobeWithBoundries.geojson"
+// const COUNTRIES =
+//   "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_scale_rank.geojson" //eslint-disable-line
 
+// https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_land.geojson
 export default function Map() {
   const mapRef = useRef()
   const geocoderContainerRef = useRef()
@@ -392,7 +395,7 @@ export default function Map() {
     if ((view.zoom <= 4.15 && view.zoom < preZoomM) || view.zoom < 1.35) {
       i = i + 1
       preZoomM = view.zoom
-      console.log("iiiiiiiii", i)
+      // console.log("iiiiiiiii", i)
     }
     if (i >= 4) {
       preZoomM = 22
@@ -409,13 +412,13 @@ export default function Map() {
   }, [])
   //Globe view change
   const handleViewStateChange = useCallback((view) => {
-    console.log("zoomggggg", view.viewState)
-    console.log("pre", preZoomG)
+    // console.log("zoomggggg", view.viewState)
+    // console.log("pre", preZoomG)
 
     if (view.viewState.zoom > 2.7 && view.viewState.zoom > preZoomG) {
       g = g + 1
       preZoomG = view.viewState.zoom
-      console.log("ggggg", g)
+      // console.log("ggggg", g)
     }
     if (g >= 4) {
       preZoomG = 1
@@ -475,7 +478,7 @@ export default function Map() {
         // console.log("Get the data", res.data)
         setPCCC(allData)
       })
-      .then(console.log("PCCC", PCCC))
+      // .then(console.log("PCCC", PCCC))
       .catch((error) => console.log(`Error:${error}`))
   }
   useEffect(async () => {
@@ -485,7 +488,7 @@ export default function Map() {
   }, [])
   // Modify the video speed
   useEffect(() => {
-    console.log("videoReference", videoRef.current)
+    // console.log("videoReference", videoRef.current)
     videoRef.current.playbackRate = 0.7
   }, [])
   useEffect(() => {
@@ -731,7 +734,6 @@ export default function Map() {
             <Layer {...skyLayer} />
             {building[0] && <Layer {...ThreeDBuildingLayer} />}
 
-            {/* boundtries */}
             {boundtries && (
               <Source id="boundtries" type="geojson" data={boundtries}>
                 <Layer {...boundriesLayer} />
@@ -963,8 +965,9 @@ export default function Map() {
               // Styles
               stroked: true,
               filled: true,
-              lineWidthMinPixels: 1,
-              getLineColor: [95, 159, 140, 255],
+              lineWidthMinPixels: 0.7,
+              // getLineColor: [95, 159, 140, 255],
+              getLineColor: [232, 235, 189, 255],
               getFillColor: [157, 192, 98, 255],
             }),
             // new GeoJsonLayer({
