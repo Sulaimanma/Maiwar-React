@@ -518,6 +518,7 @@ export default function Map() {
       "Kangaroo",
       "Goanna",
       "Medicine",
+      "Tournament",
       "Possum",
       "Turtle",
       "Artefact Scatter",
