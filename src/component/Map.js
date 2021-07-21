@@ -491,6 +491,7 @@ export default function Map() {
     // console.log("videoReference", videoRef.current)
     videoRef.current.playbackRate = 0.55
   }, [])
+
   useEffect(() => {
     const map = mapRef.current.getMap()
 
