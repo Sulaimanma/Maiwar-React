@@ -151,7 +151,7 @@ export default function HistoricMap(props) {
         {
           value: 20.5,
           label: "Karalee 1826",
-          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Karalee 1770.jpg",
+          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Karalee 1826.jpg",
           coordinates: [
             [152.7351484, -27.5856311],
             [152.78985938, -27.58561056],
