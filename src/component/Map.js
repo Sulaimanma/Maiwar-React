@@ -489,7 +489,7 @@ export default function Map() {
   // Modify the video speed
   useEffect(() => {
     // console.log("videoReference", videoRef.current)
-    videoRef.current.playbackRate = 0.7
+    videoRef.current.playbackRate = 0.55
   }, [])
   useEffect(() => {
     const map = mapRef.current.getMap()
