@@ -199,7 +199,7 @@ export default function HistoricMap(props) {
         {
           value: 4.6,
           label: "Oakey 1830",
-          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Oakey_icons.jpg",
+          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Oakey 1830.jpg",
           coordinates: [
             [151.705706, -27.432911],
             [151.7275535, -27.4325134],
