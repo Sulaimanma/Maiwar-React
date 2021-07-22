@@ -332,14 +332,14 @@ export default function HistoricMap(props) {
         {
           value: 47,
           label: "Whadjuk Boodjar 1816",
-          url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Wadjuk Boodjar 1816.jpg",
+          url: "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/Whadjuk+Boodjar+1816.jpg",
           coordinates: [
             [115.84148433, -31.94268772],
             [115.871902048, -31.942686081],
             [115.871902038, -31.969304669],
             [115.841483696, -31.969304798],
           ],
-          zoom: 12,
+          zoom: 14,
           pitch: 60,
           bearing: 40,
         },
