@@ -216,9 +216,14 @@ export default function Map() {
   const video = async (VideoName) => {
     try {
       if (VideoName.length != 0) {
+        console.log("display the video")
         var path = await Storage.get(`${VideoName}`, {
           level: "public",
         })
+      } else if (VideoName === "Gathering Bush.mp4") {
+        var path =
+          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
+          "Camp_Bush_Children_Running.mp4"
       } else {
         var path =
           "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
@@ -513,7 +518,7 @@ export default function Map() {
       "Camp",
       "Crossing",
       "Duck",
-      "Fish",
+      "Fishing",
       "Midden",
       "Kangaroo",
       "Goanna",
@@ -868,6 +873,7 @@ export default function Map() {
                       setVideoUrl(result)
                     })
                   )}
+
                   {clickInfo.source === "heritages" ? (
                     <PopInfo
                       src={videoUrl}
@@ -906,6 +912,7 @@ export default function Map() {
                       }
                     )
                   )}
+                  {console.log("video", clickInfo)}
 
                   {clickInfo.source === "PCCC" &&
                     clickInfo.properties.VideoName != null && (
