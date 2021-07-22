@@ -74,7 +74,7 @@ export const PCCCIconsLayer = {
     "icon-image": ["get", "Icon"], // reference the image
     "icon-size": 1,
     "icon-offset": [0, -15],
-    "text-field": ["get", "Icon"],
+    "text-field": ["get", "title"],
     "text-variable-anchor": ["top", "bottom", "left", "right"],
     "text-radial-offset": 0.5,
     "text-justify": "auto",
