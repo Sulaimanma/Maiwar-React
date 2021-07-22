@@ -215,7 +215,11 @@ export default function Map() {
   //Video function to play the video according to the Video Name
   const video = async (VideoName) => {
     try {
-      if (VideoName.length != 0) {
+      if (VideoName === "video/.mp4") {
+        var path =
+          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
+          "Camp_Bush_Children_Running.mp4"
+      } else if (VideoName.length != 0) {
         console.log("display the video")
         var path = await Storage.get(`${VideoName}`, {
           level: "public",
@@ -247,6 +251,15 @@ export default function Map() {
       video(`video/${clickInfo.properties.VideoName}.mp4`).then((result) => {
         setVideoUrl(result)
       })
+
+    popup &&
+      clickInfo &&
+      clickInfo != null &&
+      clickInfo.source != null &&
+      console.log(
+        "clickInfo.properties.VideoName",
+        clickInfo.properties.VideoName
+      )
   }, [clickInfo])
   //Initial the marker position
   const [marker, setMarker] = useState({
@@ -539,6 +552,8 @@ export default function Map() {
       "Turtle",
       "Artefact Scatter",
       "Quarry",
+      "Dance",
+      "Tracks",
     ]
 
     VSInfo.map((img, id) => {
@@ -558,6 +573,8 @@ export default function Map() {
   //   const map = evt.target
   //   map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 })
   // }, [])
+
+  //Layer Loading
 
   //Globe light effect
   const ambientLight = new AmbientLight({
