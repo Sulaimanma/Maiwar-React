@@ -237,6 +237,17 @@ export default function Map() {
     return path
   }
 
+  //When to run the video function
+
+  useEffect(() => {
+    popup &&
+      clickInfo &&
+      clickInfo != null &&
+      clickInfo.source != null &&
+      video(`video/${clickInfo.properties.VideoName}.mp4`).then((result) => {
+        setVideoUrl(result)
+      })
+  }, [clickInfo])
   //Initial the marker position
   const [marker, setMarker] = useState({
     latitude: -27.477173,
@@ -867,13 +878,6 @@ export default function Map() {
                   captureScroll={true}
                   captureDrag={false}
                 >
-                  {console.log(
-                    "VideoURLLLLLLLLLLLLLLLLLL",
-                    video(clickInfo.properties.video).then((result) => {
-                      setVideoUrl(result)
-                    })
-                  )}
-
                   {clickInfo.source === "heritages" ? (
                     <PopInfo
                       src={videoUrl}
@@ -904,16 +908,6 @@ export default function Map() {
                   captureScroll={true}
                   captureDrag={false}
                 >
-                  {console.log(
-                    "VideoURLLLLLLLLLLLLLLLLLL",
-                    video(`video/${clickInfo.properties.VideoName}.mp4`).then(
-                      (result) => {
-                        setVideoUrl(result)
-                      }
-                    )
-                  )}
-                  {console.log("video", clickInfo)}
-
                   {clickInfo.source === "PCCC" &&
                     clickInfo.properties.VideoName != null && (
                       <PopInfo
