@@ -35,7 +35,7 @@ export const unclusteredPointLayer = {
   type: "symbol",
   source: "heritages",
 
-  minzoom: 6,
+  minzoom: 3,
   maxzoom: 22,
   layout: {
     "icon-image": ["get", "heritageType"], // reference the image
@@ -66,7 +66,7 @@ export const PCCCIconsLayer = {
   id: "PCCCIconsLayer",
   type: "symbol",
   source: "PCCC",
-  minzoom: 7,
+  minzoom: 5,
   maxzoom: 22,
   // minzoom: 6,
   // maxzoom: 22,
