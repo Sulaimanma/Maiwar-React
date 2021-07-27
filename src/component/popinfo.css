@@ -30,3 +30,18 @@
 .mapboxgl-popup-content {
   padding: 20px 10px 15px;
 }
+@media only screen and (max-width: 430px) {
+  .popContainer {
+    width: 260px !important;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  video {
+    width: 254px !important;
+  }
+  .description {
+    font-size: 13px;
+  }
+}
