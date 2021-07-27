@@ -377,12 +377,12 @@ export default function HistoricMap(props) {
   const firstRender = useFirstRender()
 
   useEffect(() => {
-    // if (firstRender >= 3) {
-    //   setDisplay("none")
-    //   setNondisplay("inherit")
-    // }
-    setDisplay("none")
-    setNondisplay("inherit")
+    if (firstRender >= 3) {
+      setDisplay("none")
+      setNondisplay("inherit")
+    }
+    // setDisplay("none")
+    // setNondisplay("inherit")
     const longi = (mapValue.coordinates[0][0] + mapValue.coordinates[1][0]) / 2
     const lati =
       (mapValue.coordinates[0][1] + mapValue.coordinates[1][1]) / 2 - 0.034

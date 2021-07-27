@@ -156,7 +156,7 @@
     cursor: pointer;
   }
 }
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 430px) {
   .MuiSlider-markLabel {
     color: rgb(117, 121, 117) !important;
     font-size: small !important;
@@ -164,19 +164,20 @@
     margin-top: 20px;
   }
   .sliderDiv {
-    height: 100vh;
-    top: 40px;
+    border-radius: 10px;
+    height: 70vh;
+    top: 100px;
     width: 180px;
     font-size: small !important;
     position: absolute;
     left: -10px;
   }
   .sliderDivHide {
-    height: 100vh;
+    height: 70vh;
+    top: 100px;
     width: 180px;
     position: absolute;
     left: -170px;
-    top: 40px;
   }
   .MuiSlider-marked.MuiSlider-vertical {
     margin-top: 40px;

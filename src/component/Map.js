@@ -456,6 +456,7 @@ export default function Map() {
       setDisplay("none")
       setNondisplay("inherit")
       setViewpoint(view.viewState)
+      console.log("done that shit")
     }
     // else if (i === 1) {
     //   setViewpoint(view.viewState)
@@ -960,7 +961,7 @@ export default function Map() {
           initialViewState={{
             latitude: -27.477173,
             longitude: 138.014308,
-            zoom: 1,
+            zoom: 0,
           }}
           controller={true}
           onViewStateChange={handleViewStateChange}
