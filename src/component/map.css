@@ -234,6 +234,7 @@ body {
   top: 0em;
   right: 0.5em;
   height: 20px;
+  width: 150px;
   margin-right: 1vw;
 }
 .Text3d {
@@ -245,6 +246,7 @@ body {
   color: white;
   font-weight: 700;
   font-size: 1rem;
+  left: 2.6vw !important;
 }
 .Toggle3d2 {
   position: absolute;
@@ -253,6 +255,9 @@ body {
   right: 0.5em;
   height: 20px;
   margin-right: 1vw;
+
+  width: 150px;
+  right: 7.7vw;
 }
 .Text3d2 {
   position: absolute;
@@ -271,12 +276,15 @@ body {
   right: 0.5em;
   height: 20px;
   margin-right: 6vw;
+  width: 150px;
+  right: 9.7vw;
 }
 .Text3d3 {
   position: absolute;
   font-family: system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
   top: 6px;
   right: 0.5em;
+  left: 3vw;
   height: 20px;
   color: white;
   font-weight: 700;
@@ -292,8 +300,8 @@ body {
   width: 10.8vw !important;
   position: absolute !important;
   right: 3.7vw !important;
-  top: 3vh !important;
-  height: 3vh !important;
+  top: 3vh;
+  height: 3vh;
   z-index: 9999999999999999 !important;
 }
 .mapboxgl-ctrl-geocoder--input {
@@ -351,8 +359,8 @@ body {
 
   .mapboxgl-ctrl-geocoder {
     top: 6vh;
-    left: 1.5vw !important;
-    right: -4vw !important;
+    /* left: 1.5vw !important; */
+    /* right: -4vw !important; */
     min-width: 9vw !important;
     width: 40vw !important;
     height: 44px;
@@ -408,5 +416,87 @@ body {
     top: 380px !important;
 
     right: -13px !important;
+  }
+}
+@media only screen and (max-width: 430px) {
+  .mapboxgl-ctrl-geocoder {
+    top: 5vh;
+    right: 3vw;
+    min-width: 9vw !important;
+    width: 40vw !important;
+    height: 32px;
+    font-size: 13px;
+  }
+  .mapboxgl-ctrl-geocoder--input {
+    height: 4vh !important;
+    width: 100% !important;
+    border: none !important;
+  }
+  /* 3d switch */
+  .Toggle3d {
+    position: absolute;
+    z-index: 999;
+    top: 0em;
+    right: 0.5em;
+    height: 20px;
+    width: 20vw;
+    margin-right: 1vw;
+  }
+  .Text3d {
+    position: absolute;
+    font-family: system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    top: 6px;
+    right: 0.5em;
+    height: 20px;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    left: 10vw !important;
+  }
+  .Toggle3d2 {
+    position: absolute;
+    z-index: 999;
+    top: 0em;
+    right: 30vw !important;
+    height: 20px;
+    margin-right: 1vw;
+
+    width: 20vw;
+  }
+  .Text3d2 {
+    position: absolute;
+    font-family: system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    top: 6px;
+    right: 0.5em;
+    left: 9.5vw;
+    height: 20px;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .Toggle3d3 {
+    position: absolute;
+    z-index: 1099;
+    top: 0em;
+    right: 0.5em;
+    height: 20px;
+    margin-right: 6vw;
+    width: 10vw;
+    right: 60vw;
+  }
+  .Text3d3 {
+    position: absolute;
+    font-family: system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    top: 6px;
+    right: 0.5em;
+    left: 11vw;
+    height: 20px;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .bm-burger-button {
+    top: 10px !important;
+    left: 5px;
   }
 }

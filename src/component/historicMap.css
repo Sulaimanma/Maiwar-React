@@ -194,22 +194,20 @@
   .slideRight {
     color: #909c7d;
     position: absolute;
-    top: 312px;
-    right: -15px;
+    top: 35vh !important;
+    right: -15px !important;
     font-size: 2.6rem;
     cursor: pointer;
   }
   .mapboxgl-ctrl-top-right {
     top: 88px !important;
-    right: -26px !important;
+    right: 0px !important;
     z-index: 11 !important;
   }
   .mapboxgl-ctrl-geocoder {
-    width: 100vw !important;
-    min-width: 120px;
   }
   .mapboxgl-ctrl-geocoder--icon-search {
-    top: 7px;
-    left: 18px;
+    top: 4px;
+    left: 2vw;
   }
 }

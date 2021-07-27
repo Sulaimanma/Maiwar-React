@@ -700,7 +700,7 @@ export default function Map() {
             <label for="toggle1"></label>
           </div> */}
 
-            <div className="Toggle3d" style={{ width: "150px" }}>
+            <div className="Toggle3d">
               <FormControlLabel
                 control={
                   <GreenSwitch
@@ -716,15 +716,10 @@ export default function Map() {
                   />
                 }
               />
-              <div className="Text3d" style={{ left: "2.6vw" }}>
-                3D
-              </div>
+              <div className="Text3d">3D</div>
             </div>
             {/* 3d buildings */}
-            <div
-              className="Toggle3d2"
-              style={{ width: "150px", right: "7.7vw" }}
-            >
+            <div className="Toggle3d2">
               <FormControlLabel
                 control={
                   <GreenSwitch
@@ -740,15 +735,10 @@ export default function Map() {
                   />
                 }
               />
-              <div className="Text3d2" style={{ left: "2vw" }}>
-                Buildings
-              </div>
+              <div className="Text3d2">Buildings</div>
             </div>
             {/* layers switch */}
-            <div
-              className="Toggle3d3"
-              style={{ width: "150px", right: "9.7vw" }}
-            >
+            <div className="Toggle3d3">
               <FormControlLabel
                 control={
                   <GreenSwitch
@@ -764,9 +754,7 @@ export default function Map() {
                   />
                 }
               />
-              <div className="Text3d3" style={{ left: "2vw" }}>
-                Layers
-              </div>
+              <div className="Text3d3">Layers</div>
             </div>
             <Layer {...skyLayer} />
             {building[0] && <Layer {...ThreeDBuildingLayer} />}
