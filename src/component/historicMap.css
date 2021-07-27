@@ -166,7 +166,7 @@
   .sliderDiv {
     border-radius: 10px;
     height: 70vh;
-    top: 100px;
+    top: 0vh;
     width: 180px;
     font-size: small !important;
     position: absolute;
@@ -174,7 +174,7 @@
   }
   .sliderDivHide {
     height: 70vh;
-    top: 100px;
+    top: 0;
     width: 180px;
     position: absolute;
     left: -170px;
