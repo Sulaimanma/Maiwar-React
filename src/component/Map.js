@@ -224,7 +224,8 @@ export default function Map() {
         var path = await Storage.get(`${VideoName}`, {
           level: "public",
         })
-        // console.log("video path is", path)
+
+        console.log("video path is", path)
       } else if (VideoName === "Gathering Bush.mp4") {
         var path =
           "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
@@ -246,19 +247,26 @@ export default function Map() {
 
   useEffect(() => {
     popup &&
-    clickInfo &&
-    clickInfo != null &&
-    clickInfo.source != null &&
-    clickInfo.source === "heritages"
-      ? clickInfo.properties.video.length !== 0 &&
-        video(`${clickInfo.properties.video}.mp4`).then((result) => {
-          setVideoUrl(result)
-        })
-      : video(`video/${clickInfo.properties.VideoName}.mp4`).then((result) => {
-          setVideoUrl(result)
-        })
-
+      clickInfo &&
+      clickInfo != null &&
+      clickInfo.source != null &&
+      clickInfo.properties &&
+      clickInfo.properties.length != 0 &&
+      clickInfo.properties.VideoName &&
+      clickInfo.properties.VideoName.length !== 0 &&
+      video(`video/${clickInfo.properties.VideoName}.mp4`).then((result) => {
+        setVideoUrl(result)
+      })
     console.log("!!!!!!!!click info", clickInfo)
+    // ? clickInfo.properties.video.length !== 0 &&
+    //   video(`${clickInfo.properties.video}.mp4`).then((result) => {
+    //     setVideoUrl(result)
+    //   })
+    // : clickInfo.properties.VideoName.length !== 0 &&
+    //   video(`video/${clickInfo.properties.VideoName}.mp4`).then((result) => {
+    //     setVideoUrl(result)
+    //   })
+
     // popup &&
     //   clickInfo &&
     //   clickInfo != null &&
@@ -267,7 +275,7 @@ export default function Map() {
     //     "clickInfo.properties.VideoName",
     //     clickInfo.properties.VideoName
     //   )
-  }, [clickInfo])
+  }, [clickInfo, videoUrl])
   //Initial the marker position
   const [marker, setMarker] = useState({
     latitude: -27.477173,
@@ -879,7 +887,7 @@ export default function Map() {
             {popup &&
               clickInfo &&
               clickInfo != null &&
-              clickInfo.source !== "PCCC" && (
+              clickInfo.sourceLayer === "VS_Info" && (
                 <Popup
                   latitude={clickInfo.geometry.coordinates[1]}
                   longitude={clickInfo.geometry.coordinates[0]}
