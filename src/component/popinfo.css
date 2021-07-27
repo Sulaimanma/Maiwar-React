@@ -44,4 +44,7 @@
   .description {
     font-size: 13px;
   }
+  .title {
+    font-family: "Amatic SC", cursive;
+  }
 }

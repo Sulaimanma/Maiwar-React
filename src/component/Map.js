@@ -246,13 +246,19 @@ export default function Map() {
 
   useEffect(() => {
     popup &&
-      clickInfo &&
-      clickInfo != null &&
-      clickInfo.source != null &&
-      video(`video/${clickInfo.properties.VideoName}.mp4`).then((result) => {
-        setVideoUrl(result)
-      })
-    // console.log("!!!!!!!!click info", clickInfo)
+    clickInfo &&
+    clickInfo != null &&
+    clickInfo.source != null &&
+    clickInfo.source === "heritages"
+      ? clickInfo.properties.video.length !== 0 &&
+        video(`${clickInfo.properties.video}.mp4`).then((result) => {
+          setVideoUrl(result)
+        })
+      : video(`video/${clickInfo.properties.VideoName}.mp4`).then((result) => {
+          setVideoUrl(result)
+        })
+
+    console.log("!!!!!!!!click info", clickInfo)
     // popup &&
     //   clickInfo &&
     //   clickInfo != null &&
@@ -261,7 +267,7 @@ export default function Map() {
     //     "clickInfo.properties.VideoName",
     //     clickInfo.properties.VideoName
     //   )
-  }, [clickInfo, videoUrl])
+  }, [clickInfo])
   //Initial the marker position
   const [marker, setMarker] = useState({
     latitude: -27.477173,
@@ -873,8 +879,7 @@ export default function Map() {
             {popup &&
               clickInfo &&
               clickInfo != null &&
-              clickInfo.source !== "PCCC" &&
-              clickInfo.sourceLayer === "VS_Info" && (
+              clickInfo.source !== "PCCC" && (
                 <Popup
                   latitude={clickInfo.geometry.coordinates[1]}
                   longitude={clickInfo.geometry.coordinates[0]}
@@ -886,14 +891,21 @@ export default function Map() {
                   captureScroll={true}
                   captureDrag={false}
                 >
-                  {clickInfo.source !== "PCCC" &&
-                    clickInfo.sourceLayer === "VS_Info" && (
+                  {clickInfo.sourceLayer === "VS_Info" ? (
+                    <PopInfo
+                      src={videoUrl}
+                      description={clickInfo.properties.description}
+                      title={clickInfo.properties.title}
+                    />
+                  ) : (
+                    clickInfo.source === "heritages" && (
                       <PopInfo
                         src={videoUrl}
-                        description={clickInfo.properties.description}
-                        title={clickInfo.properties.title}
+                        description={clickInfo.properties.videoDescription}
+                        title={clickInfo.properties.heritageType}
                       />
-                    )}
+                    )
+                  )}
                 </Popup>
               )}
             {popup &&

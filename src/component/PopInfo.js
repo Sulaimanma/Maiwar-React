@@ -6,7 +6,7 @@ export default function PopInfo(props) {
   return (
     <div className="popContainer">
       <h3 className="title">{title}</h3>
-      {src && src != "" && (
+      {src && src != "" && src === ".mp4" && (
         <video autoPlay loop muted width="300px" src={src} />
       )}
 
