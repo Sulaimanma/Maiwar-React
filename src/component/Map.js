@@ -220,11 +220,11 @@ export default function Map() {
           "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
           "Camp_Bush_Children_Running.mp4"
       } else if (VideoName.length != 0) {
-        console.log("display the video")
+        // console.log("display the video")
         var path = await Storage.get(`${VideoName}`, {
           level: "public",
         })
-        console.log("video path is", path)
+        // console.log("video path is", path)
       } else if (VideoName === "Gathering Bush.mp4") {
         var path =
           "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
@@ -252,15 +252,15 @@ export default function Map() {
       video(`video/${clickInfo.properties.VideoName}.mp4`).then((result) => {
         setVideoUrl(result)
       })
-    console.log("!!!!!!!!click info", clickInfo)
-    popup &&
-      clickInfo &&
-      clickInfo != null &&
-      clickInfo.source != null &&
-      console.log(
-        "clickInfo.properties.VideoName",
-        clickInfo.properties.VideoName
-      )
+    // console.log("!!!!!!!!click info", clickInfo)
+    // popup &&
+    //   clickInfo &&
+    //   clickInfo != null &&
+    //   clickInfo.source != null &&
+    //   console.log(
+    //     "clickInfo.properties.VideoName",
+    //     clickInfo.properties.VideoName
+    //   )
   }, [clickInfo, videoUrl])
   //Initial the marker position
   const [marker, setMarker] = useState({
@@ -873,7 +873,8 @@ export default function Map() {
             {popup &&
               clickInfo &&
               clickInfo != null &&
-              clickInfo.source !== "PCCC" && (
+              clickInfo.source !== "PCCC" &&
+              clickInfo.sourceLayer === "VS_Info" && (
                 <Popup
                   latitude={clickInfo.geometry.coordinates[1]}
                   longitude={clickInfo.geometry.coordinates[0]}
@@ -885,13 +886,14 @@ export default function Map() {
                   captureScroll={true}
                   captureDrag={false}
                 >
-                  {clickInfo.source !== "PCCC" && (
-                    <PopInfo
-                      src={videoUrl}
-                      description={clickInfo.properties.description}
-                      title={clickInfo.properties.title}
-                    />
-                  )}
+                  {clickInfo.source !== "PCCC" &&
+                    clickInfo.sourceLayer === "VS_Info" && (
+                      <PopInfo
+                        src={videoUrl}
+                        description={clickInfo.properties.description}
+                        title={clickInfo.properties.title}
+                      />
+                    )}
                 </Popup>
               )}
             {popup &&
