@@ -215,7 +215,7 @@ export default function Map() {
   //Video function to play the video according to the Video Name
   const video = async (VideoName) => {
     try {
-      if (VideoName === "video/.mp4") {
+      if (VideoName === "video/.mp4" || !VideoName) {
         var path =
           "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
           "Camp_Bush_Children_Running.mp4"
@@ -224,6 +224,7 @@ export default function Map() {
         var path = await Storage.get(`${VideoName}`, {
           level: "public",
         })
+        console.log("video path is", path)
       } else if (VideoName === "Gathering Bush.mp4") {
         var path =
           "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
@@ -251,7 +252,7 @@ export default function Map() {
       video(`video/${clickInfo.properties.VideoName}.mp4`).then((result) => {
         setVideoUrl(result)
       })
-
+    console.log("!!!!!!!!click info", clickInfo)
     popup &&
       clickInfo &&
       clickInfo != null &&
@@ -260,7 +261,7 @@ export default function Map() {
         "clickInfo.properties.VideoName",
         clickInfo.properties.VideoName
       )
-  }, [clickInfo])
+  }, [clickInfo, videoUrl])
   //Initial the marker position
   const [marker, setMarker] = useState({
     latitude: -27.477173,
@@ -872,7 +873,7 @@ export default function Map() {
             {popup &&
               clickInfo &&
               clickInfo != null &&
-              clickInfo.source === "heritages" && (
+              clickInfo.source !== "PCCC" && (
                 <Popup
                   latitude={clickInfo.geometry.coordinates[1]}
                   longitude={clickInfo.geometry.coordinates[0]}
@@ -884,13 +885,7 @@ export default function Map() {
                   captureScroll={true}
                   captureDrag={false}
                 >
-                  {clickInfo.source === "heritages" ? (
-                    <PopInfo
-                      src={videoUrl}
-                      description={clickInfo.properties.visibility}
-                      title={clickInfo.properties.InspectionCarriedOut}
-                    />
-                  ) : (
+                  {clickInfo.source !== "PCCC" && (
                     <PopInfo
                       src={videoUrl}
                       description={clickInfo.properties.description}
