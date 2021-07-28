@@ -220,7 +220,6 @@ export default function Map() {
           "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
           "Camp_Bush_Children_Running.mp4"
       } else if (VideoName.length != 0) {
-        // console.log("display the video")
         var path = await Storage.get(`${VideoName}`, {
           level: "public",
         })
@@ -256,6 +255,20 @@ export default function Map() {
       clickInfo.properties.VideoName.length !== 0 &&
       video(`video/${clickInfo.properties.VideoName}.mp4`).then((result) => {
         setVideoUrl(result)
+        console.log("Videonamiiiiiiiiii")
+      })
+
+    popup &&
+      clickInfo &&
+      clickInfo != null &&
+      clickInfo.source != null &&
+      clickInfo.properties &&
+      clickInfo.properties.length != 0 &&
+      clickInfo.properties.video &&
+      clickInfo.properties.video.length !== 0 &&
+      video(`${clickInfo.properties.video}`).then((result) => {
+        setVideoUrl(result)
+        console.log("Videoooooooooo")
       })
     console.log("!!!!!!!!click info", clickInfo)
     // ? clickInfo.properties.video.length !== 0 &&
@@ -266,15 +279,6 @@ export default function Map() {
     //   video(`video/${clickInfo.properties.VideoName}.mp4`).then((result) => {
     //     setVideoUrl(result)
     //   })
-
-    // popup &&
-    //   clickInfo &&
-    //   clickInfo != null &&
-    //   clickInfo.source != null &&
-    //   console.log(
-    //     "clickInfo.properties.VideoName",
-    //     clickInfo.properties.VideoName
-    //   )
   }, [clickInfo, videoUrl])
   //Initial the marker position
   const [marker, setMarker] = useState({
@@ -693,7 +697,6 @@ export default function Map() {
             tileSize={512}
             maxzoom={14}
           /> */}
-
             <Geocoder
               mapRef={mapRef}
               containerRef={geocoderContainerRef}
@@ -703,7 +706,6 @@ export default function Map() {
               position="top-right"
               positionOptions={{ enableHighAccuracy: true, timeout: 6000 }}
             />
-
             {/* <div class="toggleWrapper">
             <input
               type="checkbox"
@@ -714,7 +716,6 @@ export default function Map() {
             ></input>
             <label for="toggle1"></label>
           </div> */}
-
             <div className="Toggle3d">
               <FormControlLabel
                 control={
@@ -773,7 +774,6 @@ export default function Map() {
             </div>
             <Layer {...skyLayer} />
             {building[0] && <Layer {...ThreeDBuildingLayer} />}
-
             {boundtries && (
               <Source id="boundtries" type="geojson" data={boundtries}>
                 <Layer {...boundriesLayer} />
@@ -835,7 +835,6 @@ export default function Map() {
                   />
                 )
               })}
-
             {/* {geoConvertedjson != null && (
             <Pins data={geoConvertedjson} onClick={onClick} />
           )} */}
@@ -883,10 +882,10 @@ export default function Map() {
                 />
               </Popup>
             )}
-
             {popup &&
               clickInfo &&
               clickInfo != null &&
+              clickInfo.sourceLayer &&
               clickInfo.sourceLayer === "VS_Info" && (
                 <Popup
                   latitude={clickInfo.geometry.coordinates[1]}
@@ -899,23 +898,37 @@ export default function Map() {
                   captureScroll={true}
                   captureDrag={false}
                 >
-                  {clickInfo.sourceLayer === "VS_Info" ? (
-                    <PopInfo
-                      src={videoUrl}
-                      description={clickInfo.properties.description}
-                      title={clickInfo.properties.title}
-                    />
-                  ) : (
-                    clickInfo.source === "heritages" && (
-                      <PopInfo
-                        src={videoUrl}
-                        description={clickInfo.properties.videoDescription}
-                        title={clickInfo.properties.heritageType}
-                      />
-                    )
-                  )}
+                  <PopInfo
+                    src={videoUrl}
+                    description={clickInfo.properties.description}
+                    title={clickInfo.properties.title}
+                  />
                 </Popup>
               )}
+            {popup &&
+              clickInfo &&
+              clickInfo != null &&
+              clickInfo.source.length != 0 &&
+              clickInfo.source === "heritages" && (
+                <Popup
+                  latitude={clickInfo.geometry.coordinates[1]}
+                  longitude={clickInfo.geometry.coordinates[0]}
+                  closeButton={true}
+                  closeOnClick={false}
+                  onClose={() => setPopup(false)}
+                  anchor="bottom"
+                  dynamicPosition={true}
+                  captureScroll={true}
+                  captureDrag={false}
+                >
+                  <PopInfo
+                    src={videoUrl}
+                    description={clickInfo.properties.videoDescription}
+                    title={clickInfo.properties.heritageType}
+                  />
+                </Popup>
+              )}
+
             {popup &&
               clickInfo &&
               clickInfo != null &&
