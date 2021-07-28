@@ -670,7 +670,7 @@ export default function Map() {
           >
             <GeolocateControl
               style={{
-                bottom: "11vh",
+                bottom: "12.4vh",
                 right: "0",
                 padding: "0",
               }}
@@ -681,14 +681,14 @@ export default function Map() {
             />
             <ScaleControl
               style={{
-                bottom: "0",
+                bottom: "12px",
                 left: "0",
                 padding: "2px",
               }}
             />
             <NavigationControl
               showCompass={true}
-              style={{ bottom: "2px", right: "0px" }}
+              style={{ bottom: "12px", right: "0px" }}
             />
             {/* <Source
             id="mapbox-dem"
