@@ -35,14 +35,14 @@ video {
 }
 @media only screen and (max-width: 430px) {
   .popContainer {
-    width: 260px !important;
+    width: 240px !important;
     height: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   video {
-    width: 254px !important;
+    width: 270px !important;
   }
   .description {
     font-size: 13px;
