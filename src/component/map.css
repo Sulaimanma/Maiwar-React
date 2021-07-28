@@ -93,7 +93,44 @@ video {
 .mapboxgl-ctrl {
   bottom: 10%;
 }
+/* transition for pop up */
+/* swipe-left */
 
+.mapboxgl-popup {
+  transform: unset !important;
+  left: unset !important;
+  right: 0;
+  position: unset;
+  top: 10vh !important;
+  will-change: unset !important;
+
+  animation-name: slideRight !important;
+
+  animation-duration: 2s !important;
+}
+
+@keyframes slideRight {
+  0% {
+    position: absolute;
+    right: -300px;
+  }
+  100% {
+    position: absolute;
+    right: 0px;
+  }
+}
+.mapboxgl-popup-anchor-bottom {
+}
+.mapboxgl-popup-tip {
+  display: none !important;
+}
+.mapboxgl-popup-content {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  animation: slide 0.5s forwards !important;
+
+  animation-duration: 4s !important;
+}
 .mapboxgl-popup-close-button {
   font-size: 1.5rem;
   color: #226600;

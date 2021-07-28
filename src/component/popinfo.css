@@ -1,6 +1,6 @@
 .popContainer {
-  width: 400px !important;
-  height: fit-content;
+  width: 13.7vw !important;
+  height: 70vh;
 }
 .title {
   font-size: 1.6em;
@@ -12,6 +12,9 @@
   white-space: wrap;
   width: 95%;
   color: gray;
+}
+video {
+  height: 26vh;
 }
 .description {
   white-space: normal;
