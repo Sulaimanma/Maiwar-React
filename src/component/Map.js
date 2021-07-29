@@ -67,9 +67,14 @@ import { SolidPolygonLayer, GeoJsonLayer, ArcLayer } from "@deck.gl/layers"
 import { DeckGL } from "deck.gl"
 import Weather from "./Weather"
 import { boundtries, regionsText, weatherData } from "./Helpers/DataBank"
+import { Viewer, Entity, Camera, Scene, Globe } from "resium"
+import { Cartesian3, createWorldTerrain, Math as CesiumMath } from "cesium"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
+const position = Cartesian3.fromDegrees(138.014308, -27.477173, 100)
+const pointGraphics = { pixelSize: 10 }
+const terrainProvider = createWorldTerrain()
 
 // source: Natural Earth http://www.naturalearthdata.com/ via geojson.xyz
 const COUNTRIES =
@@ -82,6 +87,7 @@ export default function Map() {
   const mapRef = useRef()
   const geocoderContainerRef = useRef()
   const videoRef = useRef()
+  const earthRef = useRef()
   // popup control variable
   const { heritages, fetchHeritages } = useContext(HeritageContext)
   //set up a enterfield
@@ -434,8 +440,42 @@ export default function Map() {
   // Use i and g to fix the zoom identified accuracy issues
   let i = 1
   let g = 1
-  let preZoomG = 1
+  let preHeight = 10000000000
   let preZoomM = 22
+  const InspectCamera = () => {
+    const scene = earthRef.current.cesiumElement.scene
+    const camera = scene.camera
+    console.log("position", camera.positionCartographic)
+    const { longitude, latitude, height } = camera.positionCartographic
+    let pi = Math.PI
+
+    const longi = longitude * (180 / pi)
+    const lati = latitude * (180 / pi)
+    if (height < 7001597 && preHeight > height) {
+      preHeight = height
+      g = g + 1
+    }
+    if (g > 3) {
+      setNondisplay("inherit")
+      setDisplay("none")
+      setViewpoint({
+        ...viewpoint,
+        longitude: longi,
+        latitude: lati,
+        zoom: 5,
+        // transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
+        // transitionDuration: "auto",
+      })
+    }
+    // console.log("heading (deg)", CesiumMath.toDegrees(camera.heading))
+    // console.log("pitch (deg)", CesiumMath.toDegrees(camera.pitch))
+    // console.log("roll (deg)", CesiumMath.toDegrees(camera.roll))
+    console.log("coordinate:", longi, lati)
+  }
+  const handleChangeView = (e) => {
+    console.log("eeeeeeeeeee", e)
+    InspectCamera()
+  }
   const handleViewportChange = useCallback((view) => {
     // console.log("zoommmmm", view)
     // console.log("iiiiiiiii", i)
@@ -459,30 +499,30 @@ export default function Map() {
     }
   }, [])
   //Globe view change
-  const handleViewStateChange = useCallback((view) => {
-    // console.log("zoomggggg", view.viewState)
-    // console.log("pre", preZoomG)
+  // const handleViewStateChange = useCallback((view) => {
+  //   // console.log("zoomggggg", view.viewState)
+  //   // console.log("pre", preZoomG)
 
-    if (view.viewState.zoom > 2.7 && view.viewState.zoom > preZoomG) {
-      g = g + 1
-      preZoomG = view.viewState.zoom
-      // console.log("ggggg", g)
-    }
-    if (g >= 4) {
-      preZoomG = 1
-      g = 1
+  //   if (view.viewState.zoom > 2.7 && view.viewState.zoom > preZoomG) {
+  //     g = g + 1
+  //     preZoomG = view.viewState.zoom
+  //     // console.log("ggggg", g)
+  //   }
+  //   if (g >= 4) {
+  //     preZoomG = 1
+  //     g = 1
 
-      setDisplay("none")
-      setNondisplay("inherit")
-      setViewpoint(view.viewState)
-      console.log("done that shit")
-    }
-    // else if (i === 1) {
-    //   setViewpoint(view.viewState)
-    // }
+  //     setDisplay("none")
+  //     setNondisplay("inherit")
+  //     setViewpoint(view.viewState)
+  //     console.log("done that shit")
+  //   }
+  //   // else if (i === 1) {
+  //   //   setViewpoint(view.viewState)
+  //   // }
 
-    // console.log('viewpoint', viewpoint.viewState);
-  }, [])
+  //   // console.log('viewpoint', viewpoint.viewState);
+  // }, [])
 
   //Fly to different project on map
   const handleGeocoderViewportChange = useCallback(
@@ -536,10 +576,10 @@ export default function Map() {
     )
   }, [])
   // Modify the video speed
-  useEffect(() => {
-    // console.log("videoReference", videoRef.current)
-    videoRef.current.playbackRate = 0.55
-  }, [])
+  // useEffect(() => {
+  //   // console.log("videoReference", videoRef.current)
+  //   videoRef.current.playbackRate = 0.55
+  // }, [])
 
   useEffect(() => {
     const map = mapRef.current.getMap()
@@ -959,93 +999,12 @@ export default function Map() {
       </div>
 
       <div className="globe" style={{ display: `${display}` }}>
-        <video ref={videoRef} className="videoTag" autoPlay loop muted>
-          <source
-            src="https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/galaxy.mp4"
-            type="video/mp4"
-          />
-        </video>
-
-        <DeckGL
-          {...viewpoint}
-          views={
-            new GlobeView({
-              resolution: 10,
-
-              // longitude: viewpoint.longitude,
-              // latitude: viewpoint.latitude
-            })
-          }
-          initialViewState={{
-            latitude: -27.477173,
-            longitude: 138.014308,
-            zoom: 0,
-          }}
-          controller={true}
-          onViewStateChange={handleViewStateChange}
-          layers={[
-            // A GeoJSON polygon that covers the entire earth
-            // See /docs/api-reference/globe-view.md#remarks
-            new SolidPolygonLayer({
-              id: "background",
-              data: [
-                // prettier-ignore
-                [[-180, 90], [0, 90], [180, 90], [180, -90], [0, -90], [-180, -90]],
-              ],
-              opacity: 0.5,
-              getPolygon: (d) => d,
-              stroked: false,
-              filled: true,
-              // getFillColor: [32, 201, 218],
-              getFillColor: [25, 119, 154, 255],
-            }),
-            new GeoJsonLayer({
-              id: "base-map",
-              data: COUNTRIES,
-              // Styles
-              stroked: true,
-              filled: true,
-              lineWidthMinPixels: 0.7,
-              // getLineColor: [95, 159, 140, 255],
-              getLineColor: [232, 235, 189, 255],
-              getFillColor: [157, 192, 98, 255],
-            }),
-            // new GeoJsonLayer({
-            //   id: 'airports',
-            //   data: AIR_PORTS,
-            //   // Styles
-            //   filled: true,
-            //   pointRadiusMinPixels: 2,
-            //   pointRadiusScale: 2000,
-            //   getRadius: f => 11 - f.properties.scalerank,
-            //   getFillColor: [200, 0, 80, 180],
-            //   // Interactive props
-            //   pickable: true,
-            //   autoHighlight: true,
-            //   onClick: info =>
-            //     // eslint-disable-next-line
-            //     info.object &&
-            //     alert(
-            //       `${info.object.properties.name} (${
-            //         info.object.properties.abbrev
-            //       })`
-            //     )
-            // }),
-            // new ArcLayer({
-            //   id: 'arcs',
-            //   data: AIR_PORTS,
-            //   dataTransform: d =>
-            //     d.features.filter(f => f.properties.scalerank < 4),
-            //   // Styles
-            //   getSourcePosition: f => [-0.4531566, 51.4709959], // London
-            //   getTargetPosition: f => f.geometry.coordinates,
-            //   getSourceColor: [0, 128, 200],
-            //   getTargetColor: [200, 0, 80],
-            //   getWidth: 1
-            // })
-          ]}
-          effects={[lightingEffect]}
-        />
+        <Viewer full terrainProvider={terrainProvider} ref={earthRef}>
+          <Entity position={position} point={pointGraphics} />
+          <Camera onChange={handleChangeView} />
+          <Scene />
+          <Globe />
+        </Viewer>
       </div>
     </div>
   )

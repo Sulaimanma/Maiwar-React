@@ -2,7 +2,20 @@
   margin: 0;
   padding: 0;
 }
+/* earth interface */
+.cesium-credit-textContainer *,
+.cesium-credit-logoContainer *,
+.cesium-viewer-timelineContainer,
+.cesium-viewer-animationContainer,
+.cesium-credit-expand-link {
+  display: none !important;
+}
 
+.cesium-viewer-toolbar {
+  right: 3.6vw !important;
+  top: 1.5vh !important;
+  z-index: 10;
+}
 /* Globe view */
 .globe {
   width: 100vw;

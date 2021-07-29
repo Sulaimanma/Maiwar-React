@@ -42,9 +42,9 @@ export default function HistoricMap(props) {
       [153.114334004, -27.547],
       [152.962180049, -27.547],
     ],
-    zoom: 1,
-    pitch: 60,
-    bearing: 20,
+    zoom: 5,
+    pitch: 0,
+    bearing: 0,
   })
   const [barValue, setBarValue] = useState(100)
   const [CSSControl, setCSSControl] = useState("sliderDiv")
