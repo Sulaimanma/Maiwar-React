@@ -455,7 +455,7 @@ export default function Map() {
       preHeight = height
       g = g + 1
     }
-    if (g > 3) {
+    if (g > 2) {
       setNondisplay("inherit")
       setDisplay("none")
       setViewpoint({
@@ -463,8 +463,8 @@ export default function Map() {
         longitude: longi,
         latitude: lati,
         zoom: 5,
-        // transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
-        // transitionDuration: "auto",
+        transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
+        transitionDuration: "auto",
       })
     }
     // console.log("heading (deg)", CesiumMath.toDegrees(camera.heading))
@@ -479,8 +479,9 @@ export default function Map() {
   const handleViewportChange = useCallback((view) => {
     // console.log("zoommmmm", view)
     // console.log("iiiiiiiii", i)
+
     setViewpoint(view)
-    if ((view.zoom <= 4.15 && view.zoom < preZoomM) || view.zoom < 1.35) {
+    if ((view.zoom <= 7.15 && view.zoom < preZoomM) || view.zoom < 4.35) {
       i = i + 1
       preZoomM = view.zoom
       // console.log("iiiiiiiii", i)
@@ -490,7 +491,24 @@ export default function Map() {
       i = 1
       g = 1
       setNondisplay("none")
-      setDisplay("inherit")
+      setDisplay("unset")
+      // if (
+      //   earthRef.current.cesiumElement &&
+      //   earthRef.current.cesiumElement.length != 0
+      // ) {
+      //   const scene = earthRef.current.cesiumElement.scene
+      //   const camera = scene.camera
+      //   let pi = Math.PI
+
+      //   camera.flyTo({
+      //     destination: Cartesian3.fromDegrees(
+      //       viewpoint.longitude * (180 / pi) - 100000,
+      //       viewpoint.latitude * (180 / pi) + 100000,
+
+      //       7201597
+      //     ),
+      //   })
+      // }
     } else {
       setMarker({
         longitude: view.longitude,
