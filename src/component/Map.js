@@ -1003,7 +1003,14 @@ export default function Map() {
           <Entity position={position} point={pointGraphics} />
           <Camera onChange={handleChangeView} />
           <Scene />
-          <Globe />
+          <Globe
+            enableLighting
+            // showGroundAtmosphere
+            // showWaterEffect
+            // dynamicAtmosphereLighting
+            // dynamicAtmosphereLightingFromSun
+            // showSkirts
+          />
         </Viewer>
       </div>
     </div>
