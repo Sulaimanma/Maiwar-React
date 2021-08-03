@@ -67,11 +67,14 @@ import { SolidPolygonLayer, GeoJsonLayer, ArcLayer } from "@deck.gl/layers"
 import { DeckGL } from "deck.gl"
 import Weather from "./Weather"
 import { boundtries, regionsText, weatherData } from "./Helpers/DataBank"
-import { Viewer, Entity, Camera, Scene, Globe } from "resium"
+import { Viewer, Entity, Camera, Scene, Globe, SkyBox } from "resium"
 import { Cartesian3, createWorldTerrain, Math as CesiumMath } from "cesium"
+import Color from "cesium/Source/Core/Color"
+import BounceLoader from "react-spinners/BounceLoader"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
+
 const position = Cartesian3.fromDegrees(138.014308, -27.477173, 100)
 const pointGraphics = { pixelSize: 10 }
 const terrainProvider = createWorldTerrain()
@@ -85,6 +88,7 @@ const COUNTRIES =
 // https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_land.geojson
 export default function Map() {
   const mapRef = useRef()
+
   const geocoderContainerRef = useRef()
   const videoRef = useRef()
   const earthRef = useRef()
@@ -588,16 +592,17 @@ export default function Map() {
       // .then(console.log("PCCC", PCCC))
       .catch((error) => console.log(`Error:${error}`))
   }
+
   useEffect(async () => {
     await fetchData(
       "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/json/VS_Info.geojson"
     )
   }, [])
   // Modify the video speed
-  // useEffect(() => {
-  //   // console.log("videoReference", videoRef.current)
-  //   videoRef.current.playbackRate = 0.55
-  // }, [])
+  useEffect(() => {
+    // console.log("videoReference", videoRef.current)
+    videoRef.current.playbackRate = 0.55
+  }, [])
 
   useEffect(() => {
     const map = mapRef.current.getMap()
@@ -659,6 +664,7 @@ export default function Map() {
     color: [255, 255, 255],
     intensity: 0.5,
   })
+
   const sunLight = new SunLight({
     color: [255, 255, 255],
     intensity: 2.0,
@@ -1017,10 +1023,40 @@ export default function Map() {
       </div>
 
       <div className="globe" style={{ display: `${display}` }}>
-        <Viewer full terrainProvider={terrainProvider} ref={earthRef}>
+        <video
+          ref={videoRef}
+          className="videoTag"
+          width="100%"
+          height="100%"
+          autoPlay
+          loop
+          muted
+        >
+          <source
+            src="https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/galaxy.mp4"
+            type="video/mp4"
+          />
+        </video>
+        <div style={{ position: "absolute", top: "50vh", left: "50vw" }}>
+          <BounceLoader color="#5AAEBD" />
+        </div>
+
+        <Viewer
+          full
+          terrainProvider={terrainProvider}
+          ref={earthRef}
+          skyBox={false}
+          skyAtmosphere={false}
+          contextOptions={{
+            webgl: {
+              alpha: true,
+            },
+          }}
+        >
+          <SkyBox show={false} />
           <Entity position={position} point={pointGraphics} />
           <Camera onChange={handleChangeView} />
-          <Scene />
+          <Scene backgroundColor={Color.TRANSPARENT} />
           <Globe
             enableLighting
             // showGroundAtmosphere

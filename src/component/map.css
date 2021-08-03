@@ -12,7 +12,8 @@
 .cesium-credit-logoContainer *,
 .cesium-viewer-timelineContainer,
 .cesium-viewer-animationContainer,
-.cesium-credit-expand-link {
+.cesium-credit-expand-link,
+.cesium-viewer-toolbar {
   display: none !important;
 }
 
@@ -30,11 +31,15 @@
   /* background-image: url("https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/earth_basic_modified.jpg"); */
   background-color: black;
 }
+/* background video for earth */
+.cesium-viewer {
+  z-index: 1;
+}
 .videoTag {
   position: fixed;
   right: 0;
   bottom: 0;
-  min-width: 100%;
+  object-fit: cover;
   min-height: 100%;
 }
 .mapboxgl-canvas {
@@ -279,7 +284,7 @@ body {
 /* tabs */
 .tabs {
   position: absolute !important;
-  z-index: 1 !important;
+  z-index: 2 !important;
   top: 9vh !important;
 }
 /* 3d switch */
