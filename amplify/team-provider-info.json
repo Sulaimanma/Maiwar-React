@@ -1,4 +1,17 @@
 {
+  "devsecond": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-maiwarreactapp-devsecond-04046-authRole",
+      "UnauthRoleArn": "arn:aws:iam::175346306213:role/amplify-maiwarreactapp-devsecond-04046-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::175346306213:role/amplify-maiwarreactapp-devsecond-04046-authRole",
+      "Region": "ap-southeast-2",
+      "DeploymentBucketName": "amplify-maiwarreactapp-devsecond-04046-deployment",
+      "UnauthRoleName": "amplify-maiwarreactapp-devsecond-04046-unauthRole",
+      "StackName": "amplify-maiwarreactapp-devsecond-04046",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:175346306213:stack/amplify-maiwarreactapp-devsecond-04046/8d9a97c0-ac1d-11eb-b633-0250ac48387c",
+      "AmplifyAppId": "d3n0mnxsojhts9"
+    }
+  },
   "dev": {
     "awscloudformation": {
       "AuthRoleName": "amplify-maiwarreactapp-dev-165816-authRole",
@@ -14,30 +27,6 @@
     "categories": {
       "auth": {
         "maiwarreactappc0e19078": {}
-      }
-    }
-  },
-  "devsecond": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-maiwarreactapp-devsecond-04046-authRole",
-      "UnauthRoleArn": "arn:aws:iam::175346306213:role/amplify-maiwarreactapp-devsecond-04046-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::175346306213:role/amplify-maiwarreactapp-devsecond-04046-authRole",
-      "Region": "ap-southeast-2",
-      "DeploymentBucketName": "amplify-maiwarreactapp-devsecond-04046-deployment",
-      "UnauthRoleName": "amplify-maiwarreactapp-devsecond-04046-unauthRole",
-      "StackName": "amplify-maiwarreactapp-devsecond-04046",
-      "StackId": "arn:aws:cloudformation:ap-southeast-2:175346306213:stack/amplify-maiwarreactapp-devsecond-04046/8d9a97c0-ac1d-11eb-b633-0250ac48387c",
-      "AmplifyAppId": "d3n0mnxsojhts9"
-    },
-    "categories": {
-      "auth": {
-        "maiwarreactappc0e19078": {}
-      },
-      "function": {
-        "S3Triggerc40f8517": {
-          "deploymentBucketName": "amplify-maiwarreactapp-devsecond-04046-deployment",
-          "s3Key": "amplify-builds/S3Triggerc40f8517-6f644a6a4b7657536176-build.zip"
-        }
       }
     }
   }
