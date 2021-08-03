@@ -599,10 +599,10 @@ export default function Map() {
     )
   }, [])
   // Modify the video speed
-  useEffect(() => {
-    // console.log("videoReference", videoRef.current)
-    videoRef.current.playbackRate = 0.55
-  }, [])
+  // useEffect(() => {
+  //   // console.log("videoReference", videoRef.current)
+  //   videoRef.current.playbackRate = 0.55
+  // }, [])
 
   useEffect(() => {
     const map = mapRef.current.getMap()
@@ -1023,7 +1023,7 @@ export default function Map() {
       </div>
 
       <div className="globe" style={{ display: `${display}` }}>
-        <video
+        {/* <video
           ref={videoRef}
           className="videoTag"
           width="100%"
@@ -1039,21 +1039,21 @@ export default function Map() {
         </video>
         <div style={{ position: "absolute", top: "50vh", left: "50vw" }}>
           <BounceLoader color="#5AAEBD" />
-        </div>
+        </div> */}
 
         <Viewer
           full
           terrainProvider={terrainProvider}
           ref={earthRef}
-          skyBox={false}
-          skyAtmosphere={false}
-          contextOptions={{
-            webgl: {
-              alpha: true,
-            },
-          }}
+          // skyBox={false}
+          // skyAtmosphere={false}
+          // contextOptions={{
+          //   webgl: {
+          //     alpha: false,
+          //   },
+          // }}
         >
-          <SkyBox show={false} />
+          <SkyBox />
           <Entity position={position} point={pointGraphics} />
           <Camera onChange={handleChangeView} />
           <Scene backgroundColor={Color.TRANSPARENT} />
