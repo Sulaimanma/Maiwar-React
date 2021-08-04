@@ -566,3 +566,19 @@ body {
     z-index: 1;
   }
 }
+
+/* normal screen size laptop */
+@media only screen and (max-width: 2000px) {
+  .Text3d2 {
+    right: 1.3vw;
+  }
+
+  .mapboxgl-ctrl-geocoder {
+    top: 5vh;
+    right: 5.3vw !important;
+    min-width: 5vw !important;
+    width: 11vw !important;
+    height: 32px;
+    font-size: 13px;
+  }
+}
