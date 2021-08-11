@@ -459,22 +459,22 @@ export default function Map() {
       preHeight = height
       g = g + 1
     }
-    if (g > 2) {
-      setNondisplay("inherit")
-      setDisplay("none")
+    if (g > 1) {
       setViewpoint({
         ...viewpoint,
         longitude: longi,
         latitude: lati,
-        zoom: 5,
+        zoom: height / 1000000,
         transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
         transitionDuration: "auto",
       })
+      setNondisplay("inherit")
+      setDisplay("none")
     }
     // console.log("heading (deg)", CesiumMath.toDegrees(camera.heading))
     // console.log("pitch (deg)", CesiumMath.toDegrees(camera.pitch))
     // console.log("roll (deg)", CesiumMath.toDegrees(camera.roll))
-    console.log("coordinate:", longi, lati)
+    console.log("coordinate:", longi, lati, height / 1000000)
   }
   const handleChangeView = (e) => {
     console.log("eeeeeeeeeee", e)
@@ -485,12 +485,26 @@ export default function Map() {
     // console.log("iiiiiiiii", i)
 
     setViewpoint(view)
-    if ((view.zoom <= 7.15 && view.zoom < preZoomM) || view.zoom < 4.35) {
+    console.log(
+      "coordinate viewpoint",
+      viewpoint.longitude,
+      viewpoint.latitude,
+      viewpoint.zoom
+    )
+    console.log(
+      "coordinate viewpoint!!!!!!",
+      view.longitude,
+      view.latitude,
+      view.zoom,
+      view,
+      viewpoint
+    )
+    if ((view.zoom <= 7.15 && view.zoom < preZoomM) || view.zoom < 2.35) {
       i = i + 1
       preZoomM = view.zoom
       // console.log("iiiiiiiii", i)
     }
-    if (i >= 4) {
+    if (i >= 5) {
       preZoomM = 22
       i = 1
       g = 1
