@@ -444,7 +444,7 @@ body {
   }
 }
 /* Surgace Pro */
-@media only screen and (max-width: 1400px) {
+@media only screen and (max-width: 1400px) and (min-width: 1200px) {
   .tabs {
     top: 9% !important;
   }
@@ -466,7 +466,40 @@ body {
     padding-right: 2vw;
   }
   .Text3d2 {
-    margin-left: 1vw;
+    margin-left: 0.7vw;
+  }
+  .Toggle3d3 {
+    margin-right: 13vw;
+  }
+  .Text3d3 {
+    left: 4vw !important;
+  }
+  .mapboxgl-ctrl-geocoder {
+    right: 6.8vw !important;
+    top: 5vh;
+
+    min-width: 7vw !important;
+    width: 11vw !important;
+    height: 32px;
+    font-size: 13px;
+  }
+  .mapboxgl-ctrl-geocoder--input {
+    height: 4.3vh !important;
+    width: 100% !important;
+    border: none !important;
+  }
+
+  .description {
+    font-size: 10px;
+  }
+  .popContainer {
+    height: 67vh !important;
+  }
+  .mapboxgl-popup {
+    top: 11vh !important;
+  }
+  .container > div {
+    height: 631px !important;
   }
   .logoText {
     font-family: ui sans-serif;
@@ -568,7 +601,7 @@ body {
 }
 
 /* normal screen size laptop */
-@media only screen and (max-width: 2000px) {
+@media only screen and (max-width: 2000px) and (min-width: 1500px) {
   .Text3d2 {
     right: 1.3vw;
   }
