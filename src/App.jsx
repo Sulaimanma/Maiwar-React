@@ -61,8 +61,8 @@ function App() {
   }, [])
 
   // console.log("heritages on the homepage!!!!!!!!!!!!!!!!!!!!!!!!!", heritages)
-
-  return authState === AuthState.SignedIn && user ? (
+  // return authState === AuthState.SignedIn && user
+  return true ? (
     <div
       className="App"
       id="App"
