@@ -67,7 +67,15 @@ import { SolidPolygonLayer, GeoJsonLayer, ArcLayer } from "@deck.gl/layers"
 import { DeckGL } from "deck.gl"
 import Weather from "./Weather"
 import { boundtries, regionsText, weatherData } from "./Helpers/DataBank"
-import { Viewer, Entity, Camera, Scene, Globe, SkyBox } from "resium"
+import {
+  Viewer,
+  Entity,
+  Camera,
+  Scene,
+  Globe,
+  SkyBox,
+  CameraFlyTo,
+} from "resium"
 import { Cartesian3, createWorldTerrain, Math as CesiumMath } from "cesium"
 import Color from "cesium/Source/Core/Color"
 import BounceLoader from "react-spinners/BounceLoader"
@@ -75,8 +83,8 @@ import BounceLoader from "react-spinners/BounceLoader"
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
 
-const position = Cartesian3.fromDegrees(138.014308, -27.477173, 100)
-const pointGraphics = { pixelSize: 10 }
+const position = Cartesian3.fromDegrees(152.9794409, -27.5084143, 12000000)
+const pointGraphics = { pixelSize: 8 }
 const terrainProvider = createWorldTerrain()
 
 // source: Natural Earth http://www.naturalearthdata.com/ via geojson.xyz
@@ -1068,7 +1076,26 @@ export default function Map() {
           // }}
         >
           <SkyBox />
-          <Entity position={position} point={pointGraphics} />
+          <Entity
+            position={Cartesian3.fromDegrees(152.9794409, -27.5084143, 200)}
+            point={pointGraphics}
+            name="Hi! There!"
+            description="This is our office location, which is Creative Industries Precinct, Z3/106 Musk Ave, Kelvin Grove QLD 4059"
+          />
+          <CameraFlyTo
+            cancelFlightOnUnmount
+            destination={Cartesian3.fromDegrees(
+              152.9794409,
+              -27.5084143,
+              32000000
+            )}
+            once
+            duration={12}
+            orientation={{
+              heading: CesiumMath.toRadians(0),
+              pitch: CesiumMath.toRadians(-90),
+            }}
+          />
           <Camera onChange={handleChangeView} />
           <Scene backgroundColor={Color.TRANSPARENT} />
           <Globe

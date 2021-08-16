@@ -42,7 +42,8 @@ export default function Weather(props) {
     weatherType = "sun"
     iconCode = "21"
   }
-  const iconUrl = `https://digital.wsi.com/products/icons/${iconCode}.png`
+  const iconUrl = `https://doc.media.weather.com/products/icons/${iconCode}.png`
+
   // console.log("fetch", temperature, weatherType, iconCode)
   return (
     <Marker
