@@ -1090,7 +1090,7 @@ export default function Map() {
               32000000
             )}
             once
-            duration={12}
+            duration={15}
             orientation={{
               heading: CesiumMath.toRadians(0),
               pitch: CesiumMath.toRadians(-90),
