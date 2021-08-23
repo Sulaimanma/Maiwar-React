@@ -42,6 +42,10 @@ export default function Weather(props) {
     weatherType = "sun"
     iconCode = "21"
   }
+  var intIcon = parseInt(iconCode)
+  if (intIcon < 10) {
+    iconCode = `0${iconCode}`
+  }
   const iconUrl = `https://doc.media.weather.com/products/icons/${iconCode}.png`
 
   // console.log("fetch", temperature, weatherType, iconCode)
