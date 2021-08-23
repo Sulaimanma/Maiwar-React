@@ -16,11 +16,19 @@
 .cesium-viewer-toolbar {
   display: none !important;
 }
+/* 
+disable the camera of point */
+.cesium-infoBox-camera {
+  display: none !important;
+}
 
 .cesium-viewer-toolbar {
   right: 3.6vw !important;
   top: 1.5vh !important;
   z-index: 10;
+}
+.cesium-infoBox {
+  top: 6vh !important;
 }
 /* Globe view */
 .globe {
