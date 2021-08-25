@@ -1045,24 +1045,6 @@ export default function Map() {
       </div>
 
       <div className="globe" style={{ display: `${display}` }}>
-        {/* <video
-          ref={videoRef}
-          className="videoTag"
-          width="100%"
-          height="100%"
-          autoPlay
-          loop
-          muted
-        >
-          <source
-            src="https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/galaxy.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div style={{ position: "absolute", top: "50vh", left: "50vw" }}>
-          <BounceLoader color="#5AAEBD" />
-        </div> */}
-
         <Viewer
           full
           terrainProvider={terrainProvider}
