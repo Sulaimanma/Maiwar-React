@@ -79,6 +79,7 @@ import {
 import { Cartesian3, createWorldTerrain, Math as CesiumMath } from "cesium"
 import Color from "cesium/Source/Core/Color"
 import BounceLoader from "react-spinners/BounceLoader"
+import Categories from "./Categories"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
@@ -715,9 +716,8 @@ export default function Map() {
           alt="LOGO"
         />
       </div>
-      <div className="tabs">
-        {/* <StyletronProvider value={engine}>
-              <BaseProvider theme={LightTheme}> */}
+      {/* <div className="tabs">
+  
         <HistoricMap
           viewpoint={viewpoint}
           setViewpoint={setViewpoint}
@@ -729,14 +729,13 @@ export default function Map() {
           setCheckboxes={setCheckboxes}
           checkboxes={checkboxes}
         />
-        {/* </BaseProvider>
-            </StyletronProvider> */}
+    
       </div>
       {isMobile() && (
         <div className="bearCtrl">
           <BearSlider viewpoint={viewpoint} setViewpoint={setViewpoint} />
         </div>
-      )}
+      )} */}
       <div
         id="map"
         style={{ display: `${nondisplay}`, width: "100vw", height: "100vh" }}
@@ -776,13 +775,7 @@ export default function Map() {
               showCompass={true}
               style={{ bottom: "12px", right: "0px" }}
             />
-            {/* <Source
-            id="mapbox-dem"
-            type="raster-dem"
-            url="mapbox://mapbox.mapbox-terrain-dem-v1"
-            tileSize={512}
-            maxzoom={14}
-          /> */}
+
             <Geocoder
               mapRef={mapRef}
               containerRef={geocoderContainerRef}
@@ -792,16 +785,7 @@ export default function Map() {
               position="top-right"
               positionOptions={{ enableHighAccuracy: true, timeout: 6000 }}
             />
-            {/* <div class="toggleWrapper">
-            <input
-              type="checkbox"
-              name="toggle1"
-              class="mobileToggle"
-              id="toggle1"
-              checked
-            ></input>
-            <label for="toggle1"></label>
-          </div> */}
+
             <div className="Toggle3d">
               <FormControlLabel
                 control={
@@ -1045,6 +1029,9 @@ export default function Map() {
       </div>
 
       <div className="globe" style={{ display: `${display}` }}>
+        <div className="Categories">
+          <Categories />
+        </div>
         <Viewer
           full
           terrainProvider={terrainProvider}
@@ -1072,7 +1059,7 @@ export default function Map() {
               32000000
             )}
             once
-            duration={15}
+            duration={4}
             orientation={{
               heading: CesiumMath.toRadians(0),
               pitch: CesiumMath.toRadians(-90),

@@ -7,6 +7,19 @@
   -moz-user-select: none !important; /* Firefox */
   -ms-user-select: none !important; /* Internet Explorer/Edge */
 }
+
+/* Icons on the first page */
+.Categories {
+  width: 100vw;
+  height: max-content;
+  z-index: 2;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 8vh;
+}
+
 /* earth interface */
 .cesium-credit-textContainer *,
 .cesium-credit-logoContainer *,
