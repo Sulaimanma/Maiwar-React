@@ -1,8 +1,13 @@
 import { Button } from "@material-ui/core"
 import React from "react"
 import { Col, Container, Row } from "react-bootstrap"
+import { FlyToInterpolator } from "react-map-gl"
 import "../component/Categories.css"
-export default function Categories() {
+import { mapData } from "./HistoricMap"
+
+export default function Categories(props) {
+  const { setViewpoint, viewpoint, setDisplay, setNondisplay } = props
+
   const categories = [
     {
       tittle: "Oral tradition",
@@ -33,23 +38,52 @@ export default function Categories() {
   return (
     <Container style={{ display: "flex", justifyContent: "center" }}>
       <div className="CategoriesDiv">
-        {categories.map((cate) => (
-          <Col key={cate.tittle}>
-            <Row>
-              {" "}
-              <Button>
-                <img
-                  src={cate.tittleBackground}
-                  style={{ width: "50px" }}
-                ></img>
-              </Button>
-            </Row>
-            <Row>
-              {" "}
-              <div className="cateTittle">{cate.tittle}</div>
-            </Row>
-          </Col>
-        ))}
+        {categories.map((cate) => {
+          const mapValue = mapData
+            .find((region) => region.state == "Northeast")
+            .regionMaps.find((city) => city.tag == cate.tittle)
+
+          const longi =
+            (mapValue.coordinates[0][0] + mapValue.coordinates[1][0]) / 2
+          const lati =
+            (mapValue.coordinates[0][1] + mapValue.coordinates[1][1]) / 2 -
+            0.034
+          return (
+            <Col key={cate.tittle}>
+              <Row>
+                {" "}
+                <Button
+                  onClick={() => {
+                    setDisplay("none")
+                    setNondisplay("inherit")
+                    setViewpoint({
+                      ...viewpoint,
+                      longitude: longi,
+                      latitude: lati,
+                      zoom: mapValue.zoom,
+                      pitch: mapValue.pitch,
+                      bearing: mapValue.bearing,
+                      transitionInterpolator: new FlyToInterpolator({
+                        speed: 1.7,
+                      }),
+                      transitionDuration: "auto",
+                    })
+                  }}
+                >
+                  <img
+                    src={cate.tittleBackground}
+                    style={{ width: "50px" }}
+                    className="cateIcon"
+                  ></img>
+                </Button>
+              </Row>
+              <Row>
+                {" "}
+                <div className="cateTittle">{cate.tittle}</div>
+              </Row>
+            </Col>
+          )
+        })}
       </div>
     </Container>
   )

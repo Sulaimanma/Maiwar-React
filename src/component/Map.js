@@ -1030,7 +1030,12 @@ export default function Map() {
 
       <div className="globe" style={{ display: `${display}` }}>
         <div className="Categories">
-          <Categories />
+          <Categories
+            setViewpoint={setViewpoint}
+            viewpoint={viewpoint}
+            setDisplay={setDisplay}
+            setNondisplay={setNondisplay}
+          />
         </div>
         <Viewer
           full
@@ -1044,7 +1049,22 @@ export default function Map() {
           //   },
           // }}
         >
-          <SkyBox />
+          <SkyBox
+            sources={{
+              positiveX:
+                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/px.png",
+              negativeX:
+                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/nx.png",
+              positiveY:
+                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/ny.png",
+              negativeY:
+                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/py.png",
+              positiveZ:
+                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/pz.png",
+              negativeZ:
+                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/nz.png",
+            }}
+          />
           <Entity
             position={Cartesian3.fromDegrees(152.9794409, -27.5084143, 200)}
             point={pointGraphics}
@@ -1059,7 +1079,7 @@ export default function Map() {
               32000000
             )}
             once
-            duration={4}
+            duration={10}
             orientation={{
               heading: CesiumMath.toRadians(0),
               pitch: CesiumMath.toRadians(-90),

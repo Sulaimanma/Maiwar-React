@@ -4,8 +4,22 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: baseline;
+  margin-left: 2.5vw;
 }
 .cateTittle {
   color: aliceblue;
   text-align: center;
 }
+
+.cateIcon:hover {
+  transform: scale(1.4);
+  transition: 1.5s;
+}
+/* @keyframes expand {
+  0% {
+    transform: scale(100%);
+  }
+  100% {
+    transform: scale(200%);
+  }
+} */
