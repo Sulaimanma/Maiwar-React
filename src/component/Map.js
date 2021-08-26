@@ -1076,20 +1076,20 @@ export default function Map() {
           // }}
         >
           <SkyBox
-          // sources={{
-          //   positiveX:
-          //     "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/left.png",
-          //   negativeX:
-          //     "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/right.png",
-          //   positiveY:
-          //     "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/top.png",
-          //   negativeY:
-          //     "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/bottom.png",
-          //   positiveZ:
-          //     "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/front.png",
-          //   negativeZ:
-          //     "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/back.png",
-          // }}
+            sources={{
+              positiveX:
+                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/px.png",
+              negativeX:
+                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/nx.png",
+              positiveY:
+                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/ny.png",
+              negativeY:
+                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/py.png",
+              positiveZ:
+                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/pz.png",
+              negativeZ:
+                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/nz.png",
+            }}
           />
           <Entity
             position={Cartesian3.fromDegrees(152.9794409, -27.5084143, 200)}
