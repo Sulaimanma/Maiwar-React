@@ -31,8 +31,8 @@ export default function Categories() {
   ]
 
   return (
-    <Container>
-      <Row className="CategoriesDiv">
+    <Container style={{ display: "flex", justifyContent: "center" }}>
+      <div className="CategoriesDiv">
         {categories.map((cate) => (
           <Col key={cate.tittle}>
             <Row>
@@ -50,7 +50,7 @@ export default function Categories() {
             </Row>
           </Col>
         ))}
-      </Row>
+      </div>
     </Container>
   )
 }
