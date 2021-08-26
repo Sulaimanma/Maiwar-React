@@ -35,9 +35,9 @@ import PopInfo from "./PopInfo"
 // import Pins from "./Pins"
 import Sidebar from "./Sidebar/Sidebar"
 import DragPin from "./DragPin"
-import API, { graphqlOperation } from "@aws-amplify/api"
-import { createHeritages } from "../graphql/mutations"
-import { v4 as uuid } from "uuid"
+// import API, { graphqlOperation } from "@aws-amplify/api"
+// import { createHeritages } from "../graphql/mutations"
+// import { v4 as uuid } from "uuid"
 import { HeritageContext } from "./Helpers/Context"
 import HeritageInput from "./HeritageInput"
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css"
@@ -55,16 +55,16 @@ import { withStyles } from "@material-ui/core/styles"
 import axios from "axios"
 import BearSlider from "./BearSlider"
 import isMobile from "./isMobile"
-import {
-  Deck,
-  _GlobeView as GlobeView,
-  LightingEffect,
-  AmbientLight,
-  _SunLight as SunLight,
-} from "@deck.gl/core"
+// import {
+//   Deck,
+//   _GlobeView as GlobeView,
+//   LightingEffect,
+//   AmbientLight,
+//   _SunLight as SunLight,
+// } from "@deck.gl/core"
 // import ReactPlayer from "react-player"
-import { SolidPolygonLayer, GeoJsonLayer, ArcLayer } from "@deck.gl/layers"
-import { DeckGL } from "deck.gl"
+// import { SolidPolygonLayer, GeoJsonLayer, ArcLayer } from "@deck.gl/layers"
+// import { DeckGL } from "deck.gl"
 import Weather from "./Weather"
 import { boundtries, regionsText, weatherData } from "./Helpers/DataBank"
 import {
@@ -80,11 +80,15 @@ import { Cartesian3, createWorldTerrain, Math as CesiumMath } from "cesium"
 import Color from "cesium/Source/Core/Color"
 import BounceLoader from "react-spinners/BounceLoader"
 import Categories from "./Categories"
+import { useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
+import { bindActionCreators } from "redux"
+import { actionCreators } from "../state/index"
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
 
-const position = Cartesian3.fromDegrees(152.9794409, -27.5084143, 12000000)
+//create terrain and point for cesium globe
 const pointGraphics = { pixelSize: 8 }
 const terrainProvider = createWorldTerrain()
 
@@ -95,7 +99,18 @@ const COUNTRIES =
 //   "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_scale_rank.geojson" //eslint-disable-line
 
 // https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_land.geojson
+
+var preZoom = 22
+var i = 0
+console.log("preprepre")
 export default function Map() {
+  //Redux configuration
+  const stateGang = useSelector((state) => state.viewpoint)
+
+  const dispatch = useDispatch()
+
+  const { changeViewpoint } = bindActionCreators(actionCreators, dispatch)
+
   const mapRef = useRef()
 
   const geocoderContainerRef = useRef()
@@ -111,18 +126,17 @@ export default function Map() {
   const REACT_APP_MAPBOX_TOKEN =
     "pk.eyJ1IjoiZ3VuZXJpYm9pIiwiYSI6ImNrMnM0NjJ1dzB3cHAzbXVpaXhrdGd1YjIifQ.1TmNd7MjX3AhHdXprT4Wjg"
   //Initial Viewpoint
-  const [viewpoint, setViewpoint] = useState({
-    latitude: -27.477173,
-    longitude: 138.014308,
-    width: window.innerWidth,
-    height: window.innerHeight,
-    zoom: 1,
-    bearing: 0,
-    pitch: 0,
-  })
 
-  // Fetched data
-  const [allData, setAllData] = useState(null)
+  // const [zoom, setZoom] = useState(1)
+  // const [viewpoint, setViewpoint] = useState({
+  //   latitude: -27.477173,
+  //   longitude: 138.014308,
+  //   width: window.innerWidth,
+  //   height: window.innerHeight,
+  //   zoom: zoom,
+  //   bearing: 0,
+  //   pitch: 0,
+  // })
 
   //Data for display
   const [clickInfo, setclickInfo] = useState(null)
@@ -153,7 +167,7 @@ export default function Map() {
     ],
     longitude: 152.962180049,
     latitude: -27.547,
-    zoom: 1,
+    zoom: 7,
     pitch: 60,
     bearing: 20,
   })
@@ -185,15 +199,15 @@ export default function Map() {
   //3D viewpoint
   useEffect(async () => {
     checkboxes[0]
-      ? await setViewpoint({
-          ...viewpoint,
+      ? await changeViewpoint({
+          ...stateGang,
           pitch: 75,
           bearing: 0,
           transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
           transitionDuration: "auto",
         })
-      : await setViewpoint({
-          ...viewpoint,
+      : await changeViewpoint({
+          ...stateGang,
           pitch: 0,
           bearing: 0,
           transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
@@ -204,8 +218,8 @@ export default function Map() {
 
   //Resize window function
   const resize = () => {
-    setViewpoint({
-      ...viewpoint,
+    changeViewpoint({
+      ...stateGang,
       width: window.innerWidth,
       height: window.innerHeight,
     })
@@ -332,8 +346,8 @@ export default function Map() {
         latitude: position.coords.latitude,
       })
 
-      setViewpoint({
-        ...viewpoint,
+      changeViewpoint({
+        ...stateGang,
         longitude: position.coords.longitude,
         latitude: position.coords.latitude,
         zoom: 15,
@@ -450,98 +464,93 @@ export default function Map() {
   geojson && (geoConvertedjson = geojson)
   //map view change
 
-  // Use i and g to fix the zoom identified accuracy issues
-  let i = 1
-  let g = 1
-  let preHeight = 10000000000
-  let preZoomM = 22
-  const InspectCamera = () => {
+  // Globe view change
+
+  const viewSwitch = () => {
     const scene = earthRef.current.cesiumElement.scene
     const camera = scene.camera
-    console.log("position", camera.positionCartographic)
     const { longitude, latitude, height } = camera.positionCartographic
     let pi = Math.PI
 
     const longi = longitude * (180 / pi)
     const lati = latitude * (180 / pi)
-    if (height < 7001597 && preHeight > height) {
-      preHeight = height
-      g = g + 1
-    }
-    if (g > 1) {
-      setViewpoint({
-        ...viewpoint,
+
+    if (height < 7001597) {
+      setNondisplay("inherit")
+      setDisplay("none")
+      console.log("height for real", stateGang.zoom)
+      changeViewpoint({
+        ...stateGang,
         longitude: longi,
         latitude: lati,
-        zoom: height / 1000000,
+        zoom: 7,
         transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
         transitionDuration: "auto",
       })
-      setNondisplay("inherit")
-      setDisplay("none")
     }
-    // console.log("heading (deg)", CesiumMath.toDegrees(camera.heading))
-    // console.log("pitch (deg)", CesiumMath.toDegrees(camera.pitch))
-    // console.log("roll (deg)", CesiumMath.toDegrees(camera.roll))
-    console.log("coordinate:", longi, lati, height / 1000000)
   }
-  const handleChangeView = (e) => {
-    console.log("eeeeeeeeeee", e)
-    InspectCamera()
-  }
-  const handleViewportChange = useCallback((view) => {
-    // console.log("zoommmmm", view)
-    // console.log("iiiiiiiii", i)
 
-    setViewpoint(view)
-    console.log(
-      "coordinate viewpoint",
-      viewpoint.longitude,
-      viewpoint.latitude,
-      viewpoint.zoom
-    )
-    console.log(
-      "coordinate viewpoint!!!!!!",
-      view.longitude,
-      view.latitude,
-      view.zoom,
-      view,
-      viewpoint
-    )
-    if ((view.zoom <= 7.15 && view.zoom < preZoomM) || view.zoom < 2.35) {
-      i = i + 1
-      preZoomM = view.zoom
-      // console.log("iiiiiiiii", i)
+  // detect the change of the camera view
+  useEffect(() => {
+    const scene = earthRef.current.cesiumElement.scene
+    const camera = scene.camera
+    var removeStart = camera.moveStart.addEventListener(viewSwitch)
+    // var removeEnd = camera.moveEnd.addEventListener(() => {
+    //   console.log("222", camera.positionCartographic)
+    // })
+
+    return function cleanUp() {
+      camera.moveStart.removeEventListener()
+      // camera.moveEnd.removeEventListener()
     }
-    if (i >= 5) {
-      preZoomM = 22
-      i = 1
-      g = 1
+  }, [])
+
+  useEffect(() => {
+    console.log("Gangshit", stateGang)
+    var newView
+    if (stateGang.zoom < preZoom && stateGang.zoom < 7.6) {
+      preZoom = stateGang.zoom
+      i = i + 1
+
+      console.log("zoommmmmmmmmmmmm", preZoom, stateGang.zoom, i)
+    } else if (preZoom === stateGang.zoom && stateGang.zoom < 3.6) {
+      console.log("damnnnnnnn", preZoom, stateGang.zoom)
+    } else {
+      console.log("yahhh", preZoom, stateGang.zoom, i)
+    }
+    if (i >= 3 || stateGang.zoom < 2) {
+      i = 0
+      console.log("right ", preZoom, stateGang.zoom)
       setNondisplay("none")
       setDisplay("unset")
-      // if (
-      //   earthRef.current.cesiumElement &&
-      //   earthRef.current.cesiumElement.length != 0
-      // ) {
-      //   const scene = earthRef.current.cesiumElement.scene
-      //   const camera = scene.camera
-      //   let pi = Math.PI
-
-      //   camera.flyTo({
-      //     destination: Cartesian3.fromDegrees(
-      //       viewpoint.longitude * (180 / pi) - 100000,
-      //       viewpoint.latitude * (180 / pi) + 100000,
-
-      //       7201597
-      //     ),
-      //   })
-      // }
-    } else {
-      setMarker({
-        longitude: view.longitude,
-        latitude: view.latitude,
+      const scene = earthRef.current.cesiumElement.scene
+      const camera = scene.camera
+      camera.flyTo({
+        destination: Cartesian3.fromDegrees(
+          stateGang.longitude,
+          stateGang.latitude,
+          // stateGang.longitude,
+          // stateGang.latitude,
+          32000000
+        ),
       })
     }
+  }, [stateGang.zoom])
+
+  const handleViewportChange = useCallback((view) => {
+    changeViewpoint(view)
+
+    // console.log(
+    //   "coordinate viewpoint!!!!!!",
+
+    //   view,
+    //   stateGang
+    // )
+
+    // setMarker({
+    //   longitude: view.longitude,
+    //   latitude: view.latitude,
+    // })
   }, [])
   //Globe view change
   // const handleViewStateChange = useCallback((view) => {
@@ -577,8 +586,8 @@ export default function Map() {
         latitude: newViewport.latitude,
       })
 
-      setViewpoint({
-        ...viewpoint,
+      changeViewpoint({
+        ...stateGang,
         longitude: newViewport.longitude,
         latitude: newViewport.latitude,
         zoom: 15,
@@ -683,18 +692,18 @@ export default function Map() {
   //Layer Loading
 
   //Globe light effect
-  const ambientLight = new AmbientLight({
-    color: [255, 255, 255],
-    intensity: 0.5,
-  })
+  // const ambientLight = new AmbientLight({
+  //   color: [255, 255, 255],
+  //   intensity: 0.5,
+  // })
 
-  const sunLight = new SunLight({
-    color: [255, 255, 255],
-    intensity: 2.0,
-    timestamp: 0,
-  })
+  // const sunLight = new SunLight({
+  //   color: [255, 255, 255],
+  //   intensity: 2.0,
+  //   timestamp: 0,
+  // })
   // create lighting effect with light sources
-  const lightingEffect = new LightingEffect({ ambientLight, sunLight })
+  // const lightingEffect = new LightingEffect({ ambientLight, sunLight })
 
   return (
     <div className="body" id="body">
@@ -719,8 +728,8 @@ export default function Map() {
       {/* <div className="tabs">
   
         <HistoricMap
-          viewpoint={viewpoint}
-          setViewpoint={setViewpoint}
+          viewpoint={stateGang}
+          setViewpoint={changeViewpoint}
           historicMap={historicMap}
           setHistoricMap={setHistoricMap}
           setMarker={setMarker}
@@ -733,7 +742,7 @@ export default function Map() {
       </div>
       {isMobile() && (
         <div className="bearCtrl">
-          <BearSlider viewpoint={viewpoint} setViewpoint={setViewpoint} />
+          <BearSlider viewpoint={stateGang} setViewpoint={changeViewpoint} />
         </div>
       )} */}
       <div
@@ -743,7 +752,7 @@ export default function Map() {
         <div ref={geocoderContainerRef}>
           <ReactMapGl
             ref={mapRef}
-            {...viewpoint}
+            {...stateGang}
             mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
             onViewportChange={handleViewportChange}
             // mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
@@ -894,8 +903,8 @@ export default function Map() {
                 <Layer {...mapRasterLayer}></Layer>
               </Source>
             )}
-            {viewpoint.zoom > 3.1 &&
-              viewpoint.zoom < 10 &&
+            {stateGang.zoom > 3.1 &&
+              stateGang.zoom < 10 &&
               weatherData.map((place) => {
                 return (
                   <Weather
@@ -1031,8 +1040,8 @@ export default function Map() {
       <div className="globe" style={{ display: `${display}` }}>
         <div className="Categories">
           <Categories
-            setViewpoint={setViewpoint}
-            viewpoint={viewpoint}
+            setViewpoint={changeViewpoint}
+            viewpoint={stateGang}
             setDisplay={setDisplay}
             setNondisplay={setNondisplay}
           />
@@ -1076,16 +1085,18 @@ export default function Map() {
             destination={Cartesian3.fromDegrees(
               152.9794409,
               -27.5084143,
+              // stateGang.longitude,
+              // stateGang.latitude,
               32000000
             )}
             once
-            duration={10}
+            duration={8}
             orientation={{
               heading: CesiumMath.toRadians(0),
               pitch: CesiumMath.toRadians(-90),
             }}
           />
-          <Camera onChange={handleChangeView} />
+          <Camera />
           <Scene backgroundColor={Color.TRANSPARENT} />
           <Globe
             enableLighting
