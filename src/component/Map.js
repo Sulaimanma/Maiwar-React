@@ -84,6 +84,7 @@ import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
 import { bindActionCreators } from "redux"
 import { actionCreators } from "../state/index"
+import { isOutOfMaxBounds } from "./isOutOfMaxBounds "
 
 mapboxgl.workerClass = MapboxWorker
 const engine = new Styletron()
@@ -186,15 +187,20 @@ export default function Map() {
   const [display, setDisplay] = useState("flex")
   const [nondisplay, setNondisplay] = useState("none")
 
-  // Fetch the Layer GeoJson data for display
-  // useEffect(() => {
-  //   /* global fetch */
-  //   fetch(
-  //     "https://amplifylanguageappgidarjil114226-dev.s3-ap-southeast-2.amazonaws.com/public/wordlist/features.geojson"
-  //   )
-  //     .then((res) => res.json())
-  //     .then((json) => setAllData(json))
-  // }, [])
+  //mapsetting
+  const [settings, setSettings] = useState({
+    dragPan: true,
+    dragRotate: false,
+    scrollZoom: false,
+    touchZoom: false,
+    touchRotate: false,
+    keyboard: true,
+    doubleClickZoom: false,
+    minZoom: 0,
+    maxZoom: 20,
+    minPitch: 0,
+    maxPitch: 85,
+  })
 
   //3D viewpoint
   useEffect(async () => {
@@ -538,7 +544,26 @@ export default function Map() {
   }, [stateGang.zoom])
 
   const handleViewportChange = useCallback((view) => {
-    changeViewpoint(view)
+    if (
+      !isOutOfMaxBounds(view.latitude, view.longitude, [
+        [153.001019596803, -27.489016758274165],
+        [153.0448862036032, -27.44599083735599],
+      ])
+    ) {
+      // console.log(
+      //   "pitch:",
+      //   view.pitch,
+      //   "zoom:",
+      //   view.zoom,
+      //   "bearing:",
+      //   view.bearing,
+      //   "latitude",
+      //   view.latitude,
+      //   "longitude",
+      //   view.longitude
+      // )
+      changeViewpoint(view)
+    }
 
     // console.log(
     //   "coordinate viewpoint!!!!!!",
@@ -591,6 +616,7 @@ export default function Map() {
         longitude: newViewport.longitude,
         latitude: newViewport.latitude,
         zoom: 15,
+
         transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
         transitionDuration: "auto",
       })
@@ -638,18 +664,6 @@ export default function Map() {
 
   useEffect(() => {
     const map = mapRef.current.getMap()
-
-    // map.addSource("mapbox-dem", {
-    //   "type": "raster-dem",
-    //   "url": "mapbox://mapbox.terrain-rgb",
-    //   "tileSize": 512,
-    //   "maxzoom": 14,
-    // })
-    // map.setTerrain({
-    //   "source": "mapbox-dem",
-    //   "exaggeration": 1.5,
-    // })
-
     const VSInfo = [
       "Burial",
       "Bora",
@@ -725,26 +739,7 @@ export default function Map() {
           alt="LOGO"
         />
       </div>
-      {/* <div className="tabs">
-  
-        <HistoricMap
-          viewpoint={stateGang}
-          setViewpoint={changeViewpoint}
-          historicMap={historicMap}
-          setHistoricMap={setHistoricMap}
-          setMarker={setMarker}
-          setDisplay={setDisplay}
-          setNondisplay={setNondisplay}
-          setCheckboxes={setCheckboxes}
-          checkboxes={checkboxes}
-        />
-    
-      </div>
-      {isMobile() && (
-        <div className="bearCtrl">
-          <BearSlider viewpoint={stateGang} setViewpoint={changeViewpoint} />
-        </div>
-      )} */}
+
       <div
         id="map"
         style={{ display: `${nondisplay}`, width: "100vw", height: "100vh" }}
@@ -755,64 +750,12 @@ export default function Map() {
             {...stateGang}
             mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
             onViewportChange={handleViewportChange}
-            // mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
-
+            {...settings}
             mapStyle="mapbox://styles/guneriboi/ckliz10u80f7817mtlpnik90t"
             //Define the interactive layer
             // interactiveLayerIds={[unclusteredPointLayer.id]}
             onClick={onClick}
           >
-            <GeolocateControl
-              style={{
-                bottom: "12.4vh",
-                right: "0",
-                padding: "0",
-              }}
-              showUserLocation={true}
-              trackUserLocation={false}
-              showAccuracyCircle={false}
-              onViewportChange={locateUser}
-            />
-            <ScaleControl
-              style={{
-                bottom: "12px",
-                left: "0",
-                padding: "2px",
-              }}
-            />
-            <NavigationControl
-              showCompass={true}
-              style={{ bottom: "12px", right: "0px" }}
-            />
-
-            <Geocoder
-              mapRef={mapRef}
-              containerRef={geocoderContainerRef}
-              marker={false}
-              onViewportChange={handleGeocoderViewportChange}
-              mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
-              position="top-right"
-              positionOptions={{ enableHighAccuracy: true, timeout: 6000 }}
-            />
-
-            <div className="Toggle3d">
-              <FormControlLabel
-                control={
-                  <GreenSwitch
-                    checked={checkboxes[0]}
-                    onChange={(e) => {
-                      const nextCheckboxes = [...checkboxes]
-                      nextCheckboxes[0] = e.currentTarget.checked
-                      setCheckboxes(nextCheckboxes)
-                    }}
-                    name="checkedB"
-                    color="secondary"
-                    // size="large"
-                  />
-                }
-              />
-              <div className="Text3d">3D</div>
-            </div>
             {/* 3d buildings */}
             <div className="Toggle3d2">
               <FormControlLabel
@@ -853,17 +796,17 @@ export default function Map() {
             </div>
             <Layer {...skyLayer} />
             {building[0] && <Layer {...ThreeDBuildingLayer} />}
-            {boundtries && (
+            {/* {boundtries && (
               <Source id="boundtries" type="geojson" data={boundtries}>
                 <Layer {...boundriesLayer} />
               </Source>
-            )}
+            )} */}
             {/* region text */}
-            {regionsText && (
+            {/* {regionsText && (
               <Source id="regions" type="geojson" data={regionsText}>
                 <Layer {...regionName} />
               </Source>
-            )}
+            )} */}
             {/* Load the Layer source data*/}
             {geoConvertedjson != null && (
               <Source
@@ -879,7 +822,7 @@ export default function Map() {
                 <Layer {...unclusteredPointLayer} />
               </Source>
             )}
-            {/* {console.log("geooooooooooooo", PCCC)} */}
+
             {PCCC && (
               <Source
                 type="geojson"
@@ -918,7 +861,7 @@ export default function Map() {
             <Pins data={geoConvertedjson} onClick={onClick} />
           )} */}
             {/* Locate the user marker label */}
-            <Marker
+            {/* <Marker
               longitude={marker.longitude}
               latitude={marker.latitude}
               offsetTop={-20}
@@ -934,7 +877,7 @@ export default function Map() {
                   setEnter(true)
                 }}
               />
-            </Marker>
+            </Marker> */}
             {enter && (
               <Popup
                 latitude={marker.latitude}

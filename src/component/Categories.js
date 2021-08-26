@@ -14,24 +14,44 @@ export default function Categories(props) {
       tittleBackground:
         "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/img/icons/Crossing.png",
       img: "",
+      pitch: 60.30213601881513,
+      zoom: 15.451941083083048,
+      bearing: -11.4375,
+      latitude: -27.476833478134672,
+      longitude: 153.03005250303866,
     },
     {
       tittle: "Astronomy",
       tittleBackground:
         "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/img/icons/Midden.png",
       img: "",
+      latitude: -27.48368957052321,
+      longitude: 153.031413050344,
+      zoom: 14.5,
+      pitch: 25,
+      bearing: 90,
     },
     {
       tittle: "Art and crafts",
       tittleBackground:
         "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/img/icons/Artefact+Scatter.png",
       img: "",
+      latitude: -27.48368957052321,
+      longitude: 153.031413050344,
+      zoom: 14.5,
+      pitch: 25,
+      bearing: 90,
     },
     {
       tittle: "Music",
       tittleBackground:
         "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/img/icons/Bora.png",
       img: "",
+      latitude: -27.48368957052321,
+      longitude: 153.031413050344,
+      zoom: 14.5,
+      pitch: 0,
+      bearing: 90,
     },
   ]
 
@@ -39,15 +59,8 @@ export default function Categories(props) {
     <Container style={{ display: "flex", justifyContent: "center" }}>
       <div className="CategoriesDiv">
         {categories.map((cate) => {
-          const mapValue = mapData
-            .find((region) => region.state == "Northeast")
-            .regionMaps.find((city) => city.tag == cate.tittle)
-
-          const longi =
-            (mapValue.coordinates[0][0] + mapValue.coordinates[1][0]) / 2
-          const lati =
-            (mapValue.coordinates[0][1] + mapValue.coordinates[1][1]) / 2 -
-            0.034
+          const longi = cate.longitude
+          const lati = cate.latitude
           return (
             <Col key={cate.tittle}>
               <Row>
@@ -60,9 +73,9 @@ export default function Categories(props) {
                       ...viewpoint,
                       longitude: longi,
                       latitude: lati,
-                      zoom: mapValue.zoom,
-                      pitch: mapValue.pitch,
-                      bearing: mapValue.bearing,
+                      zoom: cate.zoom,
+                      pitch: cate.pitch,
+                      bearing: cate.bearing,
                       transitionInterpolator: new FlyToInterpolator({
                         speed: 1.7,
                       }),

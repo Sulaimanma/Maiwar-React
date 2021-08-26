@@ -48,6 +48,7 @@ export const mapData = [
       {
         value: 100,
         label: "Maiwar 1798",
+
         url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1798.jpg",
         coordinates: [
           [152.962180055, -27.395],
@@ -55,7 +56,7 @@ export const mapData = [
           [153.114334004, -27.547],
           [152.962180049, -27.547],
         ],
-        zoom: 11.5,
+        zoom: 12.5,
         pitch: 0,
         bearing: 0,
         tag: "Oral tradition",
