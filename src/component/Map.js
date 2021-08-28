@@ -886,7 +886,6 @@ export default function Map() {
                 <Layer {...unclusteredPointLayer} />
               </Source>
             )}
-            {/* {console.log("geooooooooooooo", PCCC)} */}
             {PCCC && (
               <Source
                 type="geojson"

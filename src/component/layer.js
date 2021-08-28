@@ -41,13 +41,13 @@ export const unclusteredPointLayer = {
     "icon-image": ["get", "heritageType"], // reference the image
     "icon-size": 1,
     "icon-offset": [0, -15],
-    // "text-field": ["get", "visibility"],
-    // "text-variable-anchor": ["top", "bottom", "left", "right"],
-    // "text-radial-offset": 0.5,
-    // "text-justify": "auto",
+    "text-field": ["get", "heritageType"],
+    "text-variable-anchor": ["top", "bottom", "left", "right"],
+    "text-radial-offset": 0.5,
+    "text-justify": "auto",
 
-    // "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
-    // "text-size": 14,
+    "text-font": ["DIN Offc Pro Bold", "Arial Unicode MS Bold"],
+    "text-size": 14,
   },
   paint: {
     "text-color": "white",
