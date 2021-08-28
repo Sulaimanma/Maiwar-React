@@ -258,7 +258,7 @@ export default function HeritageInput(props) {
       await API.graphql(
         graphqlOperation(createHeritages, { input: createHeritageInput })
       )
-      fetchHeritages().then(alert("upLoading hsa been done!"))
+      fetchHeritages().then(alert("uploading has been done!"))
 
       console.log("before sumbmitt", createHeritageInput)
     } catch (error) {
