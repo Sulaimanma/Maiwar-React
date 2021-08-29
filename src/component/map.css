@@ -22,13 +22,16 @@ disable the camera of point */
   display: none !important;
 }
 
+.cesium-infoBox-visible {
+}
+
 .cesium-viewer-toolbar {
   right: 3.6vw !important;
   top: 1.5vh !important;
   z-index: 10;
 }
 .cesium-infoBox {
-  top: 6vh !important;
+  top: 9vh !important;
 }
 /* Globe view */
 .globe {
