@@ -79,7 +79,7 @@ import {
 import { Cartesian3, createWorldTerrain, Math as CesiumMath } from "cesium"
 import Color from "cesium/Source/Core/Color"
 import BounceLoader from "react-spinners/BounceLoader"
-import Categories from "./Categories"
+import Categories, { buttonPosition } from "./Categories"
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
 import { bindActionCreators } from "redux"
@@ -159,7 +159,7 @@ export default function Map() {
   const [mapLayer, setMapLayer] = useState([true, false])
   //historic map initial value
   const [historicMap, setHistoricMap] = useState({
-    url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1798.jpg",
+    url: "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/Maiwar+1798_withLine.png",
     coordinates: [
       [152.962180055, -27.395],
       [153.114333621, -27.395],
@@ -168,7 +168,7 @@ export default function Map() {
     ],
     longitude: 152.962180049,
     latitude: -27.547,
-    zoom: 7,
+    zoom: 18,
     pitch: 60,
     bearing: 20,
   })
@@ -190,8 +190,8 @@ export default function Map() {
   //mapsetting
   const [settings, setSettings] = useState({
     dragPan: true,
-    dragRotate: false,
-    scrollZoom: false,
+    dragRotate: true,
+    scrollZoom: true,
     touchZoom: false,
     touchRotate: false,
     keyboard: true,
@@ -284,6 +284,7 @@ export default function Map() {
   //When to run the video function
 
   useEffect(() => {
+    console.log("clickInfo", clickInfo)
     popup &&
       clickInfo &&
       clickInfo != null &&
@@ -808,7 +809,7 @@ export default function Map() {
               </Source>
             )} */}
             {/* Load the Layer source data*/}
-            {geoConvertedjson != null && (
+            {/* {geoConvertedjson != null && (
               <Source
                 id="heritages"
                 type="geojson"
@@ -821,9 +822,9 @@ export default function Map() {
                 <Layer {...clusterCountLayer} />
                 <Layer {...unclusteredPointLayer} />
               </Source>
-            )}
+            )} */}
 
-            {PCCC && (
+            {/* {PCCC && (
               <Source
                 type="geojson"
                 data={PCCC}
@@ -833,7 +834,7 @@ export default function Map() {
               >
                 <Layer {...PCCCIconsLayer} />
               </Source>
-            )}
+            )} */}
             {historicMap.url.length != 0 && mapLayer[0] && (
               <Source
                 // maxzoom={22}
@@ -861,23 +862,29 @@ export default function Map() {
             <Pins data={geoConvertedjson} onClick={onClick} />
           )} */}
             {/* Locate the user marker label */}
-            {/* <Marker
-              longitude={marker.longitude}
-              latitude={marker.latitude}
-              offsetTop={-20}
-              offsetLeft={-10}
-              draggable
-              onDragStart={onMarkerDragStart}
-              onDrag={onMarkerDrag}
-              onDragEnd={onMarkerDragEnd}
-            >
-              <DragPin
-                size={30}
-                clickFunction={() => {
-                  setEnter(true)
-                }}
-              />
-            </Marker> */}
+            {buttonPosition.map((button) => {
+              return (
+                <Marker
+                  id={button.id}
+                  longitude={button.coordinates[0]}
+                  latitude={button.coordinates[1]}
+                  offsetTop={0}
+                  offsetLeft={0}
+                  // draggable
+                  // onDragStart={onMarkerDragStart}
+                  // onDrag={onMarkerDrag}
+                  // onDragEnd={onMarkerDragEnd}
+                >
+                  <DragPin
+                    size={30}
+                    clickFunction={() => {
+                      setEnter(true)
+                    }}
+                  />
+                </Marker>
+              )
+            })}
+
             {enter && (
               <Popup
                 latitude={marker.latitude}

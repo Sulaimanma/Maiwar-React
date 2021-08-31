@@ -49,7 +49,7 @@ export const mapData = [
         value: 100,
         label: "Maiwar 1798",
 
-        url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1798.jpg",
+        url: "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/Maiwar+1798_withLine.png",
         coordinates: [
           [152.962180055, -27.395],
           [153.114333621, -27.395],
@@ -351,7 +351,7 @@ export default function HistoricMap(props) {
   const [mapValue, setMapValue] = useState({
     value: 100,
     label: "Maiwar 1798",
-    url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1798.jpg",
+    url: "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/Maiwar+1798_withLine.png",
     coordinates: [
       [152.962180055, -27.395],
       [153.114333621, -27.395],
