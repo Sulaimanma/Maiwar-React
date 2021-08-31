@@ -5,6 +5,29 @@ import { FlyToInterpolator } from "react-map-gl"
 import "../component/Categories.css"
 import { mapData } from "./HistoricMap"
 
+export const buttonPosition = [
+  {
+    title: "topLeft",
+    coordinates: [153.01877139639854, -27.46542025917682],
+  },
+  {
+    title: "topRight",
+    coordinates: [153.03577139639854, -27.47042025917682],
+  },
+  {
+    title: "middle",
+    coordinates: [153.02677139639854, -27.474442025917682],
+    //153.02677139639854, -27.474442025917682
+  },
+  {
+    title: "bottomRight",
+    coordinates: [153.03277139639854, -27.48842025917682],
+  },
+  {
+    title: "bottomLeft",
+    coordinates: [153.02077139639854, -27.48242025917682],
+  },
+]
 export default function Categories(props) {
   const { setViewpoint, viewpoint, setDisplay, setNondisplay } = props
 
