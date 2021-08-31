@@ -18,27 +18,30 @@ function Pin(props) {
       {/* <svg height={size} viewBox="0 0 24 24" style={pinStyle}>
         <path d={ICON} />
       </svg> */}
-      <div style={{ position: "relative", right: "56px", top: "7px" }}>
-        {" "}
-        <img
-          width={23}
-          height={23}
-          src="https://vs360maiwar.s3-ap-southeast-2.amazonaws.com/img/logo.svg"
-          alt="LOGO"
-        />
-      </div>
-
-      <TiPlus
-        onClick={props.clickFunction}
+      <div
         style={{
-          color: "green",
-          cursor: "pointer",
-          fontSize: "23px",
-          position: "absolute",
-          left: "17px",
-          bottom: "3px",
+          position: "relative",
+          right: "56px",
+          top: "7px",
+          borderRadius: "60%",
+          background: "white",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100px",
+          height: "100px",
         }}
-      />
+      >
+        {" "}
+        <div>
+          <img
+            width={80}
+            height={80}
+            src="https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/img/icons/Bora.png"
+            alt="LOGO"
+          />
+        </div>
+      </div>
     </>
   )
 }
