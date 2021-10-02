@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from "react"
+} from 'react';
 import ReactMapGl, {
   Marker,
   Popup,
@@ -15,10 +15,10 @@ import ReactMapGl, {
   NavigationControl,
   ScaleControl,
   GeolocateControl,
-} from "react-map-gl"
-import "mapbox-gl/dist/mapbox-gl.css"
-import mapboxgl from "mapbox-gl"
-import "./map.css"
+} from 'react-map-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import mapboxgl from 'mapbox-gl';
+import './map.css';
 import {
   clusterLayer,
   clusterCountLayer,
@@ -28,45 +28,53 @@ import {
   ThreeDBuildingLayer,
   boundriesLayer,
   regionName,
-} from "./layer"
-import FormControlLabel from "@material-ui/core/FormControlLabel"
-import Switch from "@material-ui/core/Switch"
-import PopInfo from "./PopInfo"
+} from './layer';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import PopInfo from './PopInfo';
 // import Pins from "./Pins"
-import Sidebar from "./Sidebar/Sidebar"
-import DragPin from "./DragPin"
-import API, { graphqlOperation } from "@aws-amplify/api"
-import { createHeritages } from "../graphql/mutations"
-import { v4 as uuid } from "uuid"
-import { HeritageContext } from "./Helpers/Context"
-import HeritageInput from "./HeritageInput"
-import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css"
-import { Client as Styletron } from "styletron-engine-atomic"
+import Sidebar from './Sidebar/Sidebar';
+import DragPin from './DragPin';
+import API, { graphqlOperation } from '@aws-amplify/api';
+import { createHeritages } from '../graphql/mutations';
+import { v4 as uuid } from 'uuid';
+import { HeritageContext } from './Helpers/Context';
+import HeritageInput from './HeritageInput';
+import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
+import { Client as Styletron } from 'styletron-engine-atomic';
 // import { Provider as StyletronProvider } from "styletron-react"
 // import { LightTheme, BaseProvider, styled } from "baseui"
 // import { Tabs, Tab, ORIENTATION, FILL } from "baseui/tabs-motion"
 // import { Checkbox, STYLE_TYPE } from "baseui/checkbox"
-import Geocoder from "react-map-gl-geocoder"
+import Geocoder from 'react-map-gl-geocoder';
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker"
-import Storage from "@aws-amplify/storage"
-import HistoricMap from "./HistoricMap"
-import { withStyles } from "@material-ui/core/styles"
-import axios from "axios"
-import BearSlider from "./BearSlider"
-import isMobile from "./isMobile"
+import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
+import Storage from '@aws-amplify/storage';
+import HistoricMap from './HistoricMap';
+import { withStyles } from '@material-ui/core/styles';
+import axios from 'axios';
+import BearSlider from './BearSlider';
+import isMobile from './isMobile';
 import {
   Deck,
   _GlobeView as GlobeView,
   LightingEffect,
   AmbientLight,
   _SunLight as SunLight,
-} from "@deck.gl/core"
+} from '@deck.gl/core';
 // import ReactPlayer from "react-player"
-import { SolidPolygonLayer, GeoJsonLayer, ArcLayer } from "@deck.gl/layers"
-import { DeckGL } from "deck.gl"
-import Weather from "./Weather"
-import { boundtries, regionsText, weatherData } from "./Helpers/DataBank"
+import {
+  SolidPolygonLayer,
+  GeoJsonLayer,
+  ArcLayer,
+} from '@deck.gl/layers';
+import { DeckGL } from 'deck.gl';
+import Weather from './Weather';
+import {
+  boundtries,
+  regionsText,
+  weatherData,
+} from './Helpers/DataBank';
 import {
   Viewer,
   Entity,
@@ -75,40 +83,52 @@ import {
   Globe,
   SkyBox,
   CameraFlyTo,
-} from "resium"
-import { Cartesian3, createWorldTerrain, Math as CesiumMath } from "cesium"
-import Color from "cesium/Source/Core/Color"
-import BounceLoader from "react-spinners/BounceLoader"
+} from 'resium';
+import {
+  Cartesian3,
+  Ion,
+  createWorldTerrain,
+  Math as CesiumMath,
+} from 'cesium';
+import Color from 'cesium/Source/Core/Color';
+import BounceLoader from 'react-spinners/BounceLoader';
 
-mapboxgl.workerClass = MapboxWorker
-const engine = new Styletron()
+mapboxgl.workerClass = MapboxWorker;
+const engine = new Styletron();
 
-const position = Cartesian3.fromDegrees(152.9794409, -27.5084143, 12000000)
-const pointGraphics = { pixelSize: 8 }
-const terrainProvider = createWorldTerrain()
+Ion.defaultAccessToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzYzZmYzVhNS04NTQxLTRiYzgtYjQyYy01N2Y5YmEwNGI4NDQiLCJpZCI6NTczMjgsImlhdCI6MTYyMjE5MjkwM30.70VciE21rIEjesOD9GMhPhEwdwU8KphFCxexNArCEVw';
+const position = Cartesian3.fromDegrees(
+  152.9794409,
+  -27.5084143,
+  12000000
+);
+const pointGraphics = { pixelSize: 8 };
+const terrainProvider = createWorldTerrain();
 
 // source: Natural Earth http://www.naturalearthdata.com/ via geojson.xyz
 const COUNTRIES =
-  "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/GlobeWithBoundries.geojson"
+  'https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/GlobeWithBoundries.geojson';
 // const COUNTRIES =
 //   "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_scale_rank.geojson" //eslint-disable-line
 
 // https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_land.geojson
 export default function Map() {
-  const mapRef = useRef()
+  const mapRef = useRef();
 
-  const geocoderContainerRef = useRef()
-  const videoRef = useRef()
-  const earthRef = useRef()
+  const geocoderContainerRef = useRef();
+  const videoRef = useRef();
+  const earthRef = useRef();
   // popup control variable
-  const { heritages, fetchHeritages } = useContext(HeritageContext)
+  const { heritages, fetchHeritages } =
+    useContext(HeritageContext);
   //set up a enterfield
-  const [enter, setEnter] = useState(false)
+  const [enter, setEnter] = useState(false);
 
-  const [popup, setPopup] = useState(false)
+  const [popup, setPopup] = useState(false);
   // mapbox Token
   const REACT_APP_MAPBOX_TOKEN =
-    "pk.eyJ1IjoiZ3VuZXJpYm9pIiwiYSI6ImNrMnM0NjJ1dzB3cHAzbXVpaXhrdGd1YjIifQ.1TmNd7MjX3AhHdXprT4Wjg"
+    'pk.eyJ1IjoiZ3VuZXJpYm9pIiwiYSI6ImNrMnM0NjJ1dzB3cHAzbXVpaXhrdGd1YjIifQ.1TmNd7MjX3AhHdXprT4Wjg';
   //Initial Viewpoint
   const [viewpoint, setViewpoint] = useState({
     latitude: -27.477173,
@@ -118,32 +138,35 @@ export default function Map() {
     zoom: 1,
     bearing: 0,
     pitch: 0,
-  })
+  });
 
   // Fetched data
-  const [allData, setAllData] = useState(null)
+  const [allData, setAllData] = useState(null);
 
   //Data for display
-  const [clickInfo, setclickInfo] = useState(null)
+  const [clickInfo, setclickInfo] = useState(null);
 
   //Set up the Urls
-  const [videoUrl, setVideoUrl] = useState("")
-  const [audioUrl, setAudioUrl] = useState("")
-  const [imageUrl, setImageUrl] = useState("")
+  const [videoUrl, setVideoUrl] = useState('');
+  const [audioUrl, setAudioUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   //Spinner state control
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   //Display  different historic map
 
   //Toggle button of 3d map
-  const [checkboxes, setCheckboxes] = useState([false, false])
+  const [checkboxes, setCheckboxes] = useState([
+    false,
+    false,
+  ]);
   //Toggle 3d building
-  const [building, setBuilding] = useState([true, false])
+  const [building, setBuilding] = useState([true, false]);
   //Toggle layer
-  const [mapLayer, setMapLayer] = useState([true, false])
+  const [mapLayer, setMapLayer] = useState([true, false]);
   //historic map initial value
   const [historicMap, setHistoricMap] = useState({
-    url: "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1798.jpg",
+    url: 'https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/mapSourceImg/Brisbane 1798.jpg',
     coordinates: [
       [152.962180055, -27.395],
       [153.114333621, -27.395],
@@ -155,21 +178,21 @@ export default function Map() {
     zoom: 1,
     pitch: 60,
     bearing: 20,
-  })
+  });
   //fetched data
-  const [PCCC, setPCCC] = useState()
+  const [PCCC, setPCCC] = useState();
   const skyLayer = {
-    id: "sky",
-    type: "sky",
+    id: 'sky',
+    type: 'sky',
     paint: {
-      "sky-type": "atmosphere",
-      "sky-atmosphere-sun": [0.0, 0.0],
-      "sky-atmosphere-sun-intensity": 15,
+      'sky-type': 'atmosphere',
+      'sky-atmosphere-sun': [0.0, 0.0],
+      'sky-atmosphere-sun-intensity': 15,
     },
-  }
+  };
   //Globe view properties
-  const [display, setDisplay] = useState("flex")
-  const [nondisplay, setNondisplay] = useState("none")
+  const [display, setDisplay] = useState('flex');
+  const [nondisplay, setNondisplay] = useState('none');
 
   // Fetch the Layer GeoJson data for display
   // useEffect(() => {
@@ -188,17 +211,21 @@ export default function Map() {
           ...viewpoint,
           pitch: 75,
           bearing: 0,
-          transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
-          transitionDuration: "auto",
+          transitionInterpolator: new FlyToInterpolator({
+            speed: 1.7,
+          }),
+          transitionDuration: 'auto',
         })
       : await setViewpoint({
           ...viewpoint,
           pitch: 0,
           bearing: 0,
-          transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
-          transitionDuration: "auto",
-        })
-  }, [checkboxes[0]])
+          transitionInterpolator: new FlyToInterpolator({
+            speed: 1.7,
+          }),
+          transitionDuration: 'auto',
+        });
+  }, [checkboxes[0]]);
   //3d building
 
   //Resize window function
@@ -207,58 +234,60 @@ export default function Map() {
       ...viewpoint,
       width: window.innerWidth,
       height: window.innerHeight,
-    })
-  }
+    });
+  };
   useEffect(() => {
-    window.addEventListener("resize", resize)
+    window.addEventListener('resize', resize);
     return function cleanUp() {
-      window.removeEventListener("resize", resize)
-    }
-  }, [])
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
   // Enable the bear control
 
   const onClick = useCallback(async (event) => {
     // Destructure features from the click event data
-    const { features } = await event
+    const { features } = await event;
     // Make sure feature data is not undefined
-    const clickedFeature = (await features) && features[0]
+    const clickedFeature = (await features) && features[0];
     //Control the state of pop up
-    setPopup(true)
+    setPopup(true);
     //Set the data to display
-    setclickInfo(clickedFeature)
+    setclickInfo(clickedFeature);
 
-    var featuresss = mapRef.current.queryRenderedFeatures(event.point)
-  }, [])
+    var featuresss = mapRef.current.queryRenderedFeatures(
+      event.point
+    );
+  }, []);
 
   //Video function to play the video according to the Video Name
   const video = async (VideoName) => {
     try {
-      if (VideoName === "video/.mp4" || !VideoName) {
+      if (VideoName === 'video/.mp4' || !VideoName) {
         var path =
-          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
-          "Camp_Bush_Children_Running.mp4"
+          'https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/' +
+          'Camp_Bush_Children_Running.mp4';
       } else if (VideoName.length != 0) {
         var path = await Storage.get(`${VideoName}`, {
-          level: "public",
-        })
+          level: 'public',
+        });
 
-        console.log("video path is", path)
-      } else if (VideoName === "Gathering Bush.mp4") {
+        console.log('video path is', path);
+      } else if (VideoName === 'Gathering Bush.mp4') {
         var path =
-          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
-          "Camp_Bush_Children_Running.mp4"
+          'https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/' +
+          'Camp_Bush_Children_Running.mp4';
       } else {
         var path =
-          "https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/" +
-          "Camp_Bush_Children_Running.mp4"
+          'https://maiwar-react-storage04046-devsecond.s3-ap-southeast-2.amazonaws.com/public/video/' +
+          'Camp_Bush_Children_Running.mp4';
       }
       // Make sure each Url is valid
     } catch (error) {
-      console.log("error happens on getting videos", error)
+      console.log('error happens on getting videos', error);
     }
 
-    return path
-  }
+    return path;
+  };
 
   //When to run the video function
 
@@ -271,10 +300,12 @@ export default function Map() {
       clickInfo.properties.length != 0 &&
       clickInfo.properties.VideoName &&
       clickInfo.properties.VideoName.length !== 0 &&
-      video(`video/${clickInfo.properties.VideoName}.mp4`).then((result) => {
-        setVideoUrl(result)
-        console.log("Videonamiiiiiiiiii")
-      })
+      video(
+        `video/${clickInfo.properties.VideoName}.mp4`
+      ).then((result) => {
+        setVideoUrl(result);
+        console.log('Videonamiiiiiiiiii');
+      });
 
     popup &&
       clickInfo &&
@@ -284,11 +315,13 @@ export default function Map() {
       clickInfo.properties.length != 0 &&
       clickInfo.properties.video &&
       clickInfo.properties.video.length !== 0 &&
-      video(`${clickInfo.properties.video}`).then((result) => {
-        setVideoUrl(result)
-        console.log("Videoooooooooo")
-      })
-    console.log("!!!!!!!!click info", clickInfo)
+      video(`${clickInfo.properties.video}`).then(
+        (result) => {
+          setVideoUrl(result);
+          console.log('Videoooooooooo');
+        }
+      );
+    console.log('!!!!!!!!click info', clickInfo);
     // ? clickInfo.properties.video.length !== 0 &&
     //   video(`${clickInfo.properties.video}.mp4`).then((result) => {
     //     setVideoUrl(result)
@@ -297,31 +330,40 @@ export default function Map() {
     //   video(`video/${clickInfo.properties.VideoName}.mp4`).then((result) => {
     //     setVideoUrl(result)
     //   })
-  }, [clickInfo, videoUrl])
+  }, [clickInfo, videoUrl]);
   //Initial the marker position
   const [marker, setMarker] = useState({
     latitude: -27.477173,
     longitude: 138.014308,
-  })
+  });
   //Initial the events
 
-  const [events, logEvents] = useState({})
+  const [events, logEvents] = useState({});
 
   const onMarkerDragStart = useCallback((event) => {
-    logEvents((_events) => ({ ..._events, onDragStart: event.lngLat }))
-  }, [])
+    logEvents((_events) => ({
+      ..._events,
+      onDragStart: event.lngLat,
+    }));
+  }, []);
   // Detect the drag event
   const onMarkerDrag = useCallback((event) => {
-    logEvents((_events) => ({ ..._events, onDrag: event.lngLat }))
-  }, [])
+    logEvents((_events) => ({
+      ..._events,
+      onDrag: event.lngLat,
+    }));
+  }, []);
 
   const onMarkerDragEnd = useCallback((event) => {
-    logEvents((_events) => ({ ..._events, onDragEnd: event.lngLat }))
+    logEvents((_events) => ({
+      ..._events,
+      onDragEnd: event.lngLat,
+    }));
     setMarker({
       longitude: event.lngLat[0],
       latitude: event.lngLat[1],
-    })
-  }, [])
+    });
+  }, []);
   // locate the user location label on the map
 
   const locateUser = () => {
@@ -329,18 +371,20 @@ export default function Map() {
       setMarker({
         longitude: position.coords.longitude,
         latitude: position.coords.latitude,
-      })
+      });
 
       setViewpoint({
         ...viewpoint,
         longitude: position.coords.longitude,
         latitude: position.coords.latitude,
         zoom: 15,
-        transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
-        transitionDuration: "auto",
-      })
-    })
-  }
+        transitionInterpolator: new FlyToInterpolator({
+          speed: 1.7,
+        }),
+        transitionDuration: 'auto',
+      });
+    });
+  };
 
   // Add the lcal DynamoDB data to the database
   //covert the json to Dynamo Json
@@ -392,9 +436,10 @@ export default function Map() {
   const covertGeojson = (data) => {
     if (data && data.length != 0) {
       const heritagesArray = data.map((heritage, id) => ({
-        type: "Feature",
+        type: 'Feature',
         properties: {
-          InspectionCarriedOut: heritage.InspectionCarriedOut,
+          InspectionCarriedOut:
+            heritage.InspectionCarriedOut,
           // accessRouteCoordinate: '[{"routeCoordinate":"route1"}]',
           // additionalComments: "",
           // clearedToProceed: false,
@@ -423,49 +468,55 @@ export default function Map() {
         },
         geometry: {
           coordinates: [
-            parseFloat(JSON.parse(heritage.GPSCoordinates)[0].easting),
-            parseFloat(JSON.parse(heritage.GPSCoordinates)[0].northing),
+            parseFloat(
+              JSON.parse(heritage.GPSCoordinates)[0].easting
+            ),
+            parseFloat(
+              JSON.parse(heritage.GPSCoordinates)[0]
+                .northing
+            ),
           ],
-          type: "Point",
+          type: 'Point',
         },
         id: heritage.id,
-      }))
+      }));
       const finalGeo = {
         features: heritagesArray,
-        type: "FeatureCollection",
-      }
+        type: 'FeatureCollection',
+      };
 
-      return finalGeo
+      return finalGeo;
     }
-  }
+  };
 
   const geojson = useMemo(() => {
     if (heritages && heritages.length != 0) {
-      var final = covertGeojson(heritages)
+      var final = covertGeojson(heritages);
     }
-    return final
-  }, [heritages])
-  var geoConvertedjson = null
-  geojson && (geoConvertedjson = geojson)
+    return final;
+  }, [heritages]);
+  var geoConvertedjson = null;
+  geojson && (geoConvertedjson = geojson);
   //map view change
 
   // Use i and g to fix the zoom identified accuracy issues
-  let i = 1
-  let g = 1
-  let preHeight = 10000000000
-  let preZoomM = 22
+  let i = 1;
+  let g = 1;
+  let preHeight = 10000000000;
+  let preZoomM = 22;
   const InspectCamera = () => {
-    const scene = earthRef.current.cesiumElement.scene
-    const camera = scene.camera
-    console.log("position", camera.positionCartographic)
-    const { longitude, latitude, height } = camera.positionCartographic
-    let pi = Math.PI
+    const scene = earthRef.current.cesiumElement.scene;
+    const camera = scene.camera;
+    console.log('position', camera.positionCartographic);
+    const { longitude, latitude, height } =
+      camera.positionCartographic;
+    let pi = Math.PI;
 
-    const longi = longitude * (180 / pi)
-    const lati = latitude * (180 / pi)
+    const longi = longitude * (180 / pi);
+    const lati = latitude * (180 / pi);
     if (height < 7001597 && preHeight > height) {
-      preHeight = height
-      g = g + 1
+      preHeight = height;
+      g = g + 1;
     }
     if (g > 1) {
       setViewpoint({
@@ -473,51 +524,61 @@ export default function Map() {
         longitude: longi,
         latitude: lati,
         zoom: height / 1000000,
-        transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
-        transitionDuration: "auto",
-      })
-      setNondisplay("inherit")
-      setDisplay("none")
+        transitionInterpolator: new FlyToInterpolator({
+          speed: 1.7,
+        }),
+        transitionDuration: 'auto',
+      });
+      setNondisplay('inherit');
+      setDisplay('none');
     }
     // console.log("heading (deg)", CesiumMath.toDegrees(camera.heading))
     // console.log("pitch (deg)", CesiumMath.toDegrees(camera.pitch))
     // console.log("roll (deg)", CesiumMath.toDegrees(camera.roll))
-    console.log("coordinate:", longi, lati, height / 1000000)
-  }
+    console.log(
+      'coordinate:',
+      longi,
+      lati,
+      height / 1000000
+    );
+  };
   const handleChangeView = (e) => {
-    console.log("eeeeeeeeeee", e)
-    InspectCamera()
-  }
+    console.log('eeeeeeeeeee', e);
+    InspectCamera();
+  };
   const handleViewportChange = useCallback((view) => {
     // console.log("zoommmmm", view)
     // console.log("iiiiiiiii", i)
 
-    setViewpoint(view)
+    setViewpoint(view);
     console.log(
-      "coordinate viewpoint",
+      'coordinate viewpoint',
       viewpoint.longitude,
       viewpoint.latitude,
       viewpoint.zoom
-    )
+    );
     console.log(
-      "coordinate viewpoint!!!!!!",
+      'coordinate viewpoint!!!!!!',
       view.longitude,
       view.latitude,
       view.zoom,
       view,
       viewpoint
-    )
-    if ((view.zoom <= 7.15 && view.zoom < preZoomM) || view.zoom < 2.35) {
-      i = i + 1
-      preZoomM = view.zoom
+    );
+    if (
+      (view.zoom <= 7.15 && view.zoom < preZoomM) ||
+      view.zoom < 2.35
+    ) {
+      i = i + 1;
+      preZoomM = view.zoom;
       // console.log("iiiiiiiii", i)
     }
     if (i >= 5) {
-      preZoomM = 22
-      i = 1
-      g = 1
-      setNondisplay("none")
-      setDisplay("unset")
+      preZoomM = 22;
+      i = 1;
+      g = 1;
+      setNondisplay('none');
+      setDisplay('unset');
       // if (
       //   earthRef.current.cesiumElement &&
       //   earthRef.current.cesiumElement.length != 0
@@ -539,9 +600,9 @@ export default function Map() {
       setMarker({
         longitude: view.longitude,
         latitude: view.latitude,
-      })
+      });
     }
-  }, [])
+  }, []);
   //Globe view change
   // const handleViewStateChange = useCallback((view) => {
   //   // console.log("zoomggggg", view.viewState)
@@ -574,52 +635,54 @@ export default function Map() {
       setMarker({
         longitude: newViewport.longitude,
         latitude: newViewport.latitude,
-      })
+      });
 
       setViewpoint({
         ...viewpoint,
         longitude: newViewport.longitude,
         latitude: newViewport.latitude,
         zoom: 15,
-        transitionInterpolator: new FlyToInterpolator({ speed: 1.7 }),
-        transitionDuration: "auto",
-      })
+        transitionInterpolator: new FlyToInterpolator({
+          speed: 1.7,
+        }),
+        transitionDuration: 'auto',
+      });
     },
     [handleViewportChange]
-  )
+  );
   //Restyle the switch button
   const GreenSwitch = withStyles({
     switchBase: {
-      color: "#6c757d",
-      "&$checked": {
-        color: "#32c40e",
+      color: '#6c757d',
+      '&$checked': {
+        color: '#32c40e',
       },
-      "&$checked + $track": {
-        backgroundColor: "#32c40e",
+      '&$checked + $track': {
+        backgroundColor: '#32c40e',
       },
     },
     checked: {},
     track: {},
-  })(Switch)
+  })(Switch);
 
   //fetch data with API
   const fetchData = (url) => {
     axios
       .get(url)
       .then((res) => {
-        const allData = res.data
+        const allData = res.data;
         // console.log("Get the data", res.data)
-        setPCCC(allData)
+        setPCCC(allData);
       })
       // .then(console.log("PCCC", PCCC))
-      .catch((error) => console.log(`Error:${error}`))
-  }
+      .catch((error) => console.log(`Error:${error}`));
+  };
 
   useEffect(async () => {
     await fetchData(
-      "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/json/VS_Info.geojson"
-    )
-  }, [])
+      'https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/json/VS_Info.geojson'
+    );
+  }, []);
   // Modify the video speed
   // useEffect(() => {
   //   // console.log("videoReference", videoRef.current)
@@ -627,7 +690,7 @@ export default function Map() {
   // }, [])
 
   useEffect(() => {
-    const map = mapRef.current.getMap()
+    const map = mapRef.current.getMap();
 
     // map.addSource("mapbox-dem", {
     //   "type": "raster-dem",
@@ -641,38 +704,38 @@ export default function Map() {
     // })
 
     const VSInfo = [
-      "Burial",
-      "Bora",
-      "Bushfood",
-      "Camp",
-      "Crossing",
-      "Duck",
-      "Fishing",
-      "Midden",
-      "Kangaroo",
-      "Goanna",
-      "Medicine",
-      "Tournament",
-      "Possum",
-      "Turtle",
-      "Artefact Scatter",
-      "Quarry",
-      "Dance",
-      "Tracks",
-    ]
+      'Burial',
+      'Bora',
+      'Bushfood',
+      'Camp',
+      'Crossing',
+      'Duck',
+      'Fishing',
+      'Midden',
+      'Kangaroo',
+      'Goanna',
+      'Medicine',
+      'Tournament',
+      'Possum',
+      'Turtle',
+      'Artefact Scatter',
+      'Quarry',
+      'Dance',
+      'Tracks',
+    ];
 
     VSInfo.map((img, id) => {
       map.loadImage(
         ` https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/img/icons/${img}.png`,
         function (error, image) {
-          if (error) throw error
+          if (error) throw error;
 
           // Add the image to the map style.
-          map.addImage(`${img}`, image)
+          map.addImage(`${img}`, image);
         }
-      )
-    })
-  }, [mapRef])
+      );
+    });
+  }, [mapRef]);
   //Enable the rgb terrain
   // const onMapLoad = useCallback((evt) => {
   //   const map = evt.target
@@ -685,15 +748,18 @@ export default function Map() {
   const ambientLight = new AmbientLight({
     color: [255, 255, 255],
     intensity: 0.5,
-  })
+  });
 
   const sunLight = new SunLight({
     color: [255, 255, 255],
     intensity: 2.0,
     timestamp: 0,
-  })
+  });
   // create lighting effect with light sources
-  const lightingEffect = new LightingEffect({ ambientLight, sunLight })
+  const lightingEffect = new LightingEffect({
+    ambientLight,
+    sunLight,
+  });
 
   return (
     <div className="body" id="body">
@@ -705,8 +771,8 @@ export default function Map() {
         />
       </div> */}
       <Sidebar
-        pageWrapId={"map"}
-        outerContainerId={"body"}
+        pageWrapId={'map'}
+        outerContainerId={'body'}
         locateUser={locateUser}
       />
       <div id="logo">
@@ -734,12 +800,19 @@ export default function Map() {
       </div>
       {isMobile() && (
         <div className="bearCtrl">
-          <BearSlider viewpoint={viewpoint} setViewpoint={setViewpoint} />
+          <BearSlider
+            viewpoint={viewpoint}
+            setViewpoint={setViewpoint}
+          />
         </div>
       )}
       <div
         id="map"
-        style={{ display: `${nondisplay}`, width: "100vw", height: "100vh" }}
+        style={{
+          display: `${nondisplay}`,
+          width: '100vw',
+          height: '100vh',
+        }}
       >
         <div ref={geocoderContainerRef}>
           <ReactMapGl
@@ -756,9 +829,9 @@ export default function Map() {
           >
             <GeolocateControl
               style={{
-                bottom: "12.4vh",
-                right: "0",
-                padding: "0",
+                bottom: '12.4vh',
+                right: '0',
+                padding: '0',
               }}
               showUserLocation={true}
               trackUserLocation={false}
@@ -767,14 +840,14 @@ export default function Map() {
             />
             <ScaleControl
               style={{
-                bottom: "12px",
-                left: "0",
-                padding: "2px",
+                bottom: '12px',
+                left: '0',
+                padding: '2px',
               }}
             />
             <NavigationControl
               showCompass={true}
-              style={{ bottom: "12px", right: "0px" }}
+              style={{ bottom: '12px', right: '0px' }}
             />
             {/* <Source
             id="mapbox-dem"
@@ -787,10 +860,15 @@ export default function Map() {
               mapRef={mapRef}
               containerRef={geocoderContainerRef}
               marker={false}
-              onViewportChange={handleGeocoderViewportChange}
+              onViewportChange={
+                handleGeocoderViewportChange
+              }
               mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
               position="top-right"
-              positionOptions={{ enableHighAccuracy: true, timeout: 6000 }}
+              positionOptions={{
+                enableHighAccuracy: true,
+                timeout: 6000,
+              }}
             />
             {/* <div class="toggleWrapper">
             <input
@@ -808,9 +886,12 @@ export default function Map() {
                   <GreenSwitch
                     checked={checkboxes[0]}
                     onChange={(e) => {
-                      const nextCheckboxes = [...checkboxes]
-                      nextCheckboxes[0] = e.currentTarget.checked
-                      setCheckboxes(nextCheckboxes)
+                      const nextCheckboxes = [
+                        ...checkboxes,
+                      ];
+                      nextCheckboxes[0] =
+                        e.currentTarget.checked;
+                      setCheckboxes(nextCheckboxes);
                     }}
                     name="checkedB"
                     color="secondary"
@@ -827,9 +908,10 @@ export default function Map() {
                   <GreenSwitch
                     checked={building[0]}
                     onChange={(e) => {
-                      const nextBuilding = [...building]
-                      nextBuilding[0] = e.currentTarget.checked
-                      setBuilding(nextBuilding)
+                      const nextBuilding = [...building];
+                      nextBuilding[0] =
+                        e.currentTarget.checked;
+                      setBuilding(nextBuilding);
                     }}
                     name="checkedB"
                     color="secondary"
@@ -846,9 +928,10 @@ export default function Map() {
                   <GreenSwitch
                     checked={mapLayer[0]}
                     onChange={(e) => {
-                      const nextMapLayer = [...mapLayer]
-                      nextMapLayer[0] = e.currentTarget.checked
-                      setMapLayer(nextMapLayer)
+                      const nextMapLayer = [...mapLayer];
+                      nextMapLayer[0] =
+                        e.currentTarget.checked;
+                      setMapLayer(nextMapLayer);
                     }}
                     name="checkedB"
                     color="secondary"
@@ -859,15 +942,25 @@ export default function Map() {
               <div className="Text3d3">Layers</div>
             </div>
             <Layer {...skyLayer} />
-            {building[0] && <Layer {...ThreeDBuildingLayer} />}
+            {building[0] && (
+              <Layer {...ThreeDBuildingLayer} />
+            )}
             {boundtries && (
-              <Source id="boundtries" type="geojson" data={boundtries}>
+              <Source
+                id="boundtries"
+                type="geojson"
+                data={boundtries}
+              >
                 <Layer {...boundriesLayer} />
               </Source>
             )}
             {/* region text */}
             {regionsText && (
-              <Source id="regions" type="geojson" data={regionsText}>
+              <Source
+                id="regions"
+                type="geojson"
+                data={regionsText}
+              >
                 <Layer {...regionName} />
               </Source>
             )}
@@ -918,7 +1011,7 @@ export default function Map() {
                     location={place.location}
                     city={place.city}
                   />
-                )
+                );
               })}
             {/* {geoConvertedjson != null && (
             <Pins data={geoConvertedjson} onClick={onClick} />
@@ -937,7 +1030,7 @@ export default function Map() {
               <DragPin
                 size={30}
                 clickFunction={() => {
-                  setEnter(true)
+                  setEnter(true);
                 }}
               />
             </Marker>
@@ -971,10 +1064,14 @@ export default function Map() {
               clickInfo &&
               clickInfo != null &&
               clickInfo.sourceLayer &&
-              clickInfo.sourceLayer === "VS_Info" && (
+              clickInfo.sourceLayer === 'VS_Info' && (
                 <Popup
-                  latitude={clickInfo.geometry.coordinates[1]}
-                  longitude={clickInfo.geometry.coordinates[0]}
+                  latitude={
+                    clickInfo.geometry.coordinates[1]
+                  }
+                  longitude={
+                    clickInfo.geometry.coordinates[0]
+                  }
                   closeButton={true}
                   closeOnClick={false}
                   onClose={() => setPopup(false)}
@@ -985,7 +1082,9 @@ export default function Map() {
                 >
                   <PopInfo
                     src={videoUrl}
-                    description={clickInfo.properties.description}
+                    description={
+                      clickInfo.properties.description
+                    }
                     title={clickInfo.properties.title}
                   />
                 </Popup>
@@ -994,10 +1093,14 @@ export default function Map() {
               clickInfo &&
               clickInfo != null &&
               clickInfo.source.length != 0 &&
-              clickInfo.source === "heritages" && (
+              clickInfo.source === 'heritages' && (
                 <Popup
-                  latitude={clickInfo.geometry.coordinates[1]}
-                  longitude={clickInfo.geometry.coordinates[0]}
+                  latitude={
+                    clickInfo.geometry.coordinates[1]
+                  }
+                  longitude={
+                    clickInfo.geometry.coordinates[0]
+                  }
                   closeButton={true}
                   closeOnClick={false}
                   onClose={() => setPopup(false)}
@@ -1008,8 +1111,12 @@ export default function Map() {
                 >
                   <PopInfo
                     src={videoUrl}
-                    description={clickInfo.properties.videoDescription}
-                    title={clickInfo.properties.heritageType}
+                    description={
+                      clickInfo.properties.videoDescription
+                    }
+                    title={
+                      clickInfo.properties.heritageType
+                    }
                   />
                 </Popup>
               )}
@@ -1017,10 +1124,14 @@ export default function Map() {
             {popup &&
               clickInfo &&
               clickInfo != null &&
-              clickInfo.source === "PCCC" && (
+              clickInfo.source === 'PCCC' && (
                 <Popup
-                  latitude={clickInfo.geometry.coordinates[1]}
-                  longitude={clickInfo.geometry.coordinates[0]}
+                  latitude={
+                    clickInfo.geometry.coordinates[1]
+                  }
+                  longitude={
+                    clickInfo.geometry.coordinates[0]
+                  }
                   closeButton={true}
                   closeOnClick={false}
                   onClose={() => setPopup(false)}
@@ -1029,11 +1140,14 @@ export default function Map() {
                   captureScroll={true}
                   captureDrag={false}
                 >
-                  {clickInfo.source === "PCCC" &&
-                    clickInfo.properties.VideoName != null && (
+                  {clickInfo.source === 'PCCC' &&
+                    clickInfo.properties.VideoName !=
+                      null && (
                       <PopInfo
                         src={videoUrl}
-                        description={clickInfo.properties.description}
+                        description={
+                          clickInfo.properties.description
+                        }
                         title={clickInfo.properties.title}
                       />
                     )}
@@ -1043,7 +1157,10 @@ export default function Map() {
         </div>
       </div>
 
-      <div className="globe" style={{ display: `${display}` }}>
+      <div
+        className="globe"
+        style={{ display: `${display}` }}
+      >
         {/* <video
           ref={videoRef}
           className="videoTag"
@@ -1077,21 +1194,25 @@ export default function Map() {
           <SkyBox
             sources={{
               positiveX:
-                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/px.png",
+                'https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/px.png',
               negativeX:
-                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/nx.png",
+                'https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/nx.png',
               positiveY:
-                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/ny.png",
+                'https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/ny.png',
               negativeY:
-                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/py.png",
+                'https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/py.png',
               positiveZ:
-                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/pz.png",
+                'https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/pz.png',
               negativeZ:
-                "https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/nz.png",
+                'https://maiwar-react-storage04046-devsecond.s3.ap-southeast-2.amazonaws.com/public/mapSourceImg/nz.png',
             }}
           />
           <Entity
-            position={Cartesian3.fromDegrees(152.9794409, -27.5084143, 200)}
+            position={Cartesian3.fromDegrees(
+              152.9794409,
+              -27.5084143,
+              200
+            )}
             point={pointGraphics}
             name="Hi! There!"
             description="This is our office location, which is Creative Industries Precinct, Z3/106 Musk Ave, Kelvin Grove QLD 4059"
@@ -1123,5 +1244,5 @@ export default function Map() {
         </Viewer>
       </div>
     </div>
-  )
+  );
 }
