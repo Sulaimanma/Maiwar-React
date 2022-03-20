@@ -1,5 +1,5 @@
 import Amplify, { API, Auth, graphqlOperation } from "aws-amplify"
-import awsconfig from "./aws-exports"
+// import awsconfig from "./aws-exports"
 
 import {
   AmplifyAuthenticator,
@@ -17,7 +17,7 @@ import { Route } from "react-router"
 import HeritageInput from "./component/HeritageInput"
 import { Button } from "react-bootstrap"
 
-Amplify.configure(awsconfig)
+// Amplify.configure(awsconfig)
 
 function App() {
   const [authState, setAuthState] = useState()
@@ -62,7 +62,7 @@ function App() {
 
   // console.log("heritages on the homepage!!!!!!!!!!!!!!!!!!!!!!!!!", heritages)
   // return authState === AuthState.SignedIn && user
-  return true ? (
+  return true && (
     <div
       className="App"
       id="App"
@@ -91,19 +91,7 @@ function App() {
         <Route exact path="/" component={Map}></Route>
       </HeritageContext.Provider>
     </div>
-  ) : (
-    // Sign up window
-    <AmplifyAuthenticator>
-      <AmplifySignUp
-        slot="sign-up"
-        formFields={[
-          { type: "username" },
-          { type: "password" },
-          { type: "email" },
-        ]}
-      />
-    </AmplifyAuthenticator>
-  )
+  ) 
 }
 
 export default App
